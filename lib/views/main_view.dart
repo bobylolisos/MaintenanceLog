@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/about_view.dart';
 import 'package:maintenance_log/views/home_view.dart';
-import 'package:maintenance_log/views/manage_view.dart';
+import 'package:maintenance_log/views/admin_view.dart';
 import 'package:maintenance_log/widgets/wave_clipper.dart';
 
 class MainView extends StatelessWidget {
@@ -55,7 +55,7 @@ class MainView extends StatelessWidget {
                               Column(
                                 children: [
                                   Text(
-                                    'Keep track of your expenses, maintenance',
+                                    'Keep track of your expenses, maintenances',
                                     style: TextStyle(
                                         color: colorGold, fontSize: 10),
                                   ),
@@ -86,7 +86,7 @@ class MainView extends StatelessWidget {
                       return AboutView();
                     }
                     if (value == 1) {
-                      return ManageView();
+                      return AdminView();
                     }
                     return HomeView();
                   },
@@ -135,7 +135,7 @@ class MainView extends StatelessWidget {
                         FontAwesomeIcons.gear,
                       ),
                     ),
-                    label: 'Manage'),
+                    label: 'Admin'),
                 BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.all(4.0),
