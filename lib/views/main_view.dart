@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/about_view.dart';
 import 'package:maintenance_log/views/home_view.dart';
@@ -14,6 +19,28 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var imagePicker = ImagePicker();
+          var xfile = await imagePicker.pickImage(source: ImageSource.camera);
+
+          if (xfile == null) {
+            return;
+          }
+          var referenceRoot = FirebaseStorage.instance.ref();
+          var referenceDirImages = referenceRoot.child('images');
+          var referenceImageToUpload = referenceDirImages.child(xfile.name);
+          await referenceImageToUpload.putFile(File(xfile.path));
+          var url = await referenceImageToUpload.getDownloadURL();
+
+          // var aaa = url;
+
+          Map<String, dynamic> myMap = {'ggg': 'hhh'};
+          var collection = FirebaseFirestore.instance.collection('test');
+          var ref = collection.doc('000');
+          await ref.set(myMap);
+        },
+      ),
       backgroundColor: colorBlue,
       body: SafeArea(
         child: Container(
