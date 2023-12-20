@@ -67,7 +67,7 @@ class MainHeader extends StatelessWidget {
                   Scaffold.of(context).openEndDrawer();
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 25),
                   child: Icon(
                     Icons.menu,
                     color: colorGold,

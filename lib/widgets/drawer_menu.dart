@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/about_view.dart';
 import 'package:maintenance_log/views/admin_view.dart';
+import 'package:maintenance_log/views/settings_view.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
@@ -66,6 +68,14 @@ class DrawerMenu extends StatelessWidget {
                       'Settings',
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SettingsView(),
+                        ),
+                      );
+                    },
                   ),
                   ListTile(
                     leading: FaIcon(
@@ -77,6 +87,14 @@ class DrawerMenu extends StatelessWidget {
                       'About',
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AboutView(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
