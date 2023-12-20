@@ -29,7 +29,7 @@ class Maintenance {
       map['id'] as String,
       map['name'] as String,
       List<Post>.from(
-        (map['posts'] as List<int>).map<Post>(
+        (map['posts'] as List).map<Post>(
           (x) => Post.fromMap(x as Map<String, dynamic>),
         ),
       ),

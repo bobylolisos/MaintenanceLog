@@ -28,7 +28,7 @@ class Post {
       map['odometer'] as int,
       map['costs'] as int,
       map['note'] as String,
-      List<String>.from(map['images'] as List<String>),
+      List<String>.from(map['images'] as List),
     );
   }
 

@@ -1,5 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:maintenance_log/models/consumption.dart';
+import 'package:maintenance_log/models/maintenance.dart';
+import 'package:maintenance_log/models/maintenance_object.dart';
+import 'package:maintenance_log/models/note.dart';
+import 'package:maintenance_log/models/post.dart';
+import 'package:maintenance_log/models/property_value.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/widgets/expandable_fab.dart';
 
@@ -24,6 +31,52 @@ class AdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var maintenanceObject = MaintenanceObject(
+        id: '1',
+        name: 'name',
+        description: 'description',
+        meterType: MeterType.odometer,
+        sortOrder: 1,
+        isActive: true,
+        propertyValues: [
+          PropertyValue('1', 'label', 'text', 1),
+          PropertyValue('2', 'label', 'text', 2)
+        ],
+        notes: [
+          Note('1', 'name 1', 'text 1', 1, ['image 1', 'image 2']),
+          Note('2', 'name 2', 'text 2', 2, ['image 1', 'image 2'])
+        ],
+        maintenanceItems: [
+          Maintenance(
+              '1',
+              'name 1',
+              [
+                Post('1', DateTime.now(), 10000, 50, 'note 1',
+                    ['image 1', 'image 2'])
+              ],
+              'description 1',
+              1,
+              true),
+          Maintenance(
+              '2',
+              'name 2',
+              [
+                Post('1', DateTime.now(), 10000, 50, 'note 2',
+                    ['image 1', 'image 2'])
+              ],
+              'description 2',
+              2,
+              true)
+        ],
+        consumptions: [
+          Consumption('1', DateTime.now().subtract(Duration(days: 1)), 20.99,
+              35.0, 10100),
+          Consumption('1', DateTime.now(), 22, 39.0, 10200)
+        ],
+        images: [
+          'image 1',
+          'image 2'
+        ]);
     return Scaffold(
       backgroundColor: colorBlue,
       appBar: AppBar(
@@ -42,11 +95,23 @@ class AdminView extends StatelessWidget {
         distance: 112,
         children: [
           ActionButton(
-            onPressed: () => _showAction(context, 0),
-            icon: const FaIcon(FontAwesomeIcons.car),
+            onPressed: () async {
+              // final collection = FirebaseFirestore.instance.collection('test');
+              // var ref = collection.doc('1');
+              // await ref.set(maintenanceObject.toMap());
+            },
+            icon: FaIcon(FontAwesomeIcons.car),
           ),
           ActionButton(
-            onPressed: () => _showAction(context, 1),
+            onPressed: () async {
+              final collection = FirebaseFirestore.instance.collection('test');
+              var ref = collection.doc('1');
+              var aaa = await ref.get();
+              var bbb = aaa.data();
+              print(bbb);
+              var ccc = MaintenanceObject.fromMap(bbb as Map<String, dynamic>);
+              var ddd = ccc;
+            },
             icon: const FaIcon(FontAwesomeIcons.bicycle),
           ),
           // ActionButton(

@@ -25,7 +25,7 @@ class Note {
       map['name'] as String,
       map['text'] as String,
       map['sortOrder'] as int,
-      List<String>.from(map['images'] as List<String>),
+      List<String>.from(map['images'] as List),
     );
   }
 

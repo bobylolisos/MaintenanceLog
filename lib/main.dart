@@ -16,7 +16,7 @@ void main() async {
     projectId: dotenv.get('ANDROID_FIREBASE_PROJECT_ID'),
     storageBucket: dotenv.get('ANDROID_FIREBASE_STORAGE_BUCKET'),
   );
-  final app = await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: firebaseOptions,
   );
 
