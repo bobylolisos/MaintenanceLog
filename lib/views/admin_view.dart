@@ -4,11 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
+import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/models/note.dart';
 import 'package:maintenance_log/models/post.dart';
 import 'package:maintenance_log/models/property_value.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/widgets/expandable_fab.dart';
+import 'package:maintenance_log/widgets/wave_clipper.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});
@@ -34,7 +36,6 @@ class AdminView extends StatelessWidget {
     var maintenanceObject = MaintenanceObject(
         id: '1',
         name: 'name',
-        description: 'description',
         meterType: MeterType.odometer,
         sortOrder: 1,
         isActive: true,
@@ -78,17 +79,36 @@ class AdminView extends StatelessWidget {
           'image 2'
         ]);
     return Scaffold(
-      backgroundColor: colorBlue,
+      backgroundColor: colorLightGrey,
       appBar: AppBar(
         backgroundColor: colorBlue,
-        title: Text('Admin'),
-      ),
-      body: SafeArea(
-        child: Container(
-          color: colorLightGrey,
-          child: Center(
-            child: Text('Admin'),
+        foregroundColor: colorGold,
+        shadowColor: Colors.transparent,
+        toolbarHeight: 120,
+        flexibleSpace: SafeArea(
+          child: Container(
+            color: colorLightGrey,
+            child: ClipPath(
+                clipper: WaveClipper(),
+                child: Container(
+                    color: colorBlue,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 80),
+                        child: Text(
+                          'Admin',
+                          style: TextStyle(color: colorGold, fontSize: 30),
+                        ),
+                      ),
+                    ))),
           ),
+        ),
+      ),
+      body: Container(
+        color: colorLightGrey,
+        child: Center(
+          child: Text('Admin'),
         ),
       ),
       floatingActionButton: ExpandableFab(

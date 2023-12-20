@@ -5,12 +5,12 @@ import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/property_value.dart';
 
 import 'maintenance.dart';
+import 'meter_type.dart';
 import 'note.dart';
 
 class MaintenanceObject {
   final String id;
   final String name;
-  final String description;
   final MeterType meterType;
   final int sortOrder; // ?????
   final bool isActive;
@@ -23,12 +23,11 @@ class MaintenanceObject {
   MaintenanceObject(
       {required this.id,
       required this.name,
-      required this.description,
       required this.meterType,
       required this.sortOrder,
       required this.isActive,
-      required this.propertyValues,
-      required this.notes, // Brand, Model, Year, LicensePlate
+      required this.propertyValues, // Brand, Model, Year, LicensePlate
+      required this.notes,
       required this.maintenanceItems,
       required this.consumptions,
       required this.images});
@@ -37,7 +36,6 @@ class MaintenanceObject {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'description': description,
       'meterType': meterType.index,
       'sortOrder': sortOrder,
       'isActive': isActive,
@@ -53,7 +51,6 @@ class MaintenanceObject {
     return MaintenanceObject(
       id: map['id'] as String,
       name: map['name'] as String,
-      description: map['description'] as String,
       sortOrder: map['sortOrder'] as int,
       meterType: MeterType.values[map['meterType']],
       isActive: map['isActive'] as bool,
@@ -86,5 +83,3 @@ class MaintenanceObject {
   factory MaintenanceObject.fromJson(String source) =>
       MaintenanceObject.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
-enum MeterType { none, odometer, hourmeter }
