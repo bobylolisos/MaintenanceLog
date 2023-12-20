@@ -17,9 +17,14 @@ class MaintenanceObjectBloc
     on<MaintenanceObjectGetEvent>(onMaintenanceObjectGetEvent);
   }
 
-  FutureOr<void> onMaintenanceObjectGetEvent(
-      MaintenanceObjectGetEvent event, Emitter<MaintenanceObjectState> emit) {
-    var id = event.maintenanceObjectId;
-    // Load object
+  FutureOr<void> onMaintenanceObjectGetEvent(MaintenanceObjectGetEvent event,
+      Emitter<MaintenanceObjectState> emit) async {
+    emit(MaintenanceObjectInitialState());
+    var maintenanceObject = await _maintenanceObjectRepository
+        .getMaintenanceObject(event.maintenanceObjectId);
+
+    if (maintenanceObject != null) {
+      emit(MaintenanceObjectGetState(maintenanceObject: maintenanceObject));
+    }
   }
 }

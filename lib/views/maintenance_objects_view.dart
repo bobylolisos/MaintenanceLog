@@ -43,8 +43,9 @@ class MaintenanceObjectsView extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        MaintenanceObjectView(),
+                                    builder: (context) => MaintenanceObjectView(
+                                      maintenanceObjectId: maintenanceObject.id,
+                                    ),
                                   ));
                                 },
                                 child: Padding(

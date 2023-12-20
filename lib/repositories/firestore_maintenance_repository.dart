@@ -22,4 +22,14 @@ class FirestoreMaintenanceRepository {
       rethrow;
     }
   }
+
+  Future<MaintenanceObject?> getMaintenanceObject(String id) async {
+    var collection = _firestore.collection('MaintenanceObjects');
+    var docRef = collection.doc(id);
+    var snapshot = await docRef.get();
+    var data = snapshot.data();
+    // await Future.delayed(Duration(milliseconds: 300));
+
+    return data != null ? MaintenanceObject.fromMap(data) : null;
+  }
 }
