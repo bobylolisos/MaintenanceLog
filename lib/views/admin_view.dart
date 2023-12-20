@@ -10,6 +10,7 @@ import 'package:maintenance_log/models/post.dart';
 import 'package:maintenance_log/models/property_value.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/widgets/expandable_fab.dart';
+import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 import 'package:maintenance_log/widgets/wave_clipper.dart';
 
 class AdminView extends StatelessWidget {
@@ -80,31 +81,7 @@ class AdminView extends StatelessWidget {
         ]);
     return Scaffold(
       backgroundColor: colorLightGrey,
-      appBar: AppBar(
-        backgroundColor: colorBlue,
-        foregroundColor: colorGold,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 120,
-        flexibleSpace: SafeArea(
-          child: Container(
-            color: colorLightGrey,
-            child: ClipPath(
-                clipper: WaveClipper(),
-                child: Container(
-                    color: colorBlue,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 80),
-                        child: Text(
-                          'Admin',
-                          style: TextStyle(color: colorGold, fontSize: 30),
-                        ),
-                      ),
-                    ))),
-          ),
-        ),
-      ),
+      appBar: SubHeaderAppBar(title: 'Admin'),
       body: Container(
         color: colorLightGrey,
         child: Center(
