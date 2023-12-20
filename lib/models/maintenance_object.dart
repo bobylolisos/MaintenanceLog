@@ -11,6 +11,7 @@ import 'note.dart';
 class MaintenanceObject {
   final String id;
   final String name;
+  final String shortDescription;
   final MeterType meterType;
   final int sortOrder; // ?????
   final bool isActive;
@@ -23,6 +24,7 @@ class MaintenanceObject {
   MaintenanceObject(
       {required this.id,
       required this.name,
+      required this.shortDescription,
       required this.meterType,
       required this.sortOrder,
       required this.isActive,
@@ -36,6 +38,7 @@ class MaintenanceObject {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'shortDescription': shortDescription,
       'meterType': meterType.index,
       'sortOrder': sortOrder,
       'isActive': isActive,
@@ -51,6 +54,7 @@ class MaintenanceObject {
     return MaintenanceObject(
       id: map['id'] as String,
       name: map['name'] as String,
+      shortDescription: map['shortDescription'] as String,
       sortOrder: map['sortOrder'] as int,
       meterType: MeterType.values[map['meterType']],
       isActive: map['isActive'] as bool,

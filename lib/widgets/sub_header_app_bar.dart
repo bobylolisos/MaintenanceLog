@@ -22,7 +22,7 @@ PreferredSizeWidget SubHeaderAppBar({required String title}) {
                 padding: const EdgeInsets.only(left: 80),
                 child: Text(
                   title,
-                  style: TextStyle(color: colorGold, fontSize: 30),
+                  style: TextStyle(color: colorGold, fontSize: 25),
                 ),
               ),
             ),

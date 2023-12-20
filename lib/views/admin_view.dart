@@ -11,7 +11,6 @@ import 'package:maintenance_log/models/property_value.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/widgets/expandable_fab.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
-import 'package:maintenance_log/widgets/wave_clipper.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});
@@ -37,6 +36,7 @@ class AdminView extends StatelessWidget {
     var maintenanceObject = MaintenanceObject(
         id: '1',
         name: 'name',
+        shortDescription: 'shortDescription',
         meterType: MeterType.odometer,
         sortOrder: 1,
         isActive: true,
@@ -93,9 +93,10 @@ class AdminView extends StatelessWidget {
         children: [
           ActionButton(
             onPressed: () async {
-              // final collection = FirebaseFirestore.instance.collection('test');
-              // var ref = collection.doc('1');
-              // await ref.set(maintenanceObject.toMap());
+              final collection =
+                  FirebaseFirestore.instance.collection('MaintenanceObjects');
+              var ref = collection.doc('3');
+              await ref.set(maintenanceObject.toMap());
             },
             icon: FaIcon(FontAwesomeIcons.car),
           ),
