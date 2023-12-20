@@ -5,6 +5,7 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
 import 'package:maintenance_log/repositories/firestore_maintenance_repository.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_object_view.dart';
 import 'package:maintenance_log/widgets/drawer_menu.dart';
 import 'package:maintenance_log/widgets/main_header.dart';
@@ -25,8 +26,7 @@ class MaintenanceObjectsView extends StatelessWidget {
               MainHeader(),
               BlocProvider<MaintenanceObjectsBloc>(
                 create: (BuildContext context) => MaintenanceObjectsBloc(
-                    maintenanceObjectRepository:
-                        FirestoreMaintenanceRepository())
+                    maintenanceObjectRepository: ioc.get())
                   ..add(MaintenanceObjectsSubscriptionEvent()),
                 child: Expanded(
                   child: BlocBuilder<MaintenanceObjectsBloc,

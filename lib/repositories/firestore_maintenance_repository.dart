@@ -7,7 +7,8 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 class FirestoreMaintenanceRepository {
   final FirebaseFirestore _firestore;
 
-  FirestoreMaintenanceRepository() : _firestore = FirebaseFirestore.instance;
+  FirestoreMaintenanceRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
   Stream<Iterable<MaintenanceObject>> subscribeForMaintenanceObjectChanges() {
     try {
