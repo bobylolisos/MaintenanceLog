@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_event.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
-import 'package:maintenance_log/repositories/firestore_maintenance_repository.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_object_view.dart';
 import 'package:maintenance_log/widgets/drawer_menu.dart';
 import 'package:maintenance_log/widgets/main_header.dart';
+import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 
 class MaintenanceObjectsView extends StatelessWidget {
   const MaintenanceObjectsView({super.key});
@@ -38,83 +39,30 @@ class MaintenanceObjectsView extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final maintenanceObject =
                                 state.maintenanceObjects.elementAt(index);
-                            return Material(
-                              // Material is used for click-splash-effect to work on inkwell
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => MaintenanceObjectView(
-                                      maintenanceObjectId: maintenanceObject.id,
-                                    ),
-                                  ));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: 70,
-                                        height: 70,
-                                        child: maintenanceObject
-                                                .images.isNotEmpty
-                                            ? ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(35),
-                                                child: Image.network(
-                                                    fit: BoxFit.cover,
-                                                    maintenanceObject
-                                                        .images.first),
-                                              )
-                                            : CircleAvatar(
-                                                backgroundColor: colorGold,
-                                                foregroundColor: colorBlue,
-                                                child: Icon(
-                                                  Icons.car_crash,
-                                                  size: 40,
-                                                ),
-                                              ),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 5),
+                              child: MaintenanceObjectCard(
+                                  maintenanceObject: maintenanceObject,
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          MaintenanceObjectView(
+                                        maintenanceObject: maintenanceObject,
                                       ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            maintenanceObject.name,
-                                            style: TextStyle(
-                                                color: colorBlue,
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            maintenanceObject.shortDescription,
-                                            style: TextStyle(
-                                                color: colorBlue, fontSize: 15),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    ));
+                                  }),
                             );
                           },
                         );
                       }
-                      return SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: CircularProgressIndicator());
+                      return Center(
+                        child: SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: CircularProgressIndicator()),
+                      );
                     },
                   ),
                 ),

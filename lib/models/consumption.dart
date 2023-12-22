@@ -3,8 +3,8 @@ import 'dart:convert';
 class Consumption {
   final String id;
   final DateTime date;
-  final double pricePerLitre;
-  final double litre;
+  final num pricePerLitre;
+  final num litre;
   final int trip;
 
   Consumption(this.id, this.date, this.pricePerLitre, this.litre, this.trip);
@@ -23,8 +23,8 @@ class Consumption {
     return Consumption(
       map['id'] as String,
       DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
-      map['pricePerLitre'] as double,
-      map['litre'] as double,
+      map['pricePerLitre'] as num,
+      map['litre'] as num,
       map['trip'] as int,
     );
   }
