@@ -46,7 +46,7 @@ class DrawerMenu extends StatelessWidget {
                       color: colorBlue,
                     ),
                     title: Text(
-                      'Admin',
+                      'Administration',
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
                     onTap: () {
@@ -65,7 +65,7 @@ class DrawerMenu extends StatelessWidget {
                       color: colorBlue,
                     ),
                     title: Text(
-                      'Settings',
+                      'Inställningar',
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
                     onTap: () {
@@ -84,7 +84,7 @@ class DrawerMenu extends StatelessWidget {
                       color: colorBlue,
                     ),
                     title: Text(
-                      'About',
+                      'Om',
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
                     onTap: () {

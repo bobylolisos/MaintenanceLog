@@ -3,14 +3,14 @@ import 'package:maintenance_log/resources/colors.dart';
 
 class MaintenanceObjectItemCard extends StatelessWidget {
   final String title;
-  final Widget widget;
+  final Widget child;
   final GestureTapCallback? onTap;
   final GestureTapCallback? onAddTap;
   final int? postCount;
 
   const MaintenanceObjectItemCard(
       {required this.title,
-      required this.widget,
+      required this.child,
       this.postCount,
       this.onTap,
       this.onAddTap,
@@ -44,6 +44,7 @@ class MaintenanceObjectItemCard extends StatelessWidget {
             ),
             postCount != null
                 ? Container(
+                    margin: EdgeInsets.only(left: 2),
                     height: 25,
                     width: 50,
                     decoration: BoxDecoration(
@@ -68,68 +69,80 @@ class MaintenanceObjectItemCard extends StatelessWidget {
         ),
 
         // Content container
-        Material(
-          color: Colors.white,
-          child: InkWell(
-            splashColor: colorGold,
-            onTap: onTap,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  )),
-              constraints: BoxConstraints(
-                // minHeight: 100,
-                minWidth: double.infinity,
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(2, 4), // changes position of shadow
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 10.0, top: 8, right: 8, bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                        child: Container(
-                            alignment: Alignment.topLeft,
-                            constraints: BoxConstraints(
-                              minHeight: 40,
-                              minWidth: double.infinity,
-                            ),
-                            child: widget)),
-                    onAddTap != null
-                        ? SizedBox(
-                            width: 10,
-                          )
-                        : Container(),
-                    onAddTap != null
-                        ? Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: colorBlue,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: colorBlue,
-                                width: 2.0,
+            ],
+          ),
+          child: Material(
+            color: Colors.white,
+            child: InkWell(
+              splashColor: colorGold,
+              onTap: onTap,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    )),
+                constraints: BoxConstraints(
+                  // minHeight: 100,
+                  minWidth: double.infinity,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10.0, top: 8, right: 8, bottom: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                          child: Container(
+                              alignment: Alignment.topLeft,
+                              constraints: BoxConstraints(
+                                minHeight: 40,
+                                minWidth: double.infinity,
                               ),
-                            ),
-                            child: InkWell(
-                              splashColor: colorGold,
-                              borderRadius: BorderRadius.circular(20),
-                              onTap: () {},
-                              child: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: Icon(
-                                  Icons.add,
-                                  color: colorGold,
+                              child: child)),
+                      onAddTap != null
+                          ? SizedBox(
+                              width: 10,
+                            )
+                          : Container(),
+                      onAddTap != null
+                          ? Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                color: colorBlue,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: colorBlue,
+                                  width: 2.0,
                                 ),
                               ),
-                            ),
-                          )
-                        : Container()
-                  ],
+                              child: InkWell(
+                                splashColor: colorGold,
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {},
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: colorGold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
               ),
             ),

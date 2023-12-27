@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/widgets/maintenace_object_card.dart';
+import 'package:maintenance_log/views/maintenance_object/builders/consumption_card_builder.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 import '../../widgets/maintenance_object_item_card.dart';
+import 'builders/maintenance_items_cards_builder.dart';
+import 'builders/maintenance_object_information_card_builder.dart';
 
+// ignore: must_be_immutable
 class MaintenanceObjectView extends StatelessWidget {
   MaintenanceObject maintenanceObject;
   MaintenanceObjectView({required this.maintenanceObject, super.key});
@@ -19,7 +21,7 @@ class MaintenanceObjectView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorLightGrey,
-      appBar: SubHeaderAppBar(title: 'Maintenance'),
+      appBar: SubHeaderAppBar(title: 'Underhåll'),
       body: BlocProvider<MaintenanceObjectBloc>(
         create: (BuildContext context) => MaintenanceObjectBloc(
           maintenanceObjectRepository: ioc.get(),
@@ -37,23 +39,29 @@ class MaintenanceObjectView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       // ----------- Object information ----------
-                      _createInformationCard(maintenanceObject),
+                      MaintenanceObjectInformationCardBuilder.create(
+                          maintenanceObject),
                       SizedBox(
                         height: 10,
                       ),
 
                       // ----------- Consumption ----------
-                      _createConsumptionCard(maintenanceObject),
+                      ConsumptionCardBuilder.create(maintenanceObject),
                       SizedBox(
                         height: 10,
                       ),
 
                       // ----------- Maintenance items ----------
+                      Column(
+                        children: MaintenanceItemsCardsBuilder.create(
+                            maintenanceObject),
+                      ),
+
                       MaintenanceObjectItemCard(
                           title: 'Insurance',
                           postCount: 999,
                           onAddTap: () {},
-                          widget: Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
@@ -98,7 +106,7 @@ class MaintenanceObjectView extends StatelessWidget {
                       MaintenanceObjectItemCard(
                           title: 'title',
                           onAddTap: () {},
-                          widget: Column(
+                          child: Column(
                             children: [
                               Text(
                                 'En ganska så jävla lång beskrivning av vad detta är för1 nått som beskriver denna',
@@ -114,17 +122,17 @@ class MaintenanceObjectView extends StatelessWidget {
                         height: 10,
                       ),
                       MaintenanceObjectItemCard(
-                          title: 'title', widget: Icon(Icons.abc)),
+                          title: 'title', child: Icon(Icons.abc)),
                       SizedBox(
                         height: 10,
                       ),
                       MaintenanceObjectItemCard(
-                          title: 'title', widget: Icon(Icons.abc)),
+                          title: 'title', child: Icon(Icons.abc)),
                       SizedBox(
                         height: 10,
                       ),
                       MaintenanceObjectItemCard(
-                          title: 'title', widget: Icon(Icons.abc)),
+                          title: 'title', child: Icon(Icons.abc)),
                     ],
                   ),
                 ),
@@ -134,106 +142,5 @@ class MaintenanceObjectView extends StatelessWidget {
         }),
       ),
     );
-  }
-
-  Widget _createInformationCard(MaintenanceObject maintenanceObject) {
-    return MaintenanceObjectItemCard(
-      title: 'Information',
-      onTap: () {},
-      widget: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            maintenanceObject.name,
-            style: TextStyle(color: colorBlue, fontSize: 20),
-          ),
-          Text(
-            maintenanceObject.shortDescription,
-            style: TextStyle(color: colorBlue, fontSize: 14),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Builder(
-            builder: (context) {
-              final widgets = List<Widget>.empty(growable: true);
-              for (var propertyValue in maintenanceObject.propertyValues) {
-                if (propertyValue.label.isEmpty) {
-                  widgets.add(Text(
-                    propertyValue.text,
-                    style: TextStyle(color: colorBlue, fontSize: 14),
-                  ));
-                } else {
-                  widgets.add(Text(
-                    propertyValue.label + ': ' + propertyValue.text,
-                    style: TextStyle(color: colorBlue, fontSize: 14),
-                  ));
-                }
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: widgets.toList(),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _createConsumptionCard(MaintenanceObject maintenanceObject) {
-    return Builder(builder: (context) {
-      final postCount = maintenanceObject.consumptions.length;
-      return MaintenanceObjectItemCard(
-          title: 'Consumption',
-          postCount: postCount,
-          onAddTap: () {},
-          widget: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              postCount > 0
-                  ? Text(
-                      maintenanceObject.consumptions.last.date
-                          .toString()
-                          .substring(0, 10),
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    )
-                  : Text(
-                      '-',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    ),
-              SizedBox(
-                height: 6,
-              ),
-              postCount > 0
-                  ? Text(
-                      '${maintenanceObject.consumptions.last.trip} km',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    )
-                  : Text(
-                      '-',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    ),
-              postCount > 0
-                  ? Text(
-                      '${maintenanceObject.consumptions.last.pricePerLitre} kr',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    )
-                  : Text(
-                      '-',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    ),
-              postCount > 0
-                  ? Text(
-                      '${maintenanceObject.consumptions.last.litre} litre',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    )
-                  : Text(
-                      '-',
-                      style: TextStyle(color: colorBlue, fontSize: 14),
-                    ),
-            ],
-          ));
-    });
   }
 }

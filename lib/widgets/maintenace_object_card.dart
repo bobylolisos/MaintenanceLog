@@ -14,7 +14,17 @@ class MaintenanceObjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(2, 4),
+          ),
+        ],
+      ),
       child: Material(
         color: Colors.transparent,
         // Material is used for click-splash-effect to work on inkwell
