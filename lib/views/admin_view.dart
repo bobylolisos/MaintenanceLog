@@ -1,102 +1,73 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:maintenance_log/models/consumption.dart';
-import 'package:maintenance_log/models/maintenance.dart';
-import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/models/meter_type.dart';
-import 'package:maintenance_log/models/note.dart';
-import 'package:maintenance_log/models/post.dart';
-import 'package:maintenance_log/models/property_value.dart';
+import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_event.dart';
+import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/widgets/expandable_fab.dart';
+import 'package:maintenance_log/setup/ioc.dart';
+import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
+
+import '../widgets/add_card.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var maintenanceObject = MaintenanceObject(
-        id: '1',
-        name: 'name',
-        shortDescription: 'shortDescription',
-        meterType: MeterType.odometer,
-        sortOrder: 1,
-        isActive: true,
-        propertyValues: [
-          PropertyValue('1', 'label', 'text', 1),
-          PropertyValue('2', 'label', 'text', 2)
-        ],
-        notes: [
-          Note('1', 'name 1', 'text 1', 1, ['image 1', 'image 2']),
-          Note('2', 'name 2', 'text 2', 2, ['image 1', 'image 2'])
-        ],
-        maintenanceItems: [
-          Maintenance(
-              '1',
-              'name 1',
-              [
-                Post('1', DateTime.now(), 10000, 50, 'note 1',
-                    ['image 1', 'image 2'])
-              ],
-              'description 1',
-              1,
-              true),
-          Maintenance(
-              '2',
-              'name 2',
-              [
-                Post('1', DateTime.now(), 10000, 50, 'note 2',
-                    ['image 1', 'image 2'])
-              ],
-              'description 2',
-              2,
-              true)
-        ],
-        consumptions: [
-          Consumption('1', DateTime.now().subtract(Duration(days: 1)), 20.99,
-              35.0, 10100),
-          Consumption('1', DateTime.now(), 22, 39.0, 10200)
-        ],
-        images: [
-          'image 1',
-          'image 2'
-        ]);
     return Scaffold(
       backgroundColor: colorLightGrey,
       appBar: SubHeaderAppBar(title: 'Admin'),
-      body: Container(
-        color: colorLightGrey,
-        child: Center(
-          child: Text('Admin'),
+      body: SafeArea(
+        child: Container(
+          color: colorLightGrey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                child: AddCard(
+                  text: 'Lägg till nytt objekt',
+                  onTap: () {},
+                ),
+              ),
+              BlocProvider<MaintenanceObjectsBloc>(
+                create: (BuildContext context) => MaintenanceObjectsBloc(
+                    maintenanceObjectRepository: ioc.get())
+                  ..add(MaintenanceObjectsSubscriptionEvent()),
+                child: Expanded(
+                  child: BlocBuilder<MaintenanceObjectsBloc,
+                      MaintenanceObjectsState>(
+                    builder: (context, state) {
+                      if (state is MaintenanceObjectsChangedState) {
+                        return ListView.builder(
+                          itemCount: state.maintenanceObjects.length,
+                          itemBuilder: (context, index) {
+                            final maintenanceObject =
+                                state.maintenanceObjects.elementAt(index);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 5),
+                              child: MaintenanceObjectCard(
+                                  maintenanceObject: maintenanceObject,
+                                  onTap: () {}),
+                            );
+                          },
+                        );
+                      }
+                      return Center(
+                        child: SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: CircularProgressIndicator()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: ExpandableFab(
-        distance: 112,
-        children: [
-          ActionButton(
-            onPressed: () async {
-              final collection =
-                  FirebaseFirestore.instance.collection('MaintenanceObjects');
-              var ref = collection.doc('3');
-              await ref.set(maintenanceObject.toMap());
-            },
-            icon: FaIcon(FontAwesomeIcons.car),
-          ),
-          ActionButton(
-            onPressed: () async {
-              final collection = FirebaseFirestore.instance.collection('test');
-              var ref = collection.doc('1');
-              var aaa = await ref.get();
-              var bbb = aaa.data();
-              print(bbb);
-              var ccc = MaintenanceObject.fromMap(bbb as Map<String, dynamic>);
-              var ddd = ccc;
-            },
-            icon: const FaIcon(FontAwesomeIcons.bicycle),
-          ),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
           iconSize: 18,
@@ -132,14 +103,6 @@ class AdminView extends StatelessWidget {
                   ),
                 ),
                 label: 'Parts'),
-            // BottomNavigationBarItem(
-            //     icon: Padding(
-            //       padding: const EdgeInsets.all(4.0),
-            //       child: FaIcon(
-            //         FontAwesomeIcons.receipt,
-            //       ),
-            //     ),
-            //     label: 'About'),
           ]),
     );
   }
