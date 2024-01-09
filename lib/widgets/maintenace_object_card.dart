@@ -71,27 +71,30 @@ class MaintenanceObjectCard extends StatelessWidget {
                     SizedBox(
                       width: 20,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          maintenanceObject.name,
-                          style: TextStyle(
-                              color: colorBlue,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          maintenanceObject.shortDescription,
-                          style: TextStyle(color: colorBlue, fontSize: 15),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            maintenanceObject.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: colorBlue,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            maintenanceObject.shortDescription,
+                            style: TextStyle(color: colorBlue, fontSize: 15),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),

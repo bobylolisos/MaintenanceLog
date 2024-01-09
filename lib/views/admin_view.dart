@@ -14,22 +14,6 @@ import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminView extends StatelessWidget {
   const AdminView({super.key});
-  void _showAction(BuildContext context, int index) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text(index.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('CLOSE'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,14 +96,6 @@ class AdminView extends StatelessWidget {
             },
             icon: const FaIcon(FontAwesomeIcons.bicycle),
           ),
-          // ActionButton(
-          //   onPressed: () => _showAction(context, 2),
-          //   icon: const Icon(Icons.videocam),
-          // ),
-          // ActionButton(
-          //   onPressed: () => _showAction(context, 2),
-          //   icon: const Icon(Icons.videocam),
-          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

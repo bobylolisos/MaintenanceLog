@@ -25,13 +25,13 @@ class MaintenanceObjectItemCard extends StatelessWidget {
         Row(
           children: [
             Container(
-              height: 25,
+              height: 27,
               width: 180,
               decoration: BoxDecoration(
                 color: colorBlue,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
                 ),
               ),
               child: Padding(
@@ -45,13 +45,13 @@ class MaintenanceObjectItemCard extends StatelessWidget {
             postCount != null
                 ? Container(
                     margin: EdgeInsets.only(left: 2),
-                    height: 25,
+                    height: 27,
                     width: 50,
                     decoration: BoxDecoration(
                       color: colorBlue,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
                       ),
                     ),
                     child: Padding(
