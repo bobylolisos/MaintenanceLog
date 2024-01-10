@@ -23,6 +23,15 @@ class FirestoreMaintenanceRepository {
     }
   }
 
+  // Future<void> setMaintenanceObjects(
+  //     List<MaintenanceObject> maintenanceObjects) async {
+  //   var collection = _firestore.collection('MaintenanceObjects');
+  //   var docRef = collection.doc(maintenanceObject.id);
+  //   await docRef.set(maintenanceObject.toMap());
+
+  //   return maintenanceObject;
+  // }
+
   Future<MaintenanceObject?> getMaintenanceObject(String id) async {
     var collection = _firestore.collection('MaintenanceObjects');
     var docRef = collection.doc(id);
@@ -31,5 +40,14 @@ class FirestoreMaintenanceRepository {
     // await Future.delayed(Duration(milliseconds: 300));
 
     return data != null ? MaintenanceObject.fromMap(data) : null;
+  }
+
+  Future<MaintenanceObject?> setMaintenanceObject(
+      MaintenanceObject maintenanceObject) async {
+    var collection = _firestore.collection('MaintenanceObjects');
+    var docRef = collection.doc(maintenanceObject.id);
+    await docRef.set(maintenanceObject.toMap());
+
+    return maintenanceObject;
   }
 }

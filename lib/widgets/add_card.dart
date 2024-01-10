@@ -46,7 +46,7 @@ class AddCard extends StatelessWidget {
                       foregroundColor: colorGold,
                       child: FaIcon(
                         FontAwesomeIcons.plus,
-                        size: 30,
+                        size: 35,
                       ),
                     ),
                   ),

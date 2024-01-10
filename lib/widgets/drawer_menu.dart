@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/about_view.dart';
-import 'package:maintenance_log/views/admin_view.dart';
+import 'package:maintenance_log/views/admin/admin_view.dart';
 import 'package:maintenance_log/views/settings_view.dart';
 
 class DrawerMenu extends StatelessWidget {

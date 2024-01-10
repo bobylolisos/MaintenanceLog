@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/property_value.dart';
+import 'package:uuid/uuid.dart';
 
 import 'maintenance.dart';
 import 'meter_type.dart';
@@ -48,6 +49,21 @@ class MaintenanceObject {
       'consumptions': consumptions.map((x) => x.toMap()).toList(),
       'images': images.toList(),
     };
+  }
+
+  factory MaintenanceObject.createNew(String name, String? description) {
+    return MaintenanceObject(
+        id: Uuid().v4().toString(),
+        name: name,
+        shortDescription: description ?? '',
+        meterType: MeterType.none,
+        sortOrder: 0,
+        isActive: true,
+        propertyValues: [],
+        notes: [],
+        maintenanceItems: [],
+        consumptions: [],
+        images: []);
   }
 
   factory MaintenanceObject.fromMap(Map<String, dynamic> map) {

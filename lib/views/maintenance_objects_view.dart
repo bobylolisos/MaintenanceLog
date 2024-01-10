@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_event.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
@@ -74,23 +73,3 @@ class MaintenanceObjectsView extends StatelessWidget {
     );
   }
 }
-
-
-          // var imagePicker = ImagePicker();
-          // var xfile = await imagePicker.pickImage(source: ImageSource.camera);
-
-          // if (xfile == null) {
-          //   return;
-          // }
-          // var referenceRoot = FirebaseStorage.instance.ref();
-          // var referenceDirImages = referenceRoot.child('images');
-          // var referenceImageToUpload = referenceDirImages.child(xfile.name);
-          // await referenceImageToUpload.putFile(File(xfile.path));
-          // var url = await referenceImageToUpload.getDownloadURL();
-
-          // // var aaa = url;
-
-          // Map<String, dynamic> myMap = {'ggg': 'hhh'};
-          // var collection = FirebaseFirestore.instance.collection('test');
-          // var ref = collection.doc('000');
-          // await ref.set(myMap);

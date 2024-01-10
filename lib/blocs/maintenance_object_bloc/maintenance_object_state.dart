@@ -5,7 +5,8 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 @immutable
 sealed class MaintenanceObjectState extends Equatable {}
 
-final class MaintenanceObjectInitialState extends MaintenanceObjectState {
+final class MaintenanceObjectWorkInProgressState
+    extends MaintenanceObjectState {
   @override
   List<Object?> get props => [];
 }
