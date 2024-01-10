@@ -11,7 +11,7 @@ final class MaintenanceObjectsInitialState extends MaintenanceObjectsState {
 }
 
 final class MaintenanceObjectsChangedState extends MaintenanceObjectsState {
-  final Iterable<MaintenanceObject> maintenanceObjects;
+  final List<MaintenanceObject> maintenanceObjects;
 
   MaintenanceObjectsChangedState({required this.maintenanceObjects});
   @override

@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/repositories/firestore_maintenance_repository.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
 
-class EditMaintenanceObjectDialog extends StatefulWidget {
-  const EditMaintenanceObjectDialog({super.key});
+class AddMaintenanceObjectDialog extends StatefulWidget {
+  const AddMaintenanceObjectDialog({super.key});
 
   @override
-  State<EditMaintenanceObjectDialog> createState() =>
-      _EditMaintenanceObjectDialogState();
+  State<AddMaintenanceObjectDialog> createState() =>
+      _AddMaintenanceObjectDialogState();
 }
 
-class _EditMaintenanceObjectDialogState
-    extends State<EditMaintenanceObjectDialog> {
+class _AddMaintenanceObjectDialogState
+    extends State<AddMaintenanceObjectDialog> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();

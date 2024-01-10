@@ -23,14 +23,24 @@ class FirestoreMaintenanceRepository {
     }
   }
 
-  // Future<void> setMaintenanceObjects(
-  //     List<MaintenanceObject> maintenanceObjects) async {
-  //   var collection = _firestore.collection('MaintenanceObjects');
-  //   var docRef = collection.doc(maintenanceObject.id);
-  //   await docRef.set(maintenanceObject.toMap());
+  Future<void> reorderMaintenanceObjects(
+      List<MaintenanceObject> maintenanceObjects) async {
+    var collection = _firestore.collection('MaintenanceObjects');
 
-  //   return maintenanceObject;
-  // }
+    for (var i = 0; i < maintenanceObjects.length; i++) {
+      final maintenanceObject = maintenanceObjects.elementAt(i);
+      var docRef = collection.doc(maintenanceObject.id);
+
+      if (maintenanceObject.sortOrder != i + 1000) {
+        // Sortorder changed
+        final reorderedMaintenanceObject =
+            maintenanceObject.copyWith(sortOrder: i + 1000);
+        await docRef.set(reorderedMaintenanceObject.toMap());
+      } else {
+        print('SortOrder not changed for ' + maintenanceObject.name);
+      }
+    }
+  }
 
   Future<MaintenanceObject?> getMaintenanceObject(String id) async {
     var collection = _firestore.collection('MaintenanceObjects');

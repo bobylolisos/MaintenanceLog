@@ -6,9 +6,13 @@ import 'package:maintenance_log/resources/colors.dart';
 class MaintenanceObjectCard extends StatelessWidget {
   final MaintenanceObject maintenanceObject;
   final GestureTapCallback? onTap;
+  final Widget? trailing;
 
   const MaintenanceObjectCard(
-      {required this.maintenanceObject, required this.onTap, super.key});
+      {required this.maintenanceObject,
+      required this.onTap,
+      this.trailing,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class MaintenanceObjectCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       width: 70,
@@ -62,7 +66,7 @@ class MaintenanceObjectCard extends StatelessWidget {
                                 backgroundColor: Colors.transparent,
                                 foregroundColor: colorBlue,
                                 child: FaIcon(
-                                  FontAwesomeIcons.car,
+                                  FontAwesomeIcons.house,
                                   size: 30,
                                 ),
                               ),
@@ -74,10 +78,8 @@ class MaintenanceObjectCard extends StatelessWidget {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 8,
-                          ),
                           Text(
                             maintenanceObject.name,
                             overflow: TextOverflow.ellipsis,
@@ -95,7 +97,15 @@ class MaintenanceObjectCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    trailing != null
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              trailing!,
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),

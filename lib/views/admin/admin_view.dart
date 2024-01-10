@@ -6,7 +6,7 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/edit_maintenance_object_dialog.dart';
+import 'package:maintenance_log/views/admin/add_maintenance_object_dialog.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -37,7 +37,7 @@ class AdminView extends StatelessWidget {
                           context: context,
                           barrierDismissible: false,
                           builder: (context) {
-                            return EditMaintenanceObjectDialog();
+                            return AddMaintenanceObjectDialog();
                           },
                         );
                       },
@@ -52,18 +52,42 @@ class AdminView extends StatelessWidget {
                           MaintenanceObjectsState>(
                         builder: (context, state) {
                           if (state is MaintenanceObjectsChangedState) {
-                            return ListView.builder(
+                            final maintenanceObjects = state.maintenanceObjects;
+                            return ReorderableListView.builder(
+                              proxyDecorator: (child, index, animation) =>
+                                  Material(
+                                color: colorGold.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(12),
+                                child: child,
+                              ),
                               itemCount: state.maintenanceObjects.length,
                               itemBuilder: (context, index) {
                                 final maintenanceObject =
                                     state.maintenanceObjects.elementAt(index);
                                 return Padding(
+                                  key: ValueKey(maintenanceObject.id),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 6, vertical: 5),
                                   child: MaintenanceObjectCard(
-                                      maintenanceObject: maintenanceObject,
-                                      onTap: () {}),
+                                    maintenanceObject: maintenanceObject,
+                                    onTap: () {},
+                                    trailing:
+                                        Icon(Icons.reorder, color: colorBlue),
+                                  ),
                                 );
+                              },
+                              onReorder: (int oldIndex, int newIndex) {
+                                print(newIndex.toString());
+                                if (oldIndex < newIndex) {
+                                  newIndex -= 1;
+                                }
+                                final item =
+                                    maintenanceObjects.removeAt(oldIndex);
+                                maintenanceObjects.insert(newIndex, item);
+                                context.read<MaintenanceObjectsBloc>().add(
+                                    MaintenanceObjectsReorderEvent(
+                                        maintenanceObjects:
+                                            maintenanceObjects));
                               },
                             );
                           }

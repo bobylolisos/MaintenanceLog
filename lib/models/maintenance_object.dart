@@ -51,6 +51,31 @@ class MaintenanceObject {
     };
   }
 
+  MaintenanceObject copyWith(
+      {String? name,
+      String? shortDescription,
+      MeterType? meterType,
+      int? sortOrder,
+      bool? isActive,
+      List<PropertyValue>? propertyValues, // Brand, Model, Year, LicensePlate
+      List<Note>? notes,
+      List<Maintenance>? maintenanceItems,
+      List<Consumption>? consumptions,
+      List<String>? images}) {
+    return MaintenanceObject(
+        id: id,
+        name: name ?? this.name,
+        shortDescription: shortDescription ?? this.shortDescription,
+        meterType: meterType ?? this.meterType,
+        sortOrder: sortOrder ?? this.sortOrder,
+        isActive: isActive ?? this.isActive,
+        propertyValues: propertyValues ?? this.propertyValues,
+        notes: notes ?? this.notes,
+        maintenanceItems: maintenanceItems ?? this.maintenanceItems,
+        consumptions: consumptions ?? this.consumptions,
+        images: images ?? this.images);
+  }
+
   factory MaintenanceObject.createNew(String name, String? description) {
     return MaintenanceObject(
         id: Uuid().v4().toString(),

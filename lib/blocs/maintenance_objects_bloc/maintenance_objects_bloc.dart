@@ -17,6 +17,7 @@ class MaintenanceObjectsBloc
         super(MaintenanceObjectsInitialState()) {
     on<MaintenanceObjectsSubscriptionEvent>(
         onMaintenanceObjectSubscriptionEvent);
+    on<MaintenanceObjectsReorderEvent>(onMaintenanceObjectsReorderEvent);
   }
 
   FutureOr<void> onMaintenanceObjectSubscriptionEvent(
@@ -31,5 +32,12 @@ class MaintenanceObjectsBloc
             maintenanceObjects: maintenanceObjects);
       },
     );
+  }
+
+  FutureOr<void> onMaintenanceObjectsReorderEvent(
+      MaintenanceObjectsReorderEvent event,
+      Emitter<MaintenanceObjectsState> emit) {
+    _maintenanceObjectRepository
+        .reorderMaintenanceObjects(event.maintenanceObjects);
   }
 }
