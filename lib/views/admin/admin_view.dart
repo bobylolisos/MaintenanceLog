@@ -19,7 +19,7 @@ class AdminView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorLightGrey,
-      appBar: SubHeaderAppBar(title: 'Admin'),
+      appBar: SubHeaderAppBar(title: 'Administrera'),
       body: Builder(builder: (context) {
         return Material(
           child: SafeArea(

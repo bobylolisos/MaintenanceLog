@@ -59,15 +59,15 @@ class MaintenanceObjectCard extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: colorBlue,
-                                  width: 2.0,
+                                  width: 1.0,
                                 ),
                               ),
                               child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 foregroundColor: colorBlue,
                                 child: FaIcon(
-                                  FontAwesomeIcons.house,
-                                  size: 30,
+                                  FontAwesomeIcons.image,
+                                  size: 25,
                                 ),
                               ),
                             ),
