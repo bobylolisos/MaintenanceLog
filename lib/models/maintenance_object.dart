@@ -14,7 +14,7 @@ class MaintenanceObject {
   final String name;
   final String shortDescription;
   final MeterType meterType;
-  final int sortOrder; // ?????
+  final int sortOrder;
   final bool isActive;
   final List<PropertyValue> propertyValues;
   final List<Note> notes;

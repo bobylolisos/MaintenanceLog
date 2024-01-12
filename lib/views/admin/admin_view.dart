@@ -7,6 +7,7 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/add_maintenance_object_dialog.dart';
+import 'package:maintenance_log/views/admin/admin_maintenance_object_view.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -70,7 +71,17 @@ class AdminView extends StatelessWidget {
                                       horizontal: 6, vertical: 5),
                                   child: MaintenanceObjectCard(
                                     maintenanceObject: maintenanceObject,
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                AdminMaintenanceObjectView(
+                                              maintenanceObject:
+                                                  maintenanceObject,
+                                            ),
+                                          ));
+                                    },
                                     trailing:
                                         Icon(Icons.reorder, color: colorBlue),
                                   ),
@@ -107,41 +118,6 @@ class AdminView extends StatelessWidget {
           ),
         );
       }),
-      // bottomNavigationBar: BottomNavigationBar(
-      //     iconSize: 18,
-      //     selectedFontSize: 16,
-      //     currentIndex: 0,
-      //     backgroundColor: colorBlue,
-      //     selectedItemColor: colorGold,
-      //     unselectedItemColor: colorGold.withOpacity(0.5),
-      //     onTap: (value) {
-      //       if (value == 1) {
-      //         // Admin
-      //         Navigator.of(context).push(
-      //           MaterialPageRoute(
-      //             builder: (context) => AdminView(),
-      //           ),
-      //         );
-      //       }
-      //     },
-      //     items: [
-      //       BottomNavigationBarItem(
-      //           icon: Padding(
-      //             padding: const EdgeInsets.all(4.0),
-      //             child: FaIcon(
-      //               FontAwesomeIcons.car,
-      //             ),
-      //           ),
-      //           label: 'Objects'),
-      //       BottomNavigationBarItem(
-      //           icon: Padding(
-      //             padding: const EdgeInsets.all(4.0),
-      //             child: FaIcon(
-      //               FontAwesomeIcons.wrench,
-      //             ),
-      //           ),
-      //           label: 'Parts'),
-      //     ]),
     );
   }
 }

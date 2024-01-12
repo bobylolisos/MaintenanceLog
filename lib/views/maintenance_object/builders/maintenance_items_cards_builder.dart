@@ -55,7 +55,7 @@ class MaintenanceItemsCardsBuilder {
                   : Container(),
               postCount > 0
                   ? Text(
-                      ' ${item.posts.first.odometer.toString()} km',
+                      ' ${item.posts.first.meterValue.toString()} km', //Todo: Can be hour
                       style: TextStyle(color: colorBlue),
                     )
                   : Container(),
