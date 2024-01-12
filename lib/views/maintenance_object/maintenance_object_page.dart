@@ -13,9 +13,9 @@ import 'builders/maintenance_items_cards_builder.dart';
 import 'builders/maintenance_object_information_card_builder.dart';
 
 // ignore: must_be_immutable
-class MaintenanceObjectView extends StatelessWidget {
+class MaintenanceObjectPage extends StatelessWidget {
   MaintenanceObject maintenanceObject;
-  MaintenanceObjectView({required this.maintenanceObject, super.key});
+  MaintenanceObjectPage({required this.maintenanceObject, super.key});
 
   @override
   Widget build(BuildContext context) {

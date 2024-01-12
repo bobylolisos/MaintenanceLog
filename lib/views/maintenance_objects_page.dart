@@ -5,13 +5,13 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_object_view.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_object_page.dart';
 import 'package:maintenance_log/widgets/drawer_menu.dart';
 import 'package:maintenance_log/widgets/main_header.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 
-class MaintenanceObjectsView extends StatelessWidget {
-  const MaintenanceObjectsView({super.key});
+class MaintenanceObjectsPage extends StatelessWidget {
+  const MaintenanceObjectsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class MaintenanceObjectsView extends StatelessWidget {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) =>
-                                          MaintenanceObjectView(
+                                          MaintenanceObjectPage(
                                         maintenanceObject: maintenanceObject,
                                       ),
                                     ));

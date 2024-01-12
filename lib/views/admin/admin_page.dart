@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_event.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/add_maintenance_object_dialog.dart';
-import 'package:maintenance_log/views/admin/admin_maintenance_object_view.dart';
+import 'package:maintenance_log/views/admin/admin_maintenance_object_page.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 import '../../widgets/add_card.dart';
 
-class AdminView extends StatelessWidget {
-  const AdminView({super.key});
+class AdminPage extends StatelessWidget {
+  const AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,7 @@ class AdminView extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                AdminMaintenanceObjectView(
+                                                AdminMaintenanceObjectPage(
                                               maintenanceObject:
                                                   maintenanceObject,
                                             ),

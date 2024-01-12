@@ -5,6 +5,8 @@ import 'package:maintenance_log/extensions/document_snapshot_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 
 class FirestoreMaintenanceRepository {
+  static String MaintenanceObjectsKey = 'MaintenanceObjects2';
+
   final FirebaseFirestore _firestore;
 
   FirestoreMaintenanceRepository({required FirebaseFirestore firestore})
@@ -12,7 +14,7 @@ class FirestoreMaintenanceRepository {
 
   Stream<Iterable<MaintenanceObject>> subscribeForMaintenanceObjectChanges() {
     try {
-      var collection = _firestore.collection('MaintenanceObjects');
+      var collection = _firestore.collection(MaintenanceObjectsKey);
       final Stream<QuerySnapshot<Object?>> snapshots = collection.snapshots();
 
       return snapshots.map(
@@ -25,7 +27,7 @@ class FirestoreMaintenanceRepository {
 
   Future<void> reorderMaintenanceObjects(
       List<MaintenanceObject> maintenanceObjects) async {
-    var collection = _firestore.collection('MaintenanceObjects');
+    var collection = _firestore.collection(MaintenanceObjectsKey);
 
     for (var i = 0; i < maintenanceObjects.length; i++) {
       final maintenanceObject = maintenanceObjects.elementAt(i);
@@ -43,7 +45,7 @@ class FirestoreMaintenanceRepository {
   }
 
   Future<MaintenanceObject?> getMaintenanceObject(String id) async {
-    var collection = _firestore.collection('MaintenanceObjects');
+    var collection = _firestore.collection(MaintenanceObjectsKey);
     var docRef = collection.doc(id);
     var snapshot = await docRef.get();
     var data = snapshot.data();
@@ -54,7 +56,7 @@ class FirestoreMaintenanceRepository {
 
   Future<MaintenanceObject?> setMaintenanceObject(
       MaintenanceObject maintenanceObject) async {
-    var collection = _firestore.collection('MaintenanceObjects');
+    var collection = _firestore.collection(MaintenanceObjectsKey);
     var docRef = collection.doc(maintenanceObject.id);
     await docRef.set(maintenanceObject.toMap());
 

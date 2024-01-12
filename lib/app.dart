@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance_log/views/maintenance_objects_view.dart';
+import 'package:maintenance_log/views/maintenance_objects_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MaintenanceObjectsView(),
+      home: MaintenanceObjectsPage(),
     );
   }
 }
