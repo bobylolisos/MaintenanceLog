@@ -69,13 +69,13 @@ class MaintenanceObject {
         images: images ?? this.images);
   }
 
-  factory MaintenanceObject.createNew(
-      String name, String? description, MeterType meterType) {
+  factory MaintenanceObject.createNew(String name, String shortDescription,
+      String longDescription, MeterType meterType) {
     return MaintenanceObject(
         id: Uuid().v4().toString(),
         name: name,
-        shortDescription: description ?? '',
-        description: '',
+        shortDescription: shortDescription,
+        description: longDescription,
         meterType: meterType,
         sortOrder: 0,
         isActive: true,

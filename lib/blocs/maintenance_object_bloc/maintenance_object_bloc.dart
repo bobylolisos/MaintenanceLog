@@ -26,7 +26,7 @@ class MaintenanceObjectBloc
         .getMaintenanceObject(event.maintenanceObjectId);
 
     if (maintenanceObject != null) {
-      emit(MaintenanceObjectGetState(maintenanceObject: maintenanceObject));
+      emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
     }
   }
 
@@ -38,7 +38,7 @@ class MaintenanceObjectBloc
         .setMaintenanceObject(event.maintenanceObject);
 
     if (maintenanceObject != null) {
-      emit(MaintenanceObjectGetState(maintenanceObject: maintenanceObject));
+      emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
     }
   }
 }

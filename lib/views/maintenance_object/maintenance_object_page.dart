@@ -6,9 +6,9 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/builders/consumption_card_builder.dart';
+import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
-import '../../widgets/maintenance_object_item_card.dart';
 import 'builders/maintenance_items_cards_builder.dart';
 import 'builders/maintenance_object_information_card_builder.dart';
 
@@ -29,7 +29,7 @@ class MaintenanceObjectPage extends StatelessWidget {
         child: Builder(builder: (context) {
           return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
             builder: (BuildContext context, MaintenanceObjectState state) {
-              if (state is MaintenanceObjectGetState) {
+              if (state is MaintenanceObjectUpdatedState) {
                 maintenanceObject = state.maintenanceObject;
               }
               return SingleChildScrollView(

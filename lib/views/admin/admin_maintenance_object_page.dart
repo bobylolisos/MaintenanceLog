@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_consumption_tab_view.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_information_tab_view.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminMaintenanceObjectPage extends StatefulWidget {
-  final MaintenanceObject maintenanceObject;
+  final String maintenanceObjectId;
 
   const AdminMaintenanceObjectPage(
-      {required this.maintenanceObject, super.key});
+      {required this.maintenanceObjectId, super.key});
 
   @override
   State<AdminMaintenanceObjectPage> createState() =>
@@ -20,79 +25,105 @@ class AdminMaintenanceObjectPage extends StatefulWidget {
 
 class _AdminMaintenanceObjectPageState
     extends State<AdminMaintenanceObjectPage> {
-  final ValueNotifier<int> _selectedTabIndexNotifier = ValueNotifier<int>(0);
+  late ValueNotifier<int> _selectedTabIndexNotifier;
+
+  @override
+  void initState() {
+    _selectedTabIndexNotifier = ValueNotifier(0);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: _selectedTabIndexNotifier,
-      builder: (context, value, child) {
-        return Scaffold(
-          backgroundColor: colorLightGrey,
-          appBar: SubHeaderAppBar(title: widget.maintenanceObject.name),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
-              child: Builder(builder: (context) {
-                return _resolveTabView();
-              }),
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-              iconSize: 18,
-              selectedFontSize: 16,
-              currentIndex: _selectedTabIndexNotifier.value,
-              backgroundColor: colorBlue,
-              selectedItemColor: colorGold,
-              unselectedItemColor: colorGold.withOpacity(0.5),
-              onTap: (value) {
-                _selectedTabIndexNotifier.value = value;
-              },
-              items: [
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.house,
-                      ),
+    return BlocProvider<MaintenanceObjectBloc>(
+      create: (context) =>
+          MaintenanceObjectBloc(maintenanceObjectRepository: ioc.get())
+            ..add(MaintenanceObjectGetEvent(
+                maintenanceObjectId: widget.maintenanceObjectId)),
+      child: ValueListenableBuilder(
+        valueListenable: _selectedTabIndexNotifier,
+        builder: (context, value, child) {
+          return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
+            bloc: context.read<MaintenanceObjectBloc>(),
+            builder: (context, state) {
+              if (state is MaintenanceObjectUpdatedState) {
+                final maintenanceObject = state.maintenanceObject;
+                return Scaffold(
+                  backgroundColor: colorLightGrey,
+                  appBar: SubHeaderAppBar(title: maintenanceObject.name),
+                  body: SingleChildScrollView(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6.0, right: 6, top: 6),
+                      child: Builder(builder: (context) {
+                        return _resolveTabView(maintenanceObject);
+                      }),
                     ),
-                    label: 'Information'),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.gasPump,
-                      ),
-                    ),
-                    label: 'Förbrukningar'),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.wrench,
-                      ),
-                    ),
-                    label: 'Underhållsobjekt'),
-              ]),
-        );
-      },
+                  ),
+                  bottomNavigationBar: BottomNavigationBar(
+                      iconSize: 18,
+                      selectedFontSize: 16,
+                      currentIndex: _selectedTabIndexNotifier.value,
+                      backgroundColor: colorBlue,
+                      selectedItemColor: colorGold,
+                      unselectedItemColor: colorGold.withOpacity(0.5),
+                      onTap: (value) {
+                        _selectedTabIndexNotifier.value = value;
+                      },
+                      items: [
+                        BottomNavigationBarItem(
+                            icon: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: FaIcon(
+                                FontAwesomeIcons.house,
+                              ),
+                            ),
+                            label: 'Information'),
+                        BottomNavigationBarItem(
+                            icon: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: FaIcon(
+                                FontAwesomeIcons.gasPump,
+                              ),
+                            ),
+                            label: 'Förbrukningar'),
+                        BottomNavigationBarItem(
+                            icon: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: FaIcon(
+                                FontAwesomeIcons.wrench,
+                              ),
+                            ),
+                            label: 'Underhållsobjekt'),
+                      ]),
+                );
+              }
+
+              return Center(
+                child: SizedBox(
+                    height: 60, width: 60, child: CircularProgressIndicator()),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
-  Widget _resolveTabView() {
+  Widget _resolveTabView(MaintenanceObject maintenanceObject) {
     if (_selectedTabIndexNotifier.value == 0) {
       return AdminMaintenanceObjectInformationTabView(
-        maintenanceObject: widget.maintenanceObject,
+        maintenanceObject: maintenanceObject,
       );
     }
     if (_selectedTabIndexNotifier.value == 1) {
       return AdminMaintenanceObjectConsumptionTabView(
-        maintenanceObject: widget.maintenanceObject,
+        maintenanceObject: maintenanceObject,
       );
     }
     if (_selectedTabIndexNotifier.value == 2) {
       return AdminMaintenanceObjectMaintenanceTabView(
-        maintenanceObject: widget.maintenanceObject,
+        maintenanceObject: maintenanceObject,
       );
     }
     return Center(child: Text('N O T   I M P L E M E N T E D'));

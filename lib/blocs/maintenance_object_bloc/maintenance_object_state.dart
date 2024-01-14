@@ -11,10 +11,10 @@ final class MaintenanceObjectWorkInProgressState
   List<Object?> get props => [];
 }
 
-final class MaintenanceObjectGetState extends MaintenanceObjectState {
+final class MaintenanceObjectUpdatedState extends MaintenanceObjectState {
   final MaintenanceObject maintenanceObject;
 
-  MaintenanceObjectGetState({required this.maintenanceObject});
+  MaintenanceObjectUpdatedState({required this.maintenanceObject});
   @override
   List<Object?> get props => [maintenanceObject];
 }

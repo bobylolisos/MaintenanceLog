@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
-import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
 
-class AddMaintenanceObjectDialog extends StatefulWidget {
-  const AddMaintenanceObjectDialog({super.key});
+class AddEditMaintenanceObjectDialog extends StatefulWidget {
+  final MaintenanceObject? maintenanceObject;
+  const AddEditMaintenanceObjectDialog({this.maintenanceObject, super.key});
 
   @override
-  State<AddMaintenanceObjectDialog> createState() =>
-      _AddMaintenanceObjectDialogState();
+  State<AddEditMaintenanceObjectDialog> createState() =>
+      _AddEditMaintenanceObjectDialogState();
 }
 
-class _AddMaintenanceObjectDialogState
-    extends State<AddMaintenanceObjectDialog> {
+class _AddEditMaintenanceObjectDialogState
+    extends State<AddEditMaintenanceObjectDialog> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final shortDescriptionController = TextEditingController();
+  final longDescriptionController = TextEditingController();
   MeterType selectedMeterType = MeterType.none;
+
+  @override
+  void initState() {
+    if (widget.maintenanceObject != null) {
+      nameController.text = widget.maintenanceObject!.name;
+      shortDescriptionController.text =
+          widget.maintenanceObject!.shortDescription;
+      longDescriptionController.text = widget.maintenanceObject!.description;
+      selectedMeterType = widget.maintenanceObject!.meterType;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +42,20 @@ class _AddMaintenanceObjectDialogState
       cancelText: 'Avbryt',
       onOkPressed: () {
         if (formKey.currentState?.validate() == true) {
-          final maintenanceObject = MaintenanceObject.createNew(
-            nameController.text.trim(),
-            descriptionController.text.trim(),
-            selectedMeterType,
-          );
+          final maintenanceObject = widget.maintenanceObject != null
+              ? widget.maintenanceObject!.copyWith(
+                  name: nameController.text.trim(),
+                  shortDescription: shortDescriptionController.text.trim(),
+                  description: longDescriptionController.text.trim(),
+                )
+              : MaintenanceObject.createNew(
+                  nameController.text.trim(),
+                  shortDescriptionController.text.trim(),
+                  longDescriptionController.text.trim(),
+                  selectedMeterType,
+                );
 
-          MaintenanceObjectBloc(
-            maintenanceObjectRepository: ioc.get(),
-          ).add(
-              MaintenanceObjectSaveEvent(maintenanceObject: maintenanceObject));
-
-          Navigator.pop(context);
+          Navigator.pop(context, maintenanceObject);
         }
       },
       onCancelPressed: () {
@@ -69,7 +82,7 @@ class _AddMaintenanceObjectDialogState
           ),
           TextFormField(
             decoration: _inputDecoration('Beskrivning'),
-            controller: descriptionController,
+            controller: shortDescriptionController,
             maxLength: 30,
           ),
           SizedBox(
@@ -112,10 +125,21 @@ class _AddMaintenanceObjectDialogState
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onChanged: (value) {
-              selectedMeterType = value as MeterType;
-            },
+            onChanged: widget.maintenanceObject == null
+                ? (value) {
+                    selectedMeterType = value as MeterType;
+                  }
+                : null,
             value: selectedMeterType,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            decoration: _inputDecoration('Notering'),
+            controller: longDescriptionController,
+            minLines: 3,
+            maxLines: 6,
           ),
         ]),
       ),
@@ -145,7 +169,8 @@ class _AddMaintenanceObjectDialogState
   @override
   void dispose() {
     nameController.dispose();
-    descriptionController.dispose();
+    shortDescriptionController.dispose();
+    longDescriptionController.dispose();
 
     super.dispose();
   }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/admin/add_edit_maintenance_object_dialog.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
@@ -41,7 +45,27 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
                     child: InkWell(
                       splashColor: colorGold,
                       borderRadius: BorderRadius.circular(20),
-                      onTap: () {},
+                      onTap: () async {
+                        final maintenanceObjectBloc =
+                            context.read<MaintenanceObjectBloc>();
+                        final changedMaintenanceObject =
+                            await showDialog<MaintenanceObject?>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return AddEditMaintenanceObjectDialog(
+                              maintenanceObject: maintenanceObject,
+                            );
+                          },
+                        );
+
+                        if (changedMaintenanceObject != null) {
+                          maintenanceObjectBloc.add(
+                            MaintenanceObjectSaveEvent(
+                                maintenanceObject: changedMaintenanceObject),
+                          );
+                        }
+                      },
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
                         child: FaIcon(

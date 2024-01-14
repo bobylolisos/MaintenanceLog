@@ -86,14 +86,21 @@ class MaintenanceObjectInformationCardBuilder {
             ],
           ),
           maintenanceObject.description.isNotEmpty
-              ? Column(
+              ? Row(
                   children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      maintenanceObject.description,
-                      style: TextStyle(color: colorBlue, fontSize: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            maintenanceObject.description,
+                            style: TextStyle(color: colorBlue, fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 )
