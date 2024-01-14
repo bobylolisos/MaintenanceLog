@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/admin/admin_maintenance_object_consumption_tab_view.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_information_tab_view.dart';
+import 'package:maintenance_log/views/admin/admin_maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminMaintenanceObjectPage extends StatefulWidget {
@@ -32,12 +34,7 @@ class _AdminMaintenanceObjectPageState
             child: Padding(
               padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
               child: Builder(builder: (context) {
-                if (_selectedTabIndexNotifier.value == 0) {
-                  return AdminMaintenanceObjectInformationTabView(
-                    maintenanceObject: widget.maintenanceObject,
-                  );
-                }
-                return Center(child: Text('N O T   I M P L E M E N T E D'));
+                return _resolveTabView();
               }),
             ),
           ),
@@ -82,20 +79,23 @@ class _AdminMaintenanceObjectPageState
     );
   }
 
-  // Widget _informationView() {
-  Widget _paddedText(String text, {double? fontSize, Color? fontColor}) {
-    if (text.isEmpty) {
-      return Container();
+  Widget _resolveTabView() {
+    if (_selectedTabIndexNotifier.value == 0) {
+      return AdminMaintenanceObjectInformationTabView(
+        maintenanceObject: widget.maintenanceObject,
+      );
     }
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
-      child: Text(
-        text,
-        maxLines: 10,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: fontColor ?? colorBlue, fontSize: fontSize),
-      ),
-    );
+    if (_selectedTabIndexNotifier.value == 1) {
+      return AdminMaintenanceObjectConsumptionTabView(
+        maintenanceObject: widget.maintenanceObject,
+      );
+    }
+    if (_selectedTabIndexNotifier.value == 2) {
+      return AdminMaintenanceObjectMaintenanceTabView(
+        maintenanceObject: widget.maintenanceObject,
+      );
+    }
+    return Center(child: Text('N O T   I M P L E M E N T E D'));
   }
 
   @override

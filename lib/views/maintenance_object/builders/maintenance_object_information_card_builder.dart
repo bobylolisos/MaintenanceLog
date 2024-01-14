@@ -85,13 +85,19 @@ class MaintenanceObjectInformationCardBuilder {
               ),
             ],
           ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            maintenanceObject.description,
-            style: TextStyle(color: colorBlue, fontSize: 16),
-          ),
+          maintenanceObject.description.isNotEmpty
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      maintenanceObject.description,
+                      style: TextStyle(color: colorBlue, fontSize: 16),
+                    ),
+                  ],
+                )
+              : Container(),
         ],
       ),
     );

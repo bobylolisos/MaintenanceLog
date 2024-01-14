@@ -7,15 +7,12 @@ class MaintenanceItemsCardsBuilder {
   static List<Widget> create(MaintenanceObject maintenanceObject) {
     final result = List<Widget>.empty(growable: true);
 
-    final items = maintenanceObject.maintenanceItems;
-    items.sort(
-      (a, b) => a.sortOrder.compareTo(b.sortOrder),
-    );
+    final items = maintenanceObject.maintenances;
 
     for (var item in items) {
       var totalCosts = 0;
-      for (var element in item.posts) {
-        totalCosts += element.costs;
+      for (var post in item.posts) {
+        totalCosts += post.costs;
       }
 
       var postCount = item.posts.length;

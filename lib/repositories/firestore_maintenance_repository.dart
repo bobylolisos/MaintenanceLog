@@ -5,7 +5,7 @@ import 'package:maintenance_log/extensions/document_snapshot_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 
 class FirestoreMaintenanceRepository {
-  static String MaintenanceObjectsKey = 'MaintenanceObjects2';
+  static String MaintenanceObjectsKey = 'MaintenanceObjects3';
 
   final FirebaseFirestore _firestore;
 

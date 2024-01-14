@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Post {
+class MaintenanceItem {
   final String id;
   final DateTime date;
   final int meterValue;
@@ -8,7 +8,8 @@ class Post {
   final String note;
   final List<String> images;
 
-  Post(this.id, this.date, this.meterValue, this.costs, this.note, this.images);
+  MaintenanceItem(
+      this.id, this.date, this.meterValue, this.costs, this.note, this.images);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -21,8 +22,8 @@ class Post {
     };
   }
 
-  factory Post.fromMap(Map<String, dynamic> map) {
-    return Post(
+  factory MaintenanceItem.fromMap(Map<String, dynamic> map) {
+    return MaintenanceItem(
       map['id'] as String,
       DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       map['meterValue'] as int,
@@ -34,6 +35,6 @@ class Post {
 
   String toJson() => json.encode(toMap());
 
-  factory Post.fromJson(String source) =>
-      Post.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory MaintenanceItem.fromJson(String source) =>
+      MaintenanceItem.fromMap(json.decode(source) as Map<String, dynamic>);
 }

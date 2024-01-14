@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:maintenance_log/models/consumption.dart';
+import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:uuid/uuid.dart';
 
 import 'maintenance.dart';
@@ -15,7 +15,7 @@ class MaintenanceObject {
   final MeterType meterType;
   final int sortOrder;
   final bool isActive;
-  final List<Maintenance> maintenanceItems;
+  final List<Maintenance> maintenances;
   final List<Consumption> consumptions;
   final List<String> images;
 
@@ -27,7 +27,7 @@ class MaintenanceObject {
       required this.meterType,
       required this.sortOrder,
       required this.isActive,
-      required this.maintenanceItems,
+      required this.maintenances,
       required this.consumptions,
       required this.images});
 
@@ -40,7 +40,7 @@ class MaintenanceObject {
       'meterType': meterType.index,
       'sortOrder': sortOrder,
       'isActive': isActive,
-      'maintenanceItems': maintenanceItems.map((x) => x.toMap()).toList(),
+      'maintenances': maintenances.map((x) => x.toMap()).toList(),
       'consumptions': consumptions.map((x) => x.toMap()).toList(),
       'images': images.toList(),
     };
@@ -53,7 +53,7 @@ class MaintenanceObject {
       MeterType? meterType,
       int? sortOrder,
       bool? isActive,
-      List<Maintenance>? maintenanceItems,
+      List<Maintenance>? maintenances,
       List<Consumption>? consumptions,
       List<String>? images}) {
     return MaintenanceObject(
@@ -64,21 +64,22 @@ class MaintenanceObject {
         meterType: meterType ?? this.meterType,
         sortOrder: sortOrder ?? this.sortOrder,
         isActive: isActive ?? this.isActive,
-        maintenanceItems: maintenanceItems ?? this.maintenanceItems,
+        maintenances: maintenances ?? this.maintenances,
         consumptions: consumptions ?? this.consumptions,
         images: images ?? this.images);
   }
 
-  factory MaintenanceObject.createNew(String name, String? description) {
+  factory MaintenanceObject.createNew(
+      String name, String? description, MeterType meterType) {
     return MaintenanceObject(
         id: Uuid().v4().toString(),
         name: name,
         shortDescription: description ?? '',
         description: '',
-        meterType: MeterType.none,
+        meterType: meterType,
         sortOrder: 0,
         isActive: true,
-        maintenanceItems: [],
+        maintenances: [],
         consumptions: [],
         images: []);
   }
@@ -92,8 +93,8 @@ class MaintenanceObject {
       sortOrder: map['sortOrder'] as int,
       meterType: MeterType.values[map['meterType']],
       isActive: map['isActive'] as bool,
-      maintenanceItems: List<Maintenance>.from(
-        (map['maintenanceItems'] as List).map<Maintenance>(
+      maintenances: List<Maintenance>.from(
+        (map['maintenances'] as List).map<Maintenance>(
           (x) => Maintenance.fromMap(x as Map<String, dynamic>),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
+import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
+import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
@@ -19,6 +21,7 @@ class _AddMaintenanceObjectDialogState
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
+  MeterType selectedMeterType = MeterType.none;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,10 @@ class _AddMaintenanceObjectDialogState
       onOkPressed: () {
         if (formKey.currentState?.validate() == true) {
           final maintenanceObject = MaintenanceObject.createNew(
-              nameController.text.trim(), descriptionController.text.trim());
+            nameController.text.trim(),
+            descriptionController.text.trim(),
+            selectedMeterType,
+          );
 
           MaintenanceObjectBloc(
             maintenanceObjectRepository: ioc.get(),
@@ -65,6 +71,51 @@ class _AddMaintenanceObjectDialogState
             decoration: _inputDecoration('Beskrivning'),
             controller: descriptionController,
             maxLength: 30,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButtonFormField(
+            items: [
+              DropdownMenuItem<MeterType>(
+                value: MeterType.none,
+                child: Text(MeterType.none.displayName),
+              ),
+              DropdownMenuItem<MeterType>(
+                value: MeterType.odometer,
+                child: Text(MeterType.odometer.displayName),
+              ),
+              DropdownMenuItem<MeterType>(
+                value: MeterType.hourmeter,
+                child: Text(MeterType.hourmeter.displayName),
+              ),
+            ],
+            focusColor: Colors.transparent,
+            dropdownColor: Colors.white,
+            style: TextStyle(color: colorBlue, fontSize: 16),
+            decoration: InputDecoration(
+              // prefixIcon: Icon(Icons.radar),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorBlue),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorBlue),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorBlue),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorBlue),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onChanged: (value) {
+              selectedMeterType = value as MeterType;
+            },
+            value: selectedMeterType,
           ),
         ]),
       ),
