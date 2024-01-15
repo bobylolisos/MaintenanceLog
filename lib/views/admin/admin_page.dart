@@ -5,6 +5,7 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_event.dart';
 import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objects_state.dart';
+import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/add_edit_maintenance_object_dialog.dart';
@@ -14,7 +15,8 @@ import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminPage extends StatelessWidget {
-  const AdminPage({super.key});
+  AdminPage({super.key});
+  int _lowestSortOrder = 1000;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class AdminPage extends StatelessWidget {
                           final maintenanceObjectBloc =
                               context.read<MaintenanceObjectBloc>();
 
-                          final addedMaintenanceObject = await showDialog(
+                          final addedMaintenanceObject =
+                              await showDialog<MaintenanceObject?>(
                             context: context,
                             barrierDismissible: false,
                             builder: (context) {
@@ -51,7 +54,8 @@ class AdminPage extends StatelessWidget {
                           if (addedMaintenanceObject != null) {
                             maintenanceObjectBloc.add(
                               MaintenanceObjectSaveEvent(
-                                  maintenanceObject: addedMaintenanceObject),
+                                  maintenanceObject: addedMaintenanceObject!
+                                      .copyWith(sortOrder: --_lowestSortOrder)),
                             );
                           }
                         },
@@ -68,6 +72,14 @@ class AdminPage extends StatelessWidget {
                             if (state is MaintenanceObjectsChangedState) {
                               final maintenanceObjects =
                                   state.maintenanceObjects;
+                              if (maintenanceObjects.isNotEmpty) {
+                                _lowestSortOrder = maintenanceObjects
+                                    .reduce((a, b) =>
+                                        a.sortOrder < b.sortOrder ? a : b)
+                                    .sortOrder;
+                                print('-------------------------- ' +
+                                    _lowestSortOrder.toString());
+                              }
                               return ReorderableListView.builder(
                                 proxyDecorator: (child, index, animation) =>
                                     Material(
@@ -83,21 +95,109 @@ class AdminPage extends StatelessWidget {
                                     key: ValueKey(maintenanceObject.id),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 6, vertical: 5),
-                                    child: MaintenanceObjectCard(
-                                      maintenanceObject: maintenanceObject,
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AdminMaintenanceObjectPage(
-                                                maintenanceObjectId:
-                                                    maintenanceObject.id,
+                                    child: Dismissible(
+                                      key: ValueKey(maintenanceObject.id),
+                                      background: Container(
+                                        color: Colors.transparent,
+                                      ),
+                                      secondaryBackground: Container(
+                                        color: Colors.red,
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Icon(Icons.delete,
+                                                  color: Colors.white),
+                                              SizedBox(
+                                                width: 8.0,
                                               ),
-                                            ));
+                                              Text('Radera',
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      confirmDismiss: (direction) async {
+                                        if (direction ==
+                                            DismissDirection.endToStart) {
+                                          var shouldDelete = await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Radera underhållsobjekt'),
+                                                content: const Text(
+                                                    'Underhållsobjektet kommer nu tas bort och kan inte återskapas. Du vet väl att du kan inaktivera ditt underhållsobjekt istället? Då kan du fortfarande återaktivera objektet samt att du kan fortfarande se utförda underhåll. \n\n Vill du fortsätta med att radera?'),
+                                                actions: <Widget>[
+                                                  SizedBox(
+                                                    width: 130,
+                                                    child: ElevatedButton(
+                                                      style: TextButton.styleFrom(
+                                                          backgroundColor:
+                                                              colorGold
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                          foregroundColor:
+                                                              colorBlue),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(false),
+                                                      child: Text('Nej'),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 130,
+                                                    child: ElevatedButton(
+                                                      style:
+                                                          TextButton.styleFrom(
+                                                              backgroundColor:
+                                                                  colorBlue,
+                                                              foregroundColor:
+                                                                  colorGold),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: Text('Ja'),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+
+                                          if (shouldDelete) {
+                                            return Future.value(true);
+                                          }
+                                        }
+
+                                        return Future.value(false);
                                       },
-                                      trailing:
-                                          Icon(Icons.reorder, color: colorBlue),
+                                      onDismissed: (direction) {
+                                        context
+                                            .read<MaintenanceObjectsBloc>()
+                                            .add(MaintenanceObjectsDeleteEvent(
+                                                maintenanceObjectId:
+                                                    maintenanceObject.id));
+                                      },
+                                      child: MaintenanceObjectCard(
+                                        maintenanceObject: maintenanceObject,
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AdminMaintenanceObjectPage(
+                                                  maintenanceObjectId:
+                                                      maintenanceObject.id,
+                                                ),
+                                              ));
+                                        },
+                                        trailing: Icon(Icons.reorder,
+                                            color: colorBlue),
+                                      ),
                                     ),
                                   );
                                 },

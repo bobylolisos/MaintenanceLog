@@ -18,6 +18,7 @@ class MaintenanceObjectsBloc
     on<MaintenanceObjectsSubscriptionEvent>(
         onMaintenanceObjectSubscriptionEvent);
     on<MaintenanceObjectsReorderEvent>(onMaintenanceObjectsReorderEvent);
+    on<MaintenanceObjectsDeleteEvent>(onMaintenanceObjectsDeleteEvent);
   }
 
   FutureOr<void> onMaintenanceObjectSubscriptionEvent(
@@ -39,5 +40,12 @@ class MaintenanceObjectsBloc
       Emitter<MaintenanceObjectsState> emit) {
     _maintenanceObjectRepository
         .reorderMaintenanceObjects(event.maintenanceObjects);
+  }
+
+  FutureOr<void> onMaintenanceObjectsDeleteEvent(
+      MaintenanceObjectsDeleteEvent event,
+      Emitter<MaintenanceObjectsState> emit) {
+    _maintenanceObjectRepository
+        .deleteMaintenanceObject(event.maintenanceObjectId);
   }
 }

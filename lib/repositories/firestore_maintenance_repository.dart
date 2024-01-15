@@ -62,4 +62,10 @@ class FirestoreMaintenanceRepository {
 
     return maintenanceObject;
   }
+
+  Future<void> deleteMaintenanceObject(String maintenanceObjectId) async {
+    var collection = _firestore.collection(MaintenanceObjectsKey);
+    var docRef = collection.doc(maintenanceObjectId);
+    await docRef.delete();
+  }
 }

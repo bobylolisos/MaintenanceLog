@@ -12,3 +12,9 @@ final class MaintenanceObjectsReorderEvent extends MaintenanceObjectsEvent {
 
   MaintenanceObjectsReorderEvent({required this.maintenanceObjects});
 }
+
+final class MaintenanceObjectsDeleteEvent extends MaintenanceObjectsEvent {
+  final String maintenanceObjectId;
+
+  MaintenanceObjectsDeleteEvent({required this.maintenanceObjectId});
+}
