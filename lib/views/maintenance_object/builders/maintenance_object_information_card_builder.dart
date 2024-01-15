@@ -23,7 +23,7 @@ class MaintenanceObjectInformationCardBuilder {
                       height: 5,
                     ),
                     Text(
-                      maintenanceObject.name,
+                      maintenanceObject.header,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
@@ -31,7 +31,7 @@ class MaintenanceObjectInformationCardBuilder {
                       height: 10,
                     ),
                     Text(
-                      maintenanceObject.shortDescription,
+                      maintenanceObject.subHeader,
                       style: TextStyle(color: colorBlue, fontSize: 16),
                     ),
                   ],

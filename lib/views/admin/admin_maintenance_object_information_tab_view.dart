@@ -27,7 +27,7 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _paddedText(maintenanceObject.name, fontSize: 24),
+                    child: _paddedText(maintenanceObject.header, fontSize: 24),
                   ),
                   SizedBox(
                     width: 10,
@@ -78,7 +78,7 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
                   )
                 ],
               ),
-              _paddedText(maintenanceObject.shortDescription),
+              _paddedText(maintenanceObject.subHeader),
               _paddedText(maintenanceObject.meterType.displayName),
               maintenanceObject.isActive
                   ? _paddedText('Aktiv')

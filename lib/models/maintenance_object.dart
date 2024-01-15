@@ -9,8 +9,8 @@ import 'meter_type.dart';
 
 class MaintenanceObject {
   final String id;
-  final String name;
-  final String shortDescription;
+  final String header;
+  final String subHeader;
   final String description;
   final MeterType meterType;
   final int sortOrder;
@@ -21,8 +21,8 @@ class MaintenanceObject {
 
   MaintenanceObject(
       {required this.id,
-      required this.name,
-      required this.shortDescription,
+      required this.header,
+      required this.subHeader,
       required this.description,
       required this.meterType,
       required this.sortOrder,
@@ -34,8 +34,8 @@ class MaintenanceObject {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'name': name,
-      'shortDescription': shortDescription,
+      'header': header,
+      'subHeader': subHeader,
       'description': description,
       'meterType': meterType.index,
       'sortOrder': sortOrder,
@@ -47,8 +47,8 @@ class MaintenanceObject {
   }
 
   MaintenanceObject copyWith(
-      {String? name,
-      String? shortDescription,
+      {String? header,
+      String? subHeader,
       String? description,
       MeterType? meterType,
       int? sortOrder,
@@ -58,8 +58,8 @@ class MaintenanceObject {
       List<String>? images}) {
     return MaintenanceObject(
         id: id,
-        name: name ?? this.name,
-        shortDescription: shortDescription ?? this.shortDescription,
+        header: header ?? this.header,
+        subHeader: subHeader ?? this.subHeader,
         description: description ?? this.description,
         meterType: meterType ?? this.meterType,
         sortOrder: sortOrder ?? this.sortOrder,
@@ -69,13 +69,13 @@ class MaintenanceObject {
         images: images ?? this.images);
   }
 
-  factory MaintenanceObject.createNew(String name, String shortDescription,
-      String longDescription, MeterType meterType) {
+  factory MaintenanceObject.createNew(String header, String subHeader,
+      String description, MeterType meterType) {
     return MaintenanceObject(
         id: Uuid().v4().toString(),
-        name: name,
-        shortDescription: shortDescription,
-        description: longDescription,
+        header: header,
+        subHeader: subHeader,
+        description: description,
         meterType: meterType,
         sortOrder: 0,
         isActive: true,
@@ -87,8 +87,8 @@ class MaintenanceObject {
   factory MaintenanceObject.fromMap(Map<String, dynamic> map) {
     return MaintenanceObject(
       id: map['id'] as String,
-      name: map['name'] as String,
-      shortDescription: map['shortDescription'] as String,
+      header: map['header'] as String,
+      subHeader: map['subHeader'] as String,
       description: map['description'] as String,
       sortOrder: map['sortOrder'] as int,
       meterType: MeterType.values[map['meterType']],

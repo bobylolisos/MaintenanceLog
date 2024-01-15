@@ -81,7 +81,7 @@ class MaintenanceObjectCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            maintenanceObject.name,
+                            maintenanceObject.header,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: colorBlue,
@@ -92,7 +92,7 @@ class MaintenanceObjectCard extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            maintenanceObject.shortDescription,
+                            maintenanceObject.subHeader,
                             style: TextStyle(color: colorBlue, fontSize: 15),
                           ),
                         ],

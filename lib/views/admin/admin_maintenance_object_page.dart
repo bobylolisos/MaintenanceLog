@@ -50,7 +50,7 @@ class _AdminMaintenanceObjectPageState
                 final maintenanceObject = state.maintenanceObject;
                 return Scaffold(
                   backgroundColor: colorLightGrey,
-                  appBar: SubHeaderAppBar(title: maintenanceObject.name),
+                  appBar: SubHeaderAppBar(title: maintenanceObject.header),
                   body: SingleChildScrollView(
                     child: Padding(
                       padding:

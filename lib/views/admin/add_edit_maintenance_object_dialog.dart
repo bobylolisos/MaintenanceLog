@@ -17,18 +17,17 @@ class AddEditMaintenanceObjectDialog extends StatefulWidget {
 class _AddEditMaintenanceObjectDialogState
     extends State<AddEditMaintenanceObjectDialog> {
   final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final shortDescriptionController = TextEditingController();
-  final longDescriptionController = TextEditingController();
+  final headerController = TextEditingController();
+  final subHeaderController = TextEditingController();
+  final descriptionController = TextEditingController();
   MeterType selectedMeterType = MeterType.none;
 
   @override
   void initState() {
     if (widget.maintenanceObject != null) {
-      nameController.text = widget.maintenanceObject!.name;
-      shortDescriptionController.text =
-          widget.maintenanceObject!.shortDescription;
-      longDescriptionController.text = widget.maintenanceObject!.description;
+      headerController.text = widget.maintenanceObject!.header;
+      subHeaderController.text = widget.maintenanceObject!.subHeader;
+      descriptionController.text = widget.maintenanceObject!.description;
       selectedMeterType = widget.maintenanceObject!.meterType;
     }
     super.initState();
@@ -44,14 +43,14 @@ class _AddEditMaintenanceObjectDialogState
         if (formKey.currentState?.validate() == true) {
           final maintenanceObject = widget.maintenanceObject != null
               ? widget.maintenanceObject!.copyWith(
-                  name: nameController.text.trim(),
-                  shortDescription: shortDescriptionController.text.trim(),
-                  description: longDescriptionController.text.trim(),
+                  header: headerController.text.trim(),
+                  subHeader: subHeaderController.text.trim(),
+                  description: descriptionController.text.trim(),
                 )
               : MaintenanceObject.createNew(
-                  nameController.text.trim(),
-                  shortDescriptionController.text.trim(),
-                  longDescriptionController.text.trim(),
+                  headerController.text.trim(),
+                  subHeaderController.text.trim(),
+                  descriptionController.text.trim(),
                   selectedMeterType,
                 );
 
@@ -69,20 +68,20 @@ class _AddEditMaintenanceObjectDialogState
             height: 10,
           ),
           TextFormField(
-            decoration: _inputDecoration('Namn'),
-            controller: nameController,
+            decoration: _inputDecoration('Rubrik'),
+            controller: headerController,
             maxLength: 20,
             onChanged: (value) => formKey.currentState?.validate(),
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Ett namn måste anges'
+                ? 'En rubrik måste anges'
                 : null,
           ),
           SizedBox(
             height: 10,
           ),
           TextFormField(
-            decoration: _inputDecoration('Beskrivning'),
-            controller: shortDescriptionController,
+            decoration: _inputDecoration('Underrubrik'),
+            controller: subHeaderController,
             maxLength: 30,
           ),
           SizedBox(
@@ -137,7 +136,7 @@ class _AddEditMaintenanceObjectDialogState
           ),
           TextFormField(
             decoration: _inputDecoration('Notering'),
-            controller: longDescriptionController,
+            controller: descriptionController,
             minLines: 3,
             maxLines: 6,
           ),
@@ -168,9 +167,9 @@ class _AddEditMaintenanceObjectDialogState
 
   @override
   void dispose() {
-    nameController.dispose();
-    shortDescriptionController.dispose();
-    longDescriptionController.dispose();
+    headerController.dispose();
+    subHeaderController.dispose();
+    descriptionController.dispose();
 
     super.dispose();
   }

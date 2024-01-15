@@ -5,7 +5,7 @@ import 'package:maintenance_log/extensions/document_snapshot_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 
 class FirestoreMaintenanceRepository {
-  static String MaintenanceObjectsKey = 'MaintenanceObjects3';
+  static String MaintenanceObjectsKey = 'MaintenanceObjects2';
 
   final FirebaseFirestore _firestore;
 
@@ -20,7 +20,7 @@ class FirestoreMaintenanceRepository {
       return snapshots.map(
           (event) => event.docs.map((e) => MaintenanceObject.fromMap(e.map)));
     } catch (e) {
-      log('Failed to subscribe for cliques', error: e.toString());
+      log('Failed to subscribe for changes', error: e.toString());
       rethrow;
     }
   }
@@ -39,7 +39,7 @@ class FirestoreMaintenanceRepository {
             maintenanceObject.copyWith(sortOrder: i + 1000);
         await docRef.set(reorderedMaintenanceObject.toMap());
       } else {
-        print('SortOrder not changed for ' + maintenanceObject.name);
+        print('SortOrder not changed for ' + maintenanceObject.header);
       }
     }
   }
