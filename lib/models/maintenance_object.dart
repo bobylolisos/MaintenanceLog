@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:uuid/uuid.dart';
 
+import 'consumption.dart';
 import 'maintenance.dart';
 import 'meter_type.dart';
 
