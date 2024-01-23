@@ -36,7 +36,9 @@ class _AddEditMaintenanceObjectDialogState
   @override
   Widget build(BuildContext context) {
     return BlsDialog(
-      title: 'Lägg till nytt objekt',
+      title: widget.maintenanceObject != null
+          ? 'Ändra objekt'
+          : 'Lägg till nytt objekt',
       okText: 'Spara',
       cancelText: 'Avbryt',
       onOkPressed: () {

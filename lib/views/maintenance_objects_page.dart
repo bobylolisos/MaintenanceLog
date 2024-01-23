@@ -33,6 +33,44 @@ class MaintenanceObjectsPage extends StatelessWidget {
                       MaintenanceObjectsState>(
                     builder: (context, state) {
                       if (state is MaintenanceObjectsChangedState) {
+                        if (state.maintenanceObjects.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  'Välkommen!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      color: colorBlue,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  'Ser att du inte har några objekt att underhålla :)',
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      TextStyle(fontSize: 20, color: colorBlue),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'Välj Administration i menyn för att där skapa ditt första objekt.',
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      TextStyle(fontSize: 20, color: colorBlue),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                         return ListView.builder(
                           itemCount: state.maintenanceObjects.length,
                           itemBuilder: (context, index) {
