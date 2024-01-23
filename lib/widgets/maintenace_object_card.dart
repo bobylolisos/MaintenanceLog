@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
@@ -50,9 +51,18 @@ class MaintenanceObjectCard extends StatelessWidget {
                       child: maintenanceObject.images.isNotEmpty
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(35),
-                              child: Image.network(
-                                  fit: BoxFit.cover,
-                                  maintenanceObject.images.first),
+                              child: CachedNetworkImage(
+                                imageUrl: maintenanceObject.images.first,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                  child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: const CircularProgressIndicator()),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             )
                           : Container(
                               decoration: BoxDecoration(

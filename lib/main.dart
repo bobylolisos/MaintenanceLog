@@ -13,5 +13,8 @@ void main() async {
   await setupFirebase();
   setupIoc();
 
+  // DefaultCacheManager manager = DefaultCacheManager();
+  // await manager.emptyCache();
+
   runApp(const App());
 }
