@@ -6,7 +6,7 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/views/admin/add_edit_maintenance_object_dialog.dart';
+import 'package:maintenance_log/views/admin/information_tab/add_edit_maintenance_object_dialog.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
@@ -21,6 +21,7 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
       children: [
         MaintenanceObjectItemCard(
           title: 'Grunddata',
+          margins: EdgeInsets.only(bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -90,6 +91,13 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
             ],
           ),
         ),
+        MaintenanceObjectItemCard(
+          title: 'Tidslinje',
+          child: Container(
+            height: 300,
+            child: Text('Nä, flytta denna från admin'),
+          ),
+        )
       ],
     );
   }

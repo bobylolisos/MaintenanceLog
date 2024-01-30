@@ -7,9 +7,9 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/admin_maintenance_object_consumption_tab_view.dart';
-import 'package:maintenance_log/views/admin/admin_maintenance_object_information_tab_view.dart';
-import 'package:maintenance_log/views/admin/admin_maintenance_object_maintenance_tab_view.dart';
+import 'package:maintenance_log/views/admin/consumption_tab/admin_maintenance_object_consumption_tab_view.dart';
+import 'package:maintenance_log/views/admin/information_tab/admin_maintenance_object_information_tab_view.dart';
+import 'package:maintenance_log/views/admin/maintenance_tab/admin_maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminMaintenanceObjectPage extends StatefulWidget {
@@ -51,14 +51,11 @@ class _AdminMaintenanceObjectPageState
                 return Scaffold(
                   backgroundColor: colorLightGrey,
                   appBar: SubHeaderAppBar(title: maintenanceObject.header),
-                  body: SingleChildScrollView(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 6.0, right: 6, top: 6),
-                      child: Builder(builder: (context) {
-                        return _resolveTabView(maintenanceObject);
-                      }),
-                    ),
+                  body: Padding(
+                    padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
+                    child: Builder(builder: (context) {
+                      return _resolveTabView(maintenanceObject);
+                    }),
                   ),
                   bottomNavigationBar: BottomNavigationBar(
                       iconSize: 18,
@@ -94,7 +91,7 @@ class _AdminMaintenanceObjectPageState
                                 FontAwesomeIcons.wrench,
                               ),
                             ),
-                            label: 'Underhållsobjekt'),
+                            label: 'Underhållspunkter'),
                       ]),
                 );
               }
@@ -123,7 +120,7 @@ class _AdminMaintenanceObjectPageState
     }
     if (_selectedTabIndexNotifier.value == 2) {
       return AdminMaintenanceObjectMaintenanceTabView(
-        maintenanceObject: maintenanceObject,
+        maintenanceObjectId: maintenanceObject.id,
       );
     }
     return Center(child: Text('N O T   I M P L E M E N T E D'));

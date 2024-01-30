@@ -5,20 +5,24 @@ class MaintenanceObjectItemCard extends StatelessWidget {
   final String title;
   final Widget child;
   final GestureTapCallback? onTap;
-  final GestureTapCallback? onAddTap;
+  final Widget? trailing;
+  final CrossAxisAlignment trailingVerticalAlignment;
   final int? postCount;
+  final EdgeInsetsGeometry? margins;
 
   const MaintenanceObjectItemCard(
       {required this.title,
       required this.child,
       this.postCount,
       this.onTap,
-      this.onAddTap,
+      this.trailing,
+      this.trailingVerticalAlignment = CrossAxisAlignment.center,
+      this.margins,
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final card = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title container
@@ -101,7 +105,7 @@ class MaintenanceObjectItemCard extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 10.0, top: 8, right: 8, bottom: 8),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: trailingVerticalAlignment,
                     children: [
                       Expanded(
                           child: Container(
@@ -111,36 +115,12 @@ class MaintenanceObjectItemCard extends StatelessWidget {
                                 minWidth: double.infinity,
                               ),
                               child: child)),
-                      onAddTap != null
+                      trailing != null
                           ? SizedBox(
                               width: 10,
                             )
                           : Container(),
-                      onAddTap != null
-                          ? Container(
-                              height: 35,
-                              decoration: BoxDecoration(
-                                color: colorBlue,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: colorBlue,
-                                  width: 2.0,
-                                ),
-                              ),
-                              child: InkWell(
-                                splashColor: colorGold,
-                                borderRadius: BorderRadius.circular(20),
-                                onTap: () {},
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: colorGold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container()
+                      trailing != null ? trailing! : Container()
                     ],
                   ),
                 ),
@@ -150,5 +130,14 @@ class MaintenanceObjectItemCard extends StatelessWidget {
         ),
       ],
     );
+
+    if (margins != null) {
+      return Padding(
+        padding: margins!,
+        child: card,
+      );
+    }
+
+    return card;
   }
 }

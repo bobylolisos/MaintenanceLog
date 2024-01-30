@@ -21,7 +21,30 @@ class MaintenanceItemsCardsBuilder {
           title: item.name,
           postCount: postCount,
           onTap: () {},
-          onAddTap: () {},
+          trailing: Container(
+            height: 35,
+            decoration: BoxDecoration(
+              color: colorBlue,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: colorBlue,
+                width: 2.0,
+              ),
+            ),
+            child: InkWell(
+              splashColor: colorGold,
+              borderRadius: BorderRadius.circular(20),
+              onTap: () {},
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Icon(
+                  Icons.add,
+                  color: colorGold,
+                ),
+              ),
+            ),
+          ),
+          trailingVerticalAlignment: CrossAxisAlignment.end,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

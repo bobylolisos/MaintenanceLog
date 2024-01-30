@@ -3,7 +3,10 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/admin/widgets/text_input_decoration.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
+
+import '../maintenance_tab/add_edit_maintenance_dialog.dart';
 
 class AddEditMaintenanceObjectDialog extends StatefulWidget {
   final MaintenanceObject? maintenanceObject;
@@ -70,7 +73,7 @@ class _AddEditMaintenanceObjectDialogState
             height: 10,
           ),
           TextFormField(
-            decoration: _inputDecoration('Rubrik'),
+            decoration: textInputDecoration('Rubrik'),
             controller: headerController,
             maxLength: 20,
             onChanged: (value) => formKey.currentState?.validate(),
@@ -82,7 +85,7 @@ class _AddEditMaintenanceObjectDialogState
             height: 10,
           ),
           TextFormField(
-            decoration: _inputDecoration('Underrubrik'),
+            decoration: textInputDecoration('Underrubrik'),
             controller: subHeaderController,
             maxLength: 30,
           ),
@@ -137,33 +140,13 @@ class _AddEditMaintenanceObjectDialogState
             height: 10,
           ),
           TextFormField(
-            decoration: _inputDecoration('Notering'),
+            decoration: textInputDecoration('Notering'),
             controller: descriptionController,
             minLines: 3,
             maxLines: 6,
           ),
         ]),
       ),
-    );
-  }
-
-  InputDecoration _inputDecoration(String labelText) {
-    return InputDecoration(
-      counterStyle: TextStyle(color: colorBlue, fontSize: 12),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: colorBlue),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: colorBlue),
-      ),
-      errorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red),
-      ),
-      focusedErrorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red),
-      ),
-      labelText: labelText,
-      labelStyle: TextStyle(color: colorBlue),
     );
   }
 

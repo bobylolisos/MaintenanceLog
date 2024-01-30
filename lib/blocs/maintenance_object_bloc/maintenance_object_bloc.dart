@@ -17,6 +17,8 @@ class MaintenanceObjectBloc
     on<MaintenanceObjectGetEvent>(onMaintenanceObjectGetEvent);
 
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
+
+    on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
   }
 
   FutureOr<void> onMaintenanceObjectGetEvent(MaintenanceObjectGetEvent event,
@@ -36,6 +38,22 @@ class MaintenanceObjectBloc
 
     var maintenanceObject = await _maintenanceObjectRepository
         .setMaintenanceObject(event.maintenanceObject);
+
+    if (maintenanceObject != null) {
+      emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
+    }
+  }
+
+  FutureOr<void> onMaintenanceAddedEvent(
+      MaintenanceAddedEvent event, Emitter<MaintenanceObjectState> emit) async {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenances = [
+      ...[event.maintenance],
+      ...event.maintenanceObject.maintenances
+    ];
+    var maintenanceObject =
+        await _maintenanceObjectRepository.setMaintenanceObject(
+            event.maintenanceObject.copyWith(maintenances: maintenances));
 
     if (maintenanceObject != null) {
       emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));

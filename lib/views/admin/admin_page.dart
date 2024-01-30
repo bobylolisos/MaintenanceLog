@@ -8,7 +8,7 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/add_edit_maintenance_object_dialog.dart';
+import 'package:maintenance_log/views/admin/information_tab/add_edit_maintenance_object_dialog.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_page.dart';
 import 'package:maintenance_log/widgets/add_card.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
@@ -37,7 +37,7 @@ class AdminPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 5),
                       child: AddCard(
-                        text: 'Lägg till nytt objekt',
+                        text: 'Nytt objekt',
                         onTap: () async {
                           final maintenanceObjectBloc =
                               context.read<MaintenanceObjectBloc>();
@@ -77,15 +77,25 @@ class AdminPage extends StatelessWidget {
                                     .reduce((a, b) =>
                                         a.sortOrder < b.sortOrder ? a : b)
                                     .sortOrder;
-                                print('-------------------------- ' +
-                                    _lowestSortOrder.toString());
                               }
                               return ReorderableListView.builder(
                                 proxyDecorator: (child, index, animation) =>
                                     Material(
-                                  color: colorGold.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: child,
+                                  color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(12),
+                                  child: Stack(
+                                    children: [
+                                      child,
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 6, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            color: colorGold.withOpacity(0.7),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 itemCount: state.maintenanceObjects.length,
                                 itemBuilder: (context, index) {

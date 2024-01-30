@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 
 @immutable
@@ -14,4 +15,12 @@ final class MaintenanceObjectSaveEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;
 
   MaintenanceObjectSaveEvent({required this.maintenanceObject});
+}
+
+final class MaintenanceAddedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final Maintenance maintenance;
+
+  MaintenanceAddedEvent(
+      {required this.maintenanceObject, required this.maintenance});
 }

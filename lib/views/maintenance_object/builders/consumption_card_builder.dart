@@ -9,7 +9,7 @@ class ConsumptionCardBuilder {
       builder: (context) {
         final postCount = maintenanceObject.consumptions.length;
         // final avarageConsumption = _getConsumptions(maintenanceObject);
-        return Text('data');
+        return Text('Todo: ConsumptionCardBuilder');
         // return MaintenanceObjectItemCard(
         //   title: 'Förbrukning',
         //   postCount: postCount,

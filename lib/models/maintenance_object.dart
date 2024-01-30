@@ -31,19 +31,19 @@ class MaintenanceObject {
       required this.consumptions,
       required this.images});
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'header': header,
-      'subHeader': subHeader,
-      'description': description,
-      'meterType': meterType.index,
-      'sortOrder': sortOrder,
-      'isActive': isActive,
-      'maintenances': maintenances.map((x) => x.toMap()).toList(),
-      'consumptions': consumptions.map((x) => x.toMap()).toList(),
-      'images': images.toList(),
-    };
+  factory MaintenanceObject.createNew(String header, String subHeader,
+      String description, MeterType meterType) {
+    return MaintenanceObject(
+        id: Uuid().v4().toString(),
+        header: header,
+        subHeader: subHeader,
+        description: description,
+        meterType: meterType,
+        sortOrder: 0,
+        isActive: true,
+        maintenances: [],
+        consumptions: [],
+        images: []);
   }
 
   MaintenanceObject copyWith(
@@ -69,19 +69,19 @@ class MaintenanceObject {
         images: images ?? this.images);
   }
 
-  factory MaintenanceObject.createNew(String header, String subHeader,
-      String description, MeterType meterType) {
-    return MaintenanceObject(
-        id: Uuid().v4().toString(),
-        header: header,
-        subHeader: subHeader,
-        description: description,
-        meterType: meterType,
-        sortOrder: 0,
-        isActive: true,
-        maintenances: [],
-        consumptions: [],
-        images: []);
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'header': header,
+      'subHeader': subHeader,
+      'description': description,
+      'meterType': meterType.index,
+      'sortOrder': sortOrder,
+      'isActive': isActive,
+      'maintenances': maintenances.map((x) => x.toMap()).toList(),
+      'consumptions': consumptions.map((x) => x.toMap()).toList(),
+      'images': images.toList(),
+    };
   }
 
   factory MaintenanceObject.fromMap(Map<String, dynamic> map) {

@@ -60,7 +60,6 @@ class MaintenanceObjectPage extends StatelessWidget {
                       MaintenanceObjectItemCard(
                           title: 'Insurance',
                           postCount: 999,
-                          onAddTap: () {},
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -105,7 +104,6 @@ class MaintenanceObjectPage extends StatelessWidget {
                       ),
                       MaintenanceObjectItemCard(
                           title: 'title',
-                          onAddTap: () {},
                           child: Column(
                             children: [
                               Text(
