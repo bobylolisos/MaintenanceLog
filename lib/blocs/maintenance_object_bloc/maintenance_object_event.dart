@@ -5,6 +5,12 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 @immutable
 sealed class MaintenanceObjectEvent {}
 
+final class MaintenanceObjectSubscriptionEvent extends MaintenanceObjectEvent {
+  final String maintenanceObjectId;
+
+  MaintenanceObjectSubscriptionEvent({required this.maintenanceObjectId});
+}
+
 final class MaintenanceObjectGetEvent extends MaintenanceObjectEvent {
   final String maintenanceObjectId;
 

@@ -14,11 +14,26 @@ class MaintenanceObjectBloc
       {required FirestoreMaintenanceRepository maintenanceObjectRepository})
       : _maintenanceObjectRepository = maintenanceObjectRepository,
         super(MaintenanceObjectWorkInProgressState()) {
+    on<MaintenanceObjectSubscriptionEvent>(
+        onMaintenanceObjectSubscriptionEvent);
+
     on<MaintenanceObjectGetEvent>(onMaintenanceObjectGetEvent);
 
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
 
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
+  }
+
+  FutureOr<void> onMaintenanceObjectSubscriptionEvent(
+      MaintenanceObjectSubscriptionEvent event,
+      Emitter<MaintenanceObjectState> emit) async {
+    await emit.forEach(
+      _maintenanceObjectRepository
+          .subscribeForMaintenanceObjectChanges(event.maintenanceObjectId),
+      onData: (data) {
+        return MaintenanceObjectUpdatedState(maintenanceObject: data);
+      },
+    );
   }
 
   FutureOr<void> onMaintenanceObjectGetEvent(MaintenanceObjectGetEvent event,

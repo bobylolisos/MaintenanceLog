@@ -12,13 +12,26 @@ class FirestoreMaintenanceRepository {
   FirestoreMaintenanceRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
 
-  Stream<Iterable<MaintenanceObject>> subscribeForMaintenanceObjectChanges() {
+  Stream<Iterable<MaintenanceObject>> subscribeForMaintenanceObjectsChanges() {
     try {
       var collection = _firestore.collection(MaintenanceObjectsKey);
       final Stream<QuerySnapshot<Object?>> snapshots = collection.snapshots();
 
       return snapshots.map(
           (event) => event.docs.map((e) => MaintenanceObject.fromMap(e.map)));
+    } catch (e) {
+      log('Failed to subscribe for changes', error: e.toString());
+      rethrow;
+    }
+  }
+
+  Stream<MaintenanceObject> subscribeForMaintenanceObjectChanges(String id) {
+    try {
+      var collection = _firestore.collection(MaintenanceObjectsKey);
+      final Stream<DocumentSnapshot<Map<String, dynamic>>> snapshot =
+          collection.doc(id).snapshots();
+
+      return snapshot.map((event) => MaintenanceObject.fromMap(event.map));
     } catch (e) {
       log('Failed to subscribe for changes', error: e.toString());
       rethrow;

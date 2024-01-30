@@ -17,88 +17,91 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        MaintenanceObjectItemCard(
-          title: 'Grunddata',
-          margins: EdgeInsets.only(bottom: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: _paddedText(maintenanceObject.header, fontSize: 24),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: colorBlue,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: colorBlue,
-                        width: 2.0,
-                      ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          MaintenanceObjectItemCard(
+            title: 'Grunddata',
+            margins: EdgeInsets.only(bottom: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child:
+                          _paddedText(maintenanceObject.header, fontSize: 24),
                     ),
-                    child: InkWell(
-                      splashColor: colorGold,
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: () async {
-                        final maintenanceObjectBloc =
-                            context.read<MaintenanceObjectBloc>();
-                        final changedMaintenanceObject =
-                            await showDialog<MaintenanceObject?>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return AddEditMaintenanceObjectDialog(
-                              maintenanceObject: maintenanceObject,
-                            );
-                          },
-                        );
-
-                        if (changedMaintenanceObject != null) {
-                          maintenanceObjectBloc.add(
-                            MaintenanceObjectSaveEvent(
-                                maintenanceObject: changedMaintenanceObject),
-                          );
-                        }
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: FaIcon(
-                          FontAwesomeIcons.pen,
-                          color: colorGold,
-                          size: 15,
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: colorBlue,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: colorBlue,
+                          width: 2.0,
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-              _paddedText(maintenanceObject.subHeader),
-              _paddedText(maintenanceObject.meterType.displayName),
-              maintenanceObject.isActive
-                  ? _paddedText('Aktiv')
-                  : _paddedText('Inaktiv', fontColor: Colors.red),
-              SizedBox(
-                height: 10,
-              ),
-              _paddedText(maintenanceObject.description)
-            ],
+                      child: InkWell(
+                        splashColor: colorGold,
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () async {
+                          final maintenanceObjectBloc =
+                              context.read<MaintenanceObjectBloc>();
+                          final changedMaintenanceObject =
+                              await showDialog<MaintenanceObject?>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AddEditMaintenanceObjectDialog(
+                                maintenanceObject: maintenanceObject,
+                              );
+                            },
+                          );
+
+                          if (changedMaintenanceObject != null) {
+                            maintenanceObjectBloc.add(
+                              MaintenanceObjectSaveEvent(
+                                  maintenanceObject: changedMaintenanceObject),
+                            );
+                          }
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: FaIcon(
+                            FontAwesomeIcons.pen,
+                            color: colorGold,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                _paddedText(maintenanceObject.subHeader),
+                _paddedText(maintenanceObject.meterType.displayName),
+                maintenanceObject.isActive
+                    ? _paddedText('Aktiv')
+                    : _paddedText('Inaktiv', fontColor: Colors.red),
+                SizedBox(
+                  height: 10,
+                ),
+                _paddedText(maintenanceObject.description)
+              ],
+            ),
           ),
-        ),
-        MaintenanceObjectItemCard(
-          title: 'Tidslinje',
-          child: Container(
-            height: 300,
-            child: Text('Nä, flytta denna från admin'),
-          ),
-        )
-      ],
+          MaintenanceObjectItemCard(
+            title: 'Tidslinje',
+            child: Container(
+              height: 300,
+              child: Text('Nä, flytta denna från admin'),
+            ),
+          )
+        ],
+      ),
     );
   }
 

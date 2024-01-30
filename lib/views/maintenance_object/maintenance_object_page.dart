@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/builders/consumption_card_builder.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_object_maintenance_tab_view.dart';
+import 'package:maintenance_log/views/maintenance_object/statistics_tab/maintenance_object_statistic_tab_view.dart';
+import 'package:maintenance_log/views/maintenance_object/timeline_tab/maintenance_object_timeline_tab_view.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -13,132 +18,118 @@ import 'builders/maintenance_items_cards_builder.dart';
 import 'builders/maintenance_object_information_card_builder.dart';
 
 // ignore: must_be_immutable
-class MaintenanceObjectPage extends StatelessWidget {
+class MaintenanceObjectPage extends StatefulWidget {
   MaintenanceObject maintenanceObject;
   MaintenanceObjectPage({required this.maintenanceObject, super.key});
 
   @override
+  State<MaintenanceObjectPage> createState() => _MaintenanceObjectPageState();
+}
+
+class _MaintenanceObjectPageState extends State<MaintenanceObjectPage> {
+  late ValueNotifier<int> _selectedTabIndexNotifier;
+
+  @override
+  void initState() {
+    _selectedTabIndexNotifier = ValueNotifier(0);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: colorLightGrey,
-      appBar: SubHeaderAppBar(title: 'Underhåll'),
-      body: BlocProvider<MaintenanceObjectBloc>(
-        create: (BuildContext context) => MaintenanceObjectBloc(
-          maintenanceObjectRepository: ioc.get(),
-        ),
-        child: Builder(builder: (context) {
-          return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
-            builder: (BuildContext context, MaintenanceObjectState state) {
-              if (state is MaintenanceObjectUpdatedState) {
-                maintenanceObject = state.maintenanceObject;
-              }
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      // ----------- Object information ----------
-                      MaintenanceObjectInformationCardBuilder.create(
-                          maintenanceObject),
-                      SizedBox(
-                        height: 10,
+    return BlocProvider<MaintenanceObjectBloc>(
+      create: (BuildContext context) => MaintenanceObjectBloc(
+        maintenanceObjectRepository: ioc.get(),
+      )..add(MaintenanceObjectSubscriptionEvent(
+          maintenanceObjectId: widget.maintenanceObject.id)),
+      child: ValueListenableBuilder(
+        valueListenable: _selectedTabIndexNotifier,
+        builder: (context, value, child) {
+          return Scaffold(
+            backgroundColor: colorLightGrey,
+            appBar: SubHeaderAppBar(title: widget.maintenanceObject.header),
+            body: Padding(
+              padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
+              child: BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
+                bloc: context.read<MaintenanceObjectBloc>(),
+                builder: (BuildContext context, MaintenanceObjectState state) {
+                  if (state is MaintenanceObjectUpdatedState) {
+                    return _resolveTabView(state.maintenanceObject);
+                  }
+                  return Center(
+                      child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(),
+                  ));
+                },
+              ),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+                iconSize: 18,
+                selectedFontSize: 16,
+                currentIndex: _selectedTabIndexNotifier.value,
+                backgroundColor: colorBlue,
+                selectedItemColor: colorGold,
+                unselectedItemColor: colorGold.withOpacity(0.5),
+                onTap: (value) {
+                  _selectedTabIndexNotifier.value = value;
+                },
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.wrench,
+                        ),
                       ),
-
-                      // ----------- Consumption ----------
-                      ConsumptionCardBuilder.create(maintenanceObject),
-                      SizedBox(
-                        height: 10,
+                      label: 'Underhåll'),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: RotatedBox(
+                          quarterTurns: 1,
+                          child: FaIcon(
+                            size: 14,
+                            FontAwesomeIcons.timeline,
+                          ),
+                        ),
                       ),
-
-                      // ----------- Maintenance items ----------
-                      Column(
-                        children: MaintenanceItemsCardsBuilder.create(
-                            maintenanceObject),
+                      label: 'Tidslinje'),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.chartLine,
+                        ),
                       ),
-
-                      MaintenanceObjectItemCard(
-                          title: 'Insurance',
-                          postCount: 999,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                'Posts: 5',
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                              SizedBox(
-                                height: 6,
-                              ),
-                              Text(
-                                '2023-12-15',
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                              Text(
-                                '10219 km',
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                              SizedBox(
-                                height: 6,
-                              ),
-                              Text(
-                                '6131 kr',
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                              Text(
-                                'Volvia',
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                            ],
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MaintenanceObjectItemCard(
-                          title: 'title',
-                          child: Column(
-                            children: [
-                              Text(
-                                'En ganska så jävla lång beskrivning av vad detta är för1 nått som beskriver denna',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style:
-                                    TextStyle(color: colorBlue, fontSize: 14),
-                              ),
-                              Icon(Icons.abc),
-                            ],
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MaintenanceObjectItemCard(
-                          title: 'title', child: Icon(Icons.abc)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MaintenanceObjectItemCard(
-                          title: 'title', child: Icon(Icons.abc)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MaintenanceObjectItemCard(
-                          title: 'title', child: Icon(Icons.abc)),
-                    ],
-                  ),
-                ),
-              );
-            },
+                      label: 'Statistik'),
+                ]),
           );
-        }),
+        },
       ),
     );
+  }
+
+  Widget _resolveTabView(MaintenanceObject maintenanceObject) {
+    if (_selectedTabIndexNotifier.value == 0) {
+      return MaintenanceObjectMaintenanceTabView(
+        maintenanceObject: maintenanceObject,
+      );
+    }
+    if (_selectedTabIndexNotifier.value == 1) {
+      return MaintenanceObjectTimelineTabView();
+    }
+    if (_selectedTabIndexNotifier.value == 2) {
+      return MaintenanceObjectStatisticTabView();
+    }
+    return Center(child: Text('N O T   I M P L E M E N T E D'));
+  }
+
+  @override
+  void dispose() {
+    _selectedTabIndexNotifier.dispose();
+    super.dispose();
   }
 }

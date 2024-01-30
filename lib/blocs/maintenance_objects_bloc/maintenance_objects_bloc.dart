@@ -16,16 +16,16 @@ class MaintenanceObjectsBloc
       : _maintenanceObjectRepository = maintenanceObjectRepository,
         super(MaintenanceObjectsInitialState()) {
     on<MaintenanceObjectsSubscriptionEvent>(
-        onMaintenanceObjectSubscriptionEvent);
+        onMaintenanceObjectsSubscriptionEvent);
     on<MaintenanceObjectsReorderEvent>(onMaintenanceObjectsReorderEvent);
     on<MaintenanceObjectsDeleteEvent>(onMaintenanceObjectsDeleteEvent);
   }
 
-  FutureOr<void> onMaintenanceObjectSubscriptionEvent(
+  FutureOr<void> onMaintenanceObjectsSubscriptionEvent(
       MaintenanceObjectsSubscriptionEvent event,
       Emitter<MaintenanceObjectsState> emit) async {
     await emit.forEach(
-      _maintenanceObjectRepository.subscribeForMaintenanceObjectChanges(),
+      _maintenanceObjectRepository.subscribeForMaintenanceObjectsChanges(),
       onData: (data) {
         final maintenanceObjects = List<MaintenanceObject>.from(data);
         maintenanceObjects.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
