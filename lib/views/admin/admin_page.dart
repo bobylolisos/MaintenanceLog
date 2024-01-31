@@ -16,7 +16,7 @@ import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminPage extends StatefulWidget {
-  AdminPage({super.key});
+  const AdminPage({super.key});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -77,7 +77,7 @@ class _AdminPageState extends State<AdminPage> {
                                       maintenanceObjectBloc.add(
                                         MaintenanceObjectSaveEvent(
                                             maintenanceObject:
-                                                addedMaintenanceObject!.copyWith(
+                                                addedMaintenanceObject.copyWith(
                                                     sortOrder:
                                                         --_lowestSortOrder)),
                                       );
