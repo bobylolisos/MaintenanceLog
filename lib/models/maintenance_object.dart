@@ -41,7 +41,14 @@ class MaintenanceObject {
         meterType: meterType,
         sortOrder: 0,
         isActive: true,
-        maintenances: [],
+        maintenances: [
+          Maintenance.createNew(
+            name: 'Övrigt',
+            description:
+                'Övriga åtgärder och kostnader som inte behöver egen underhållspunkt.',
+            meterType: meterType,
+          ),
+        ],
         consumptions: [],
         images: []);
   }

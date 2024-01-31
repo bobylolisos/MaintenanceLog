@@ -33,7 +33,10 @@ class MaintenanceObjectsPage extends StatelessWidget {
                       MaintenanceObjectsState>(
                     builder: (context, state) {
                       if (state is MaintenanceObjectsChangedState) {
-                        if (state.maintenanceObjects.isEmpty) {
+                        final maintenanceObjects = state.maintenanceObjects
+                            .where((element) => element.isActive)
+                            .toList();
+                        if (maintenanceObjects.isEmpty) {
                           return Padding(
                             padding: const EdgeInsets.all(20),
                             child: Column(
@@ -72,10 +75,10 @@ class MaintenanceObjectsPage extends StatelessWidget {
                           );
                         }
                         return ListView.builder(
-                          itemCount: state.maintenanceObjects.length,
+                          itemCount: maintenanceObjects.length,
                           itemBuilder: (context, index) {
                             final maintenanceObject =
-                                state.maintenanceObjects.elementAt(index);
+                                maintenanceObjects.elementAt(index);
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 5),

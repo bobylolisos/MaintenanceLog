@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
@@ -23,6 +22,27 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
           MaintenanceObjectItemCard(
             title: 'Grunddata',
             margins: EdgeInsets.only(bottom: 20),
+            onTap: () async {
+              final maintenanceObjectBloc =
+                  context.read<MaintenanceObjectBloc>();
+              final changedMaintenanceObject =
+                  await showDialog<MaintenanceObject?>(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AddEditMaintenanceObjectDialog(
+                    maintenanceObject: maintenanceObject,
+                  );
+                },
+              );
+
+              if (changedMaintenanceObject != null) {
+                maintenanceObjectBloc.add(
+                  MaintenanceObjectSaveEvent(
+                      maintenanceObject: changedMaintenanceObject),
+                );
+              }
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -33,71 +53,37 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
                           _paddedText(maintenanceObject.header, fontSize: 24),
                     ),
                     SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: colorBlue,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: colorBlue,
-                          width: 2.0,
-                        ),
-                      ),
-                      child: InkWell(
-                        splashColor: colorGold,
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () async {
+                      height: 30,
+                      child: Switch(
+                        value: maintenanceObject.isActive,
+                        inactiveThumbColor: Colors.red,
+                        inactiveTrackColor: Colors.red.withOpacity(0.5),
+                        activeColor: Colors.green,
+                        onChanged: (value) {
                           final maintenanceObjectBloc =
                               context.read<MaintenanceObjectBloc>();
-                          final changedMaintenanceObject =
-                              await showDialog<MaintenanceObject?>(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AddEditMaintenanceObjectDialog(
-                                maintenanceObject: maintenanceObject,
-                              );
-                            },
+                          maintenanceObjectBloc.add(
+                            MaintenanceObjectSaveEvent(
+                              maintenanceObject: maintenanceObject.copyWith(
+                                  isActive: value, sortOrder: 2000),
+                            ),
                           );
-
-                          if (changedMaintenanceObject != null) {
-                            maintenanceObjectBloc.add(
-                              MaintenanceObjectSaveEvent(
-                                  maintenanceObject: changedMaintenanceObject),
-                            );
-                          }
                         },
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: FaIcon(
-                            FontAwesomeIcons.pen,
-                            color: colorGold,
-                            size: 15,
-                          ),
-                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 _paddedText(maintenanceObject.subHeader),
                 _paddedText(maintenanceObject.meterType.displayName),
-                maintenanceObject.isActive
-                    ? _paddedText('Aktiv')
-                    : _paddedText('Inaktiv', fontColor: Colors.red),
-                SizedBox(
-                  height: 10,
-                ),
                 _paddedText(maintenanceObject.description)
               ],
             ),
           ),
           MaintenanceObjectItemCard(
-            title: 'Tidslinje',
+            title: 'Bilder',
             child: Container(
               height: 300,
-              child: Text('Nä, flytta denna från admin'),
+              child: Text('Fina bilder här'),
             ),
           )
         ],

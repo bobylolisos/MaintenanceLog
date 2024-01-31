@@ -38,7 +38,7 @@ class _AdminMaintenanceObjectPageState
     return BlocProvider<MaintenanceObjectBloc>(
       create: (context) =>
           MaintenanceObjectBloc(maintenanceObjectRepository: ioc.get())
-            ..add(MaintenanceObjectGetEvent(
+            ..add(MaintenanceObjectSubscriptionEvent(
                 maintenanceObjectId: widget.maintenanceObjectId)),
       child: ValueListenableBuilder(
         valueListenable: _selectedTabIndexNotifier,
