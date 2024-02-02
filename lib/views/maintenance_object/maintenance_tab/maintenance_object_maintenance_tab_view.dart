@@ -4,9 +4,9 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/builders/consumption_card_builder.dart';
-import 'package:maintenance_log/views/maintenance_object/builders/maintenance_items_cards_builder.dart';
-import 'package:maintenance_log/views/maintenance_object/builders/maintenance_object_information_card_builder.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/builders/consumption_card_builder.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/builders/maintenance_items_cards_builder.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/builders/maintenance_object_information_card_builder.dart';
 
 // ignore: must_be_immutable
 class MaintenanceObjectMaintenanceTabView extends StatelessWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class ConsumptionCardBuilder {
   static Widget create(MaintenanceObject maintenanceObject) {
