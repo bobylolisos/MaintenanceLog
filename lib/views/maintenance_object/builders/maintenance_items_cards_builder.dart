@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
+import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
+import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class MaintenanceItemsCardsBuilder {
@@ -31,18 +36,41 @@ class MaintenanceItemsCardsBuilder {
                 width: 2.0,
               ),
             ),
-            child: InkWell(
-              splashColor: colorGold,
-              borderRadius: BorderRadius.circular(20),
-              onTap: () {},
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.add,
-                  color: colorGold,
+            child: Builder(builder: (context) {
+              return InkWell(
+                splashColor: colorGold,
+                borderRadius: BorderRadius.circular(20),
+                onTap: () async {
+                  final maintenanceObjectBloc =
+                      context.read<MaintenanceObjectBloc>();
+                  final changedMaintenanceItem =
+                      await showDialog<MaintenanceItem?>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AddEditMaintenanceItemDialog(
+                        maintenance: item,
+                      );
+                    },
+                  );
+
+                  if (changedMaintenanceItem != null) {
+                    maintenanceObjectBloc.add(
+                      MaintenanceItemChangedEvent(
+                          maintenanceObject: maintenanceObject,
+                          maintenanceItem: changedMaintenanceItem),
+                    );
+                  }
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Icon(
+                    Icons.add,
+                    color: colorGold,
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
           trailingVerticalAlignment: CrossAxisAlignment.end,
           child: Column(
@@ -65,6 +93,12 @@ class MaintenanceItemsCardsBuilder {
                       'Föregående post',
                       style: TextStyle(
                           color: colorBlue, fontWeight: FontWeight.w600),
+                    )
+                  : Container(),
+              postCount > 0
+                  ? Text(
+                      ' ${item.posts.first.header}',
+                      style: TextStyle(color: colorBlue),
                     )
                   : Container(),
               postCount > 0

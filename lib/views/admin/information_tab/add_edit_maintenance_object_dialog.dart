@@ -6,8 +6,6 @@ import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/admin/widgets/text_input_decoration.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
 
-import '../maintenance_tab/add_edit_maintenance_dialog.dart';
-
 class AddEditMaintenanceObjectDialog extends StatefulWidget {
   final MaintenanceObject? maintenanceObject;
   const AddEditMaintenanceObjectDialog({this.maintenanceObject, super.key});

@@ -7,15 +7,10 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/builders/consumption_card_builder.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/views/maintenance_object/statistics_tab/maintenance_object_statistic_tab_view.dart';
 import 'package:maintenance_log/views/maintenance_object/timeline_tab/maintenance_object_timeline_tab_view.dart';
-import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
-
-import 'builders/maintenance_items_cards_builder.dart';
-import 'builders/maintenance_object_information_card_builder.dart';
 
 // ignore: must_be_immutable
 class MaintenanceObjectPage extends StatefulWidget {

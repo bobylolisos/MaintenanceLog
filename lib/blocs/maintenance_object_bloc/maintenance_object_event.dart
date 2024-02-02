@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/maintenance.dart';
+import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 
 @immutable
@@ -29,4 +30,12 @@ final class MaintenanceAddedEvent extends MaintenanceObjectEvent {
 
   MaintenanceAddedEvent(
       {required this.maintenanceObject, required this.maintenance});
+}
+
+final class MaintenanceItemChangedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final MaintenanceItem maintenanceItem;
+
+  MaintenanceItemChangedEvent(
+      {required this.maintenanceObject, required this.maintenanceItem});
 }
