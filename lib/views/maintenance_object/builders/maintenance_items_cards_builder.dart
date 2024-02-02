@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
+import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
@@ -73,60 +75,78 @@ class MaintenanceItemsCardsBuilder {
             }),
           ),
           trailingVerticalAlignment: CrossAxisAlignment.end,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              item.description.isNotEmpty
-                  ? Text(item.description)
-                  : Container(),
-              item.description.isNotEmpty
-                  ? SizedBox(
-                      height: 6,
-                    )
-                  : Container(),
-              Text('Total utgift: $totalCosts kr'),
-              SizedBox(
-                height: 6,
-              ),
-              postCount > 0
-                  ? Text(
-                      'Föregående post',
-                      style: TextStyle(
-                          color: colorBlue, fontWeight: FontWeight.w600),
-                    )
-                  : Container(),
-              postCount > 0
-                  ? Text(
-                      ' ${item.posts.first.header}',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  : Container(),
-              postCount > 0
-                  ? Text(
-                      ' ${item.posts.first.date.toString().substring(0, 10)}',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  : Container(),
-              postCount > 0
-                  ? Text(
-                      ' ${item.posts.first.meterValue.toString()} km', //Todo: Can be hour
-                      style: TextStyle(color: colorBlue),
-                    )
-                  : Container(),
-              postCount > 0
-                  ? Text(
-                      ' ${item.posts.first.costs.toString()} kr',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  : Container(),
-              postCount > 0
-                  ? Text(
-                      ' ${item.posts.first.note}',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  : Container(),
-            ],
-          ),
+          child: Builder(builder: (context) {
+            final latestPost = postCount > 0 ? item.posts.first : null;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                item.description.isNotEmpty
+                    ? Text(item.description)
+                    : Container(),
+                item.description.isNotEmpty
+                    ? SizedBox(
+                        height: 10,
+                      )
+                    : Container(),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 2,
+                    ),
+                    FaIcon(
+                      FontAwesomeIcons.coins,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('$totalCosts kr'),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                latestPost != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              'Föregående post',
+                              style: TextStyle(
+                                  color: colorBlue,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                            ),
+                          ),
+                          _previousPostRowItem(
+                            latestPost.date.toString().substring(0, 10),
+                            FontAwesomeIcons.calendar,
+                          ),
+                          _previousPostRowItem(
+                            latestPost.header,
+                            FontAwesomeIcons.tag,
+                          ),
+                          _previousPostRowItem(
+                              '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}',
+                              FontAwesomeIcons.leftRight,
+                              additionalValidation: () =>
+                                  latestPost.meterValue != null),
+                          _previousPostRowItem(
+                            '${latestPost.costs} kr',
+                            FontAwesomeIcons.coins,
+                          ),
+                          _previousPostRowItem(
+                            latestPost.note,
+                            FontAwesomeIcons.clipboard,
+                          ),
+                        ],
+                      )
+                    : Container(),
+              ],
+            );
+          }),
         ),
       );
 
@@ -138,5 +158,33 @@ class MaintenanceItemsCardsBuilder {
     }
 
     return result;
+  }
+
+  static Widget _previousPostRowItem(String value, IconData icon,
+      {bool Function()? additionalValidation}) {
+    return additionalValidation == null || additionalValidation()
+        ? Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 4, right: 10, bottom: 2, top: 2),
+                child: SizedBox(
+                  width: 15,
+                  height: 15,
+                  child: Center(
+                    child: FaIcon(
+                      icon,
+                      size: 14,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                value,
+                style: TextStyle(color: colorBlue),
+              ),
+            ],
+          )
+        : Container();
   }
 }

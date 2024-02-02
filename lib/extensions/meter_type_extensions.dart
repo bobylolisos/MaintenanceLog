@@ -8,7 +8,18 @@ extension MeterTypeExtensions on MeterType {
       case MeterType.odometer:
         return 'Vägmätare (km)';
       case MeterType.hourmeter:
-        return 'Timräknare (timme)';
+        return 'Timräknare (timmar)';
+    }
+  }
+
+  String get displaySuffix {
+    switch (this) {
+      case MeterType.none:
+        return '';
+      case MeterType.odometer:
+        return 'km';
+      case MeterType.hourmeter:
+        return 'timmar';
     }
   }
 }
