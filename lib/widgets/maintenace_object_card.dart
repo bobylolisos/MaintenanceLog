@@ -34,7 +34,8 @@ class MaintenanceObjectCard extends StatelessWidget {
         color: Colors.transparent,
         // Material is used for click-splash-effect to work on inkwell
         child: InkWell(
-          splashColor: colorGold,
+          splashColor: colorGold.withOpacity(0.4),
+          highlightColor: Colors.transparent,
           onTap: onTap,
           child: Hero(
             tag: maintenanceObject.id,

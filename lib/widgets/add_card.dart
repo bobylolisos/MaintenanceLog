@@ -29,7 +29,7 @@ class AddCard extends StatelessWidget {
         color: Colors.transparent,
         // Material is used for click-splash-effect to work on inkwell
         child: InkWell(
-          splashColor: colorGold,
+          splashColor: colorGold.withOpacity(0.4),
           onTap: onTap,
           child: Material(
             color: Colors.transparent,

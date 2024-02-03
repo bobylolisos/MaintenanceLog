@@ -37,6 +37,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         children: [
           TextFormField(
             key: textFormFieldKey,
+            style: TextStyle(color: colorBlue),
             decoration: InputDecoration(
               counterText: '',
               enabledBorder: OutlineInputBorder(

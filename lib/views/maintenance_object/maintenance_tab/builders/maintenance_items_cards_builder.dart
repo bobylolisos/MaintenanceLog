@@ -8,10 +8,12 @@ import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_overview_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class MaintenanceItemsCardsBuilder {
-  static List<Widget> create(MaintenanceObject maintenanceObject) {
+  static List<Widget> create(
+      BuildContext context, MaintenanceObject maintenanceObject) {
     final result = List<Widget>.empty(growable: true);
 
     final items = maintenanceObject.maintenances;
@@ -27,7 +29,15 @@ class MaintenanceItemsCardsBuilder {
         MaintenanceObjectItemCard(
           title: item.name,
           postCount: postCount,
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MaintenanceOverviewPage(
+                maintenanceObjectId: maintenanceObject.id,
+                maintenanceObjectName: maintenanceObject.header,
+                maintenanceId: item.id,
+              ),
+            ));
+          },
           trailing: Container(
             height: 35,
             decoration: BoxDecoration(
@@ -40,7 +50,7 @@ class MaintenanceItemsCardsBuilder {
             ),
             child: Builder(builder: (context) {
               return InkWell(
-                splashColor: colorGold,
+                splashColor: colorGold.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(20),
                 onTap: () async {
                   final maintenanceObjectBloc =
@@ -81,7 +91,10 @@ class MaintenanceItemsCardsBuilder {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 item.description.isNotEmpty
-                    ? Text(item.description)
+                    ? Text(
+                        item.description,
+                        style: TextStyle(color: colorBlue),
+                      )
                     : Container(),
                 item.description.isNotEmpty
                     ? SizedBox(
@@ -96,11 +109,15 @@ class MaintenanceItemsCardsBuilder {
                     FaIcon(
                       FontAwesomeIcons.coins,
                       size: 18,
+                      color: colorBlue,
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text('$totalCosts kr'),
+                    Text(
+                      '$totalCosts kr',
+                      style: TextStyle(color: colorBlue),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -175,6 +192,7 @@ class MaintenanceItemsCardsBuilder {
                     child: FaIcon(
                       icon,
                       size: 14,
+                      color: colorBlue,
                     ),
                   ),
                 ),

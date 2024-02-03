@@ -24,6 +24,7 @@ class CustomNumericFormField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
         controller: controller,
+        style: TextStyle(color: colorBlue),
         decoration: InputDecoration(
           counterText: '',
           enabledBorder: OutlineInputBorder(

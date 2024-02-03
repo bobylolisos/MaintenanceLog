@@ -169,7 +169,7 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                               postCount: maintenance.posts.length,
                               onTap: () {},
                               trailing: InkWell(
-                                splashColor: colorGold,
+                                splashColor: colorGold.withOpacity(0.4),
                                 borderRadius: BorderRadius.circular(20),
                                 onTap: () {},
                                 child: Icon(

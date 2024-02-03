@@ -69,7 +69,7 @@ class MaintenanceObjectInformationCardBuilder {
                         ),
                       )
                     : InkWell(
-                        splashColor: colorGold,
+                        splashColor: colorGold.withOpacity(0.4),
                         onTap: () async {
                           var imagePicker = ImagePicker();
                           var xfile = await imagePicker.pickImage(

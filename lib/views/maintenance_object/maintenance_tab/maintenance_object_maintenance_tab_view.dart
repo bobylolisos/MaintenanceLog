@@ -45,8 +45,8 @@ class MaintenanceObjectMaintenanceTabView extends StatelessWidget {
 
                   // ----------- Maintenance items ----------
                   Column(
-                    children:
-                        MaintenanceItemsCardsBuilder.create(maintenanceObject),
+                    children: MaintenanceItemsCardsBuilder.create(
+                        context, maintenanceObject),
                   ),
                 ],
               ),

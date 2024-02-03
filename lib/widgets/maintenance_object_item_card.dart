@@ -87,7 +87,8 @@ class MaintenanceObjectItemCard extends StatelessWidget {
           child: Material(
             color: Colors.white,
             child: InkWell(
-              splashColor: colorGold,
+              splashColor: colorGold.withOpacity(0.4),
+              highlightColor: Colors.transparent,
               onTap: onTap,
               child: Container(
                 decoration: BoxDecoration(
