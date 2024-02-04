@@ -11,14 +11,19 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
+// ignore: must_be_immutable
 class MaintenanceOverviewPage extends StatelessWidget {
   final String maintenanceObjectId;
   final String maintenanceObjectName;
   final String maintenanceId;
-  const MaintenanceOverviewPage(
+  late MaintenanceObject maintenanceObject;
+  late Maintenance maintenance;
+
+  MaintenanceOverviewPage(
       {required this.maintenanceObjectId,
       required this.maintenanceObjectName,
       required this.maintenanceId,
@@ -30,122 +35,155 @@ class MaintenanceOverviewPage extends StatelessWidget {
       create: (context) => MaintenanceObjectBloc(
         maintenanceObjectRepository: ioc.get(),
       ),
-      child: Scaffold(
-        backgroundColor: colorLightGrey,
-        appBar: SubHeaderAppBar(title: maintenanceObjectName),
-        body: Builder(builder: (context) {
-          return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
-              bloc: context.read<MaintenanceObjectBloc>()
-                ..add(MaintenanceObjectSubscriptionEvent(
-                    maintenanceObjectId: maintenanceObjectId)),
-              builder: (context, state) {
-                if (state is MaintenanceObjectUpdatedState) {
-                  final maintenance = state.maintenanceObject.maintenances
-                      .firstWhere((x) => x.id == maintenanceId);
-
-                  var totalCosts = maintenance.posts.isNotEmpty
-                      ? maintenance.posts
-                          .map((e) => e.costs)
-                          .reduce((a, b) => a + b)
-                      : 0;
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        MaintenanceObjectItemCard(
-                          title: 'Underhållspunkt',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                maintenance.name,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: colorBlue,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                maintenance.description,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: colorBlue,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.coins,
-                                    color: colorBlue,
-                                    size: 16,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '$totalCosts kr',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: colorBlue,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.coins,
-                                    color: colorBlue,
-                                    size: 16,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '${totalCosts} kr/km', // TODO
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: colorBlue,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MaintenanceObjectItemCard(
-                          title: 'Poster',
-                          child: Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _createPosts(context,
-                                  state.maintenanceObject, maintenance),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: colorLightGrey,
+          appBar: SubHeaderAppBar(title: maintenanceObjectName),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: colorBlue,
+            foregroundColor: colorGold,
+            splashColor: colorGold.withOpacity(0.4),
+            onPressed: () async {
+              final maintenanceObjectBloc =
+                  context.read<MaintenanceObjectBloc>();
+              final changedMaintenanceItem = await showDialog<MaintenanceItem?>(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AddEditMaintenanceItemDialog(
+                    maintenance: maintenance,
                   );
-                }
+                },
+              );
 
-                return Center(
-                  child: SizedBox(
-                      height: 60,
-                      width: 60,
-                      child: CircularProgressIndicator()),
+              if (changedMaintenanceItem != null) {
+                maintenanceObjectBloc.add(
+                  MaintenanceItemChangedEvent(
+                      maintenanceObject: maintenanceObject,
+                      maintenanceItem: changedMaintenanceItem),
                 );
-              });
-        }),
-      ),
+              }
+            },
+            child: Icon(Icons.add),
+          ),
+          body: Builder(builder: (context) {
+            return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
+                bloc: context.read<MaintenanceObjectBloc>()
+                  ..add(MaintenanceObjectSubscriptionEvent(
+                      maintenanceObjectId: maintenanceObjectId)),
+                builder: (context, state) {
+                  if (state is MaintenanceObjectUpdatedState) {
+                    maintenanceObject = state.maintenanceObject;
+                    maintenance = state.maintenanceObject.maintenances
+                        .firstWhere((x) => x.id == maintenanceId);
+
+                    var totalCosts = maintenance.posts.isNotEmpty
+                        ? maintenance.posts
+                            .map((e) => e.costs)
+                            .reduce((a, b) => a + b)
+                        : 0;
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6.0, right: 6, top: 6),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            MaintenanceObjectItemCard(
+                              title: 'Underhållspunkt',
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    maintenance.name,
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: colorBlue,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    maintenance.description,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: colorBlue,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.coins,
+                                        color: colorBlue,
+                                        size: 16,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '$totalCosts kr',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: colorBlue,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.coins,
+                                        color: colorBlue,
+                                        size: 16,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${totalCosts} kr/km', // TODO
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: colorBlue,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            MaintenanceObjectItemCard(
+                              title: 'Poster',
+                              child: Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: _createPosts(context,
+                                      state.maintenanceObject, maintenance),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  return Center(
+                    child: SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: CircularProgressIndicator()),
+                  );
+                });
+          }),
+        );
+      }),
     );
   }
 
@@ -261,31 +299,55 @@ class MaintenanceOverviewPage extends StatelessWidget {
               children: [
                 Text(
                   maintenanceItem.date.toString().substring(0, 16),
-                  style: TextStyle(fontSize: 18, color: colorBlue),
+                  style: TextStyle(fontSize: 20, color: colorBlue),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 7,
                 ),
-                Text(
-                  maintenanceItem.header,
-                  style: TextStyle(fontSize: 12, color: colorBlue),
-                ),
-                meterType != MeterType.none &&
+                _row(maintenanceItem.header, FontAwesomeIcons.tag),
+                meterType != MeterType.none
+                    ? _row(
                         maintenanceItem.meterValue != null
-                    ? Text(
-                        '${maintenanceItem.meterValue} ${meterType.displaySuffix}',
-                        style: TextStyle(fontSize: 12, color: colorBlue),
-                      )
+                            ? '${maintenanceItem.meterValue} ${meterType.displaySuffix}'
+                            : '-',
+                        FontAwesomeIcons.leftRight)
                     : Container(),
-                Text(
-                  '${maintenanceItem.costs} kr',
-                  style: TextStyle(fontSize: 12, color: colorBlue),
-                ),
+                _row('${maintenanceItem.costs} kr', FontAwesomeIcons.coins),
+                _row(
+                    maintenanceItem.note.isNotEmpty
+                        ? maintenanceItem.note
+                        : '-',
+                    FontAwesomeIcons.clipboard),
               ],
             ),
           ),
         ),
         Divider(),
+      ],
+    );
+  }
+
+  Widget _row(String text, IconData icon) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, right: 10, bottom: 2, top: 2),
+          child: SizedBox(
+            width: 15,
+            height: 15,
+            child: Center(
+              child: FaIcon(
+                icon,
+                size: 14,
+                color: colorBlue,
+              ),
+            ),
+          ),
+        ),
+        Text(
+          text,
+          style: TextStyle(fontSize: 12, color: colorBlue),
+        ),
       ],
     );
   }

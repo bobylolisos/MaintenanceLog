@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
-import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
-import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
+import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_overview_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
@@ -38,53 +34,6 @@ class MaintenanceItemsCardsBuilder {
               ),
             ));
           },
-          trailing: Container(
-            height: 35,
-            decoration: BoxDecoration(
-              color: colorBlue,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: colorBlue,
-                width: 2.0,
-              ),
-            ),
-            child: Builder(builder: (context) {
-              return InkWell(
-                splashColor: colorGold.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(20),
-                onTap: () async {
-                  final maintenanceObjectBloc =
-                      context.read<MaintenanceObjectBloc>();
-                  final changedMaintenanceItem =
-                      await showDialog<MaintenanceItem?>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return AddEditMaintenanceItemDialog(
-                        maintenance: item,
-                      );
-                    },
-                  );
-
-                  if (changedMaintenanceItem != null) {
-                    maintenanceObjectBloc.add(
-                      MaintenanceItemChangedEvent(
-                          maintenanceObject: maintenanceObject,
-                          maintenanceItem: changedMaintenanceItem),
-                    );
-                  }
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Icon(
-                    Icons.add,
-                    color: colorGold,
-                  ),
-                ),
-              );
-            }),
-          ),
-          trailingVerticalAlignment: CrossAxisAlignment.end,
           child: Builder(builder: (context) {
             final latestPost = postCount > 0 ? item.posts.first : null;
             return Column(
@@ -146,16 +95,19 @@ class MaintenanceItemsCardsBuilder {
                             FontAwesomeIcons.tag,
                           ),
                           _previousPostRowItem(
-                              '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}',
+                              latestPost.meterValue != null
+                                  ? '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}'
+                                  : '-',
                               FontAwesomeIcons.leftRight,
                               additionalValidation: () =>
-                                  latestPost.meterValue != null),
+                                  maintenanceObject.meterType !=
+                                  MeterType.none),
                           _previousPostRowItem(
                             '${latestPost.costs} kr',
                             FontAwesomeIcons.coins,
                           ),
                           _previousPostRowItem(
-                            latestPost.note,
+                            latestPost.note.isNotEmpty ? latestPost.note : '-',
                             FontAwesomeIcons.clipboard,
                           ),
                         ],
