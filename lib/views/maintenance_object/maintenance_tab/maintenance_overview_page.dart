@@ -7,6 +7,7 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
+import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
@@ -126,7 +127,8 @@ class MaintenanceOverviewPage extends StatelessWidget {
                           child: Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _createPosts(maintenance),
+                              children: _createPosts(context,
+                                  state.maintenanceObject, maintenance),
                             ),
                           ),
                         ),
@@ -147,7 +149,8 @@ class MaintenanceOverviewPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _createPosts(Maintenance maintenance) {
+  List<Widget> _createPosts(BuildContext context,
+      MaintenanceObject maintenanceObject, Maintenance maintenance) {
     if (maintenance.posts.isEmpty) {
       return [
         Padding(
@@ -164,46 +167,122 @@ class MaintenanceOverviewPage extends StatelessWidget {
 
     final result = List<Widget>.empty(growable: true);
     for (var i = 0; i < maintenance.posts.length; i++) {
-      final post = maintenance.posts.elementAt(i);
+      final maintenanceItem = maintenance.posts.elementAt(i);
 
-      result.add(_createPost(post, maintenance.meterType));
+      result.add(_createPost(
+          context, maintenanceObject, maintenanceItem, maintenance.meterType));
     }
     return result;
   }
 
-  Widget _createPost(MaintenanceItem post, MeterType meterType) {
+  Widget _createPost(BuildContext context, MaintenanceObject maintenanceObject,
+      MaintenanceItem maintenanceItem, MeterType meterType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        InkWell(
-          splashColor: colorGold.withOpacity(0.4),
-          highlightColor: Colors.transparent,
-          onTap: () {},
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                post.date.toString().substring(0, 16),
-                style: TextStyle(fontSize: 18, color: colorBlue),
+        Dismissible(
+          key: ValueKey(maintenanceItem.id),
+          background: Container(
+            color: Colors.transparent,
+          ),
+          secondaryBackground: Container(
+            color: Colors.red,
+            child: const Padding(
+              padding: EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.delete, color: Colors.white),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text('Radera', style: TextStyle(color: Colors.white)),
+                ],
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                post.header,
-                style: TextStyle(fontSize: 12, color: colorBlue),
-              ),
-              meterType != MeterType.none && post.meterValue != null
-                  ? Text(
-                      '${post.meterValue} ${meterType.displaySuffix}',
-                      style: TextStyle(fontSize: 12, color: colorBlue),
-                    )
-                  : Container(),
-              Text(
-                '${post.costs} kr',
-                style: TextStyle(fontSize: 12, color: colorBlue),
-              ),
-            ],
+            ),
+          ),
+          confirmDismiss: (direction) async {
+            if (direction == DismissDirection.endToStart) {
+              final maintenanceObjectBloc =
+                  context.read<MaintenanceObjectBloc>();
+              var shouldDelete = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Radera post'),
+                    content: const Text(
+                        'Posten kommer nu tas bort och kan inte återskapas. \n\n Vill du fortsätta med att radera?'),
+                    actions: <Widget>[
+                      SizedBox(
+                        width: 130,
+                        child: ElevatedButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: colorGold.withOpacity(0.5),
+                              foregroundColor: colorBlue),
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('Nej'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 130,
+                        child: ElevatedButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: colorBlue,
+                              foregroundColor: colorGold),
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text('Ja'),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (shouldDelete) {
+                maintenanceObjectBloc.add(
+                  MaintenanceItemDeletedEvent(
+                      maintenanceObject: maintenanceObject,
+                      maintenanceItem: maintenanceItem),
+                );
+              }
+            }
+
+            return Future.value(false);
+          },
+          onDismissed: (direction) {
+            // Do STUFF
+          },
+          child: InkWell(
+            splashColor: colorGold.withOpacity(0.4),
+            highlightColor: Colors.transparent,
+            onTap: () {},
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  maintenanceItem.date.toString().substring(0, 16),
+                  style: TextStyle(fontSize: 18, color: colorBlue),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  maintenanceItem.header,
+                  style: TextStyle(fontSize: 12, color: colorBlue),
+                ),
+                meterType != MeterType.none &&
+                        maintenanceItem.meterValue != null
+                    ? Text(
+                        '${maintenanceItem.meterValue} ${meterType.displaySuffix}',
+                        style: TextStyle(fontSize: 12, color: colorBlue),
+                      )
+                    : Container(),
+                Text(
+                  '${maintenanceItem.costs} kr',
+                  style: TextStyle(fontSize: 12, color: colorBlue),
+                ),
+              ],
+            ),
           ),
         ),
         Divider(),

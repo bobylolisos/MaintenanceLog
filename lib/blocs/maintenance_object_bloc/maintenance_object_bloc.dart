@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maintenance_log/main.dart';
 import 'package:maintenance_log/repositories/firestore_maintenance_repository.dart';
 
 import 'maintenance_object_event.dart';
@@ -25,6 +24,8 @@ class MaintenanceObjectBloc
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
 
     on<MaintenanceItemChangedEvent>(onMaintenanceItemChangedEvent);
+
+    on<MaintenanceItemDeletedEvent>(onMaintenanceItemDeletedEvent);
   }
 
   FutureOr<void> onMaintenanceObjectSubscriptionEvent(
@@ -96,6 +97,22 @@ class MaintenanceObjectBloc
 
     maintenance.posts.sort((a, b) =>
         b.date.millisecondsSinceEpoch.compareTo(a.date.millisecondsSinceEpoch));
+
+    _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
+  }
+
+  FutureOr<void> onMaintenanceItemDeletedEvent(
+      MaintenanceItemDeletedEvent event, Emitter<MaintenanceObjectState> emit) {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenanceObject = event.maintenanceObject;
+    final maintenance = maintenanceObject.maintenances.firstWhere(
+        (element) => element.id == event.maintenanceItem.maintenanceId);
+    final index = maintenance.posts
+        .indexWhere((element) => element.id == event.maintenanceItem.id);
+
+    if (index >= 0) {
+      maintenance.posts.removeAt(index);
+    }
 
     _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
   }

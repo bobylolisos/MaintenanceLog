@@ -39,3 +39,11 @@ final class MaintenanceItemChangedEvent extends MaintenanceObjectEvent {
   MaintenanceItemChangedEvent(
       {required this.maintenanceObject, required this.maintenanceItem});
 }
+
+final class MaintenanceItemDeletedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final MaintenanceItem maintenanceItem;
+
+  MaintenanceItemDeletedEvent(
+      {required this.maintenanceObject, required this.maintenanceItem});
+}
