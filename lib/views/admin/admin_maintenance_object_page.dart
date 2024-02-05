@@ -4,11 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
+import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/consumption_tab/admin_maintenance_object_consumption_tab_view.dart';
 import 'package:maintenance_log/views/admin/information_tab/admin_maintenance_object_information_tab_view.dart';
+import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_dialog.dart';
 import 'package:maintenance_log/views/admin/maintenance_tab/admin_maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -42,7 +44,7 @@ class _AdminMaintenanceObjectPageState
                 maintenanceObjectId: widget.maintenanceObjectId)),
       child: ValueListenableBuilder(
         valueListenable: _selectedTabIndexNotifier,
-        builder: (context, value, child) {
+        builder: (context, selectedTabIndex, child) {
           return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
             bloc: context.read<MaintenanceObjectBloc>(),
             builder: (context, state) {
@@ -50,11 +52,13 @@ class _AdminMaintenanceObjectPageState
                 final maintenanceObject = state.maintenanceObject;
                 return Scaffold(
                   backgroundColor: colorLightGrey,
-                  appBar: SubHeaderAppBar(title: maintenanceObject.header),
+                  appBar: _resolveAppBar(
+                      selectedTabIndex, maintenanceObject, context),
                   body: Padding(
                     padding: const EdgeInsets.only(left: 6.0, right: 6, top: 6),
                     child: Builder(builder: (context) {
-                      return _resolveTabView(maintenanceObject);
+                      return _resolveTabView(
+                          selectedTabIndex, maintenanceObject);
                     }),
                   ),
                   bottomNavigationBar: BottomNavigationBar(
@@ -107,18 +111,59 @@ class _AdminMaintenanceObjectPageState
     );
   }
 
-  Widget _resolveTabView(MaintenanceObject maintenanceObject) {
-    if (_selectedTabIndexNotifier.value == 0) {
+  PreferredSizeWidget _resolveAppBar(
+    int selectedTabIndex,
+    MaintenanceObject maintenanceObject,
+    BuildContext context,
+  ) {
+    if (selectedTabIndex == 1) {
+      return SubHeaderAppBar(title: maintenanceObject.header);
+    }
+
+    if (selectedTabIndex == 2) {
+      return SubHeaderAppBar(
+          title: maintenanceObject.header,
+          onTrailingAddTap: () async {
+            final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
+            final addedMaintenance = await showDialog<Maintenance?>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AddEditMaintenanceDialog(
+                  maintenanceObject: maintenanceObject,
+                );
+              },
+            );
+
+            if (addedMaintenance != null) {
+              maintenanceObjectBloc.add(
+                MaintenanceAddedEvent(
+                  maintenanceObject: maintenanceObject,
+                  maintenance: addedMaintenance,
+                ),
+              );
+            }
+          });
+    }
+
+    return SubHeaderAppBar(title: maintenanceObject.header);
+  }
+
+  Widget _resolveTabView(
+    int selectedTabIndex,
+    MaintenanceObject maintenanceObject,
+  ) {
+    if (selectedTabIndex == 0) {
       return AdminMaintenanceObjectInformationTabView(
         maintenanceObject: maintenanceObject,
       );
     }
-    if (_selectedTabIndexNotifier.value == 1) {
+    if (selectedTabIndex == 1) {
       return AdminMaintenanceObjectConsumptionTabView(
         maintenanceObject: maintenanceObject,
       );
     }
-    if (_selectedTabIndexNotifier.value == 2) {
+    if (selectedTabIndex == 2) {
       return AdminMaintenanceObjectMaintenanceTabView(
         maintenanceObjectId: maintenanceObject.id,
       );

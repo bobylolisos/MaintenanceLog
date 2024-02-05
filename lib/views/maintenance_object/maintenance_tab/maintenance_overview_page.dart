@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
@@ -221,6 +222,8 @@ class MaintenanceOverviewPage extends StatelessWidget {
 
   Widget _createPost(BuildContext context, MaintenanceObject maintenanceObject,
       MaintenanceItem maintenanceItem, MeterType meterType) {
+    final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -247,8 +250,6 @@ class MaintenanceOverviewPage extends StatelessWidget {
           ),
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.endToStart) {
-              final maintenanceObjectBloc =
-                  context.read<MaintenanceObjectBloc>();
               var shouldDelete = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -283,15 +284,18 @@ class MaintenanceOverviewPage extends StatelessWidget {
               );
 
               if (shouldDelete) {
-                maintenanceObjectBloc.add(
-                  MaintenanceItemDeletedEvent(
-                      maintenanceObject: maintenanceObject,
-                      maintenanceItem: maintenanceItem),
-                );
+                return Future.value(true);
               }
             }
 
             return Future.value(false);
+          },
+          onDismissed: (direction) {
+            maintenanceObjectBloc.add(
+              MaintenanceItemDeletedEvent(
+                  maintenanceObject: maintenanceObject,
+                  maintenanceItem: maintenanceItem),
+            );
           },
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
@@ -301,12 +305,14 @@ class MaintenanceOverviewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  maintenanceItem.date.toString().substring(0, 16),
+                  DateFormat.yMMMMd('sv').format(maintenanceItem.date),
                   style: TextStyle(fontSize: 20, color: colorBlue),
                 ),
                 SizedBox(
                   height: 7,
                 ),
+                _row(maintenanceItem.date.toString().substring(11, 16),
+                    FontAwesomeIcons.clock),
                 _row(maintenanceItem.header, FontAwesomeIcons.tag),
                 meterType != MeterType.none
                     ? _row(
@@ -334,7 +340,7 @@ class MaintenanceOverviewPage extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 4, right: 10, bottom: 2, top: 2),
+          padding: const EdgeInsets.only(left: 2, right: 10, bottom: 2, top: 2),
           child: SizedBox(
             width: 15,
             height: 15,
