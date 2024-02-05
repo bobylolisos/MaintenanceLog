@@ -46,7 +46,7 @@ class _AdminPageState extends State<AdminPage> {
           builder: (context, selectedTabIndex, child) {
             return Scaffold(
               backgroundColor: colorLightGrey,
-              appBar: SubHeaderAppBar(title: 'Administrera'),
+              appBar: SubHeaderAppBar(title: 'Dina underhållsobjekt'),
               body: Material(
                 child: SafeArea(
                   child: Container(

@@ -38,12 +38,9 @@ class MaintenanceOverviewPage extends StatelessWidget {
       child: Builder(builder: (context) {
         return Scaffold(
           backgroundColor: colorLightGrey,
-          appBar: SubHeaderAppBar(title: maintenanceObjectName),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: colorBlue,
-            foregroundColor: colorGold,
-            splashColor: colorGold.withOpacity(0.4),
-            onPressed: () async {
+          appBar: SubHeaderAppBar(
+            title: maintenanceObjectName,
+            onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
               final changedMaintenanceItem = await showDialog<MaintenanceItem?>(
@@ -64,7 +61,6 @@ class MaintenanceOverviewPage extends StatelessWidget {
                 );
               }
             },
-            child: Icon(Icons.add),
           ),
           body: Builder(builder: (context) {
             return BlocBuilder<MaintenanceObjectBloc, MaintenanceObjectState>(
@@ -85,91 +81,101 @@ class MaintenanceOverviewPage extends StatelessWidget {
                     return Padding(
                       padding:
                           const EdgeInsets.only(left: 6.0, right: 6, top: 6),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            MaintenanceObjectItemCard(
-                              title: 'Underhållspunkt',
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Text(
-                                    maintenance.name,
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      color: colorBlue,
+                                  MaintenanceObjectItemCard(
+                                    title: 'Underhållspunkt',
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          maintenance.name,
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: colorBlue,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          maintenance.description,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: colorBlue,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.coins,
+                                              color: colorBlue,
+                                              size: 16,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              '$totalCosts kr',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: colorBlue,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.coins,
+                                              color: colorBlue,
+                                              size: 16,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              '${totalCosts} kr/km', // TODO
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: colorBlue,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Text(
-                                    maintenance.description,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: colorBlue,
+                                  MaintenanceObjectItemCard(
+                                    title: 'Poster',
+                                    child: Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: _createPosts(
+                                            context,
+                                            state.maintenanceObject,
+                                            maintenance),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.coins,
-                                        color: colorBlue,
-                                        size: 16,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        '$totalCosts kr',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: colorBlue,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.coins,
-                                        color: colorBlue,
-                                        size: 16,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        '${totalCosts} kr/km', // TODO
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: colorBlue,
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            MaintenanceObjectItemCard(
-                              title: 'Poster',
-                              child: Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: _createPosts(context,
-                                      state.maintenanceObject, maintenance),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   }
