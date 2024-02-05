@@ -21,7 +21,6 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
         children: [
           MaintenanceObjectItemCard(
             title: 'Grunddata',
-            margins: EdgeInsets.only(bottom: 20),
             onTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();

@@ -157,9 +157,6 @@ class MaintenancePage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
                                   MaintenanceObjectItemCard(
                                     title: 'Poster',
                                     child: Column(

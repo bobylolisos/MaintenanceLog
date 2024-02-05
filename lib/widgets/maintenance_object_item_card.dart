@@ -8,7 +8,7 @@ class MaintenanceObjectItemCard extends StatelessWidget {
   final Widget? trailing;
   final CrossAxisAlignment trailingVerticalAlignment;
   final int? postCount;
-  final EdgeInsetsGeometry? margins;
+  final EdgeInsetsGeometry margins;
 
   const MaintenanceObjectItemCard(
       {required this.title,
@@ -17,7 +17,7 @@ class MaintenanceObjectItemCard extends StatelessWidget {
       this.onTap,
       this.trailing,
       this.trailingVerticalAlignment = CrossAxisAlignment.center,
-      this.margins,
+      this.margins = const EdgeInsets.only(bottom: 20),
       super.key});
 
   @override
@@ -132,13 +132,9 @@ class MaintenanceObjectItemCard extends StatelessWidget {
       ],
     );
 
-    if (margins != null) {
-      return Padding(
-        padding: margins!,
-        child: card,
-      );
-    }
-
-    return card;
+    return Padding(
+      padding: margins,
+      child: card,
+    );
   }
 }

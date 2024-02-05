@@ -119,12 +119,6 @@ class MaintenanceItemsCardsBuilder {
           }),
         ),
       );
-
-      result.add(
-        SizedBox(
-          height: 10,
-        ),
-      );
     }
 
     return result;

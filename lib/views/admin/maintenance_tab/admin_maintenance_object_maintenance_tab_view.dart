@@ -121,7 +121,6 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                             );
                       },
                       child: MaintenanceObjectItemCard(
-                        margins: EdgeInsets.only(bottom: 20),
                         title: maintenance.name,
                         postCount: maintenance.posts.length,
                         onTap: () {},
