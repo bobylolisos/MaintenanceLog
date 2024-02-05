@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/views/admin/widgets/text_input_decoration.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
 class AddEditMaintenanceDialog extends StatefulWidget {
   final MaintenanceObject maintenanceObject;
@@ -63,11 +63,10 @@ class _AddEditMaintenanceDialogState extends State<AddEditMaintenanceDialog> {
             // Needed for text in border to be visible when scroll is used
             height: 10,
           ),
-          TextFormField(
-            decoration: textInputDecoration('Namn'),
-            controller: nameController,
+          CustomTextFormField(
+            label: 'Namn',
+            textController: nameController,
             maxLength: 20,
-            onChanged: (value) => formKey.currentState?.validate(),
             validator: (value) => value == null || value.trim().isEmpty
                 ? 'Ett namn måste anges'
                 : null,
@@ -75,9 +74,9 @@ class _AddEditMaintenanceDialogState extends State<AddEditMaintenanceDialog> {
           SizedBox(
             height: 10,
           ),
-          TextFormField(
-            decoration: textInputDecoration('Beskrivning'),
-            controller: descriptionController,
+          CustomTextFormField(
+            label: 'Beskrivning',
+            textController: descriptionController,
             minLines: 3,
             maxLines: 6,
           ),

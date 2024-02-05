@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/views/admin/widgets/text_input_decoration.dart';
+import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
   final String label;
@@ -13,10 +14,9 @@ class CustomDateTimePicker extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Stack(
         children: [
-          TextFormField(
-            decoration: textInputDecoration(label),
-            controller: textController,
-            style: TextStyle(color: colorBlue),
+          CustomTextFormField(
+            label: label,
+            textController: textController,
             readOnly: true,
           ),
           Row(
@@ -52,7 +52,9 @@ class CustomDateTimePicker extends StatelessWidget {
                       fieldLabelText: '',
                       helpText: '',
                       initialEntryMode: DatePickerEntryMode.calendarOnly,
-                      initialDate: DateTime.now(),
+                      initialDate: textController.text.isNotEmpty
+                          ? DateTime.parse(textController.text)
+                          : DateTime.now(),
                       firstDate:
                           DateTime.now().subtract(const Duration(days: 100)),
                       lastDate: DateTime.now().add(const Duration(days: 1000)));
@@ -85,7 +87,10 @@ class CustomDateTimePicker extends StatelessWidget {
                       confirmText: 'Ok',
                       helpText: '',
                       initialEntryMode: TimePickerEntryMode.dialOnly,
-                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      initialTime: textController.text.isNotEmpty
+                          ? TimeOfDay.fromDateTime(
+                              DateTime.parse(textController.text))
+                          : TimeOfDay.fromDateTime(DateTime.now()),
                     );
                     if (selectedTime != null) {
                       textController.text = DateTime(
@@ -94,7 +99,7 @@ class CustomDateTimePicker extends StatelessWidget {
                         date.day,
                         selectedTime.hour,
                         selectedTime.minute,
-                      ).toString().substring(0, 16);
+                      ).toDateAndTime();
                     }
                   }
                 },

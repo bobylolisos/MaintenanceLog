@@ -3,8 +3,8 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/views/admin/widgets/text_input_decoration.dart';
 import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
 class AddEditMaintenanceObjectDialog extends StatefulWidget {
   final MaintenanceObject? maintenanceObject;
@@ -70,11 +70,10 @@ class _AddEditMaintenanceObjectDialogState
             // Needed for text in border to be visible when scroll is used
             height: 10,
           ),
-          TextFormField(
-            decoration: textInputDecoration('Rubrik'),
-            controller: headerController,
+          CustomTextFormField(
+            label: 'Rubrik',
+            textController: headerController,
             maxLength: 20,
-            onChanged: (value) => formKey.currentState?.validate(),
             validator: (value) => value == null || value.trim().isEmpty
                 ? 'En rubrik måste anges'
                 : null,
@@ -82,9 +81,9 @@ class _AddEditMaintenanceObjectDialogState
           SizedBox(
             height: 10,
           ),
-          TextFormField(
-            decoration: textInputDecoration('Underrubrik'),
-            controller: subHeaderController,
+          CustomTextFormField(
+            label: 'Underrubrik',
+            textController: subHeaderController,
             maxLength: 30,
           ),
           SizedBox(
@@ -112,19 +111,19 @@ class _AddEditMaintenanceObjectDialogState
               // prefixIcon: Icon(Icons.radar),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: colorBlue),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: colorBlue),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: colorBlue),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: colorBlue),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
               ),
             ),
             onChanged: widget.maintenanceObject == null
@@ -137,9 +136,9 @@ class _AddEditMaintenanceObjectDialogState
           SizedBox(
             height: 10,
           ),
-          TextFormField(
-            decoration: textInputDecoration('Notering'),
-            controller: descriptionController,
+          CustomTextFormField(
+            label: 'Notering',
+            textController: descriptionController,
             minLines: 3,
             maxLines: 6,
           ),

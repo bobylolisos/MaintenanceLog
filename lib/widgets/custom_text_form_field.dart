@@ -5,13 +5,19 @@ class CustomTextFormField extends StatefulWidget {
   final String? label;
   final TextEditingController? textController;
   final int? maxLength;
+  final int? minLines;
+  final int? maxLines;
   final FormFieldValidator<String>? validator;
+  final bool readOnly;
 
   const CustomTextFormField({
     this.label,
     this.textController,
     this.maxLength,
+    this.minLines,
+    this.maxLines,
     this.validator,
+    this.readOnly = false,
     super.key,
   });
 
@@ -57,6 +63,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             ),
             controller: widget.textController,
             maxLength: widget.maxLength,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
+            readOnly: widget.readOnly,
             onChanged: (value) {
               textFormFieldKey.currentState?.validate();
               textChangedNotifier.value = textChangedNotifier.value + 1;

@@ -38,7 +38,7 @@ class _AddEditMaintenanceItemDialogState
       costController.text = widget.maintenanceItem!.costs.toString();
       noteController.text = widget.maintenanceItem!.note;
     } else {
-      dateController.text = DateTime.now().toString().substring(0, 16);
+      dateController.text = DateTime.now().toDateAndTime();
     }
     super.initState();
   }
