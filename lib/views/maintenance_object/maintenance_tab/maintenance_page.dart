@@ -13,18 +13,19 @@ import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 // ignore: must_be_immutable
-class MaintenanceOverviewPage extends StatelessWidget {
+class MaintenancePage extends StatelessWidget {
   final String maintenanceObjectId;
   final String maintenanceObjectName;
   final String maintenanceId;
   late MaintenanceObject maintenanceObject;
   late Maintenance maintenance;
 
-  MaintenanceOverviewPage(
+  MaintenancePage(
       {required this.maintenanceObjectId,
       required this.maintenanceObjectName,
       required this.maintenanceId,
@@ -161,15 +162,11 @@ class MaintenanceOverviewPage extends StatelessWidget {
                                   ),
                                   MaintenanceObjectItemCard(
                                     title: 'Poster',
-                                    child: Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: _createPosts(
-                                            context,
-                                            state.maintenanceObject,
-                                            maintenance),
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: _createPosts(context,
+                                          state.maintenanceObject, maintenance),
                                     ),
                                   ),
                                 ],
@@ -300,7 +297,14 @@ class MaintenanceOverviewPage extends StatelessWidget {
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MaintenanceItemPage(
+                  maintenanceObjectName: maintenanceObjectName,
+                  maintenanceItem: maintenanceItem,
+                ),
+              ));
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -356,7 +360,8 @@ class MaintenanceOverviewPage extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            // overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 5,
             style: TextStyle(fontSize: 12, color: colorBlue),
           ),
         ),

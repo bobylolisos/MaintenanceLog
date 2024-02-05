@@ -5,7 +5,7 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_overview_page.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class MaintenanceItemsCardsBuilder {
@@ -28,7 +28,7 @@ class MaintenanceItemsCardsBuilder {
           postCount: postCount,
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MaintenanceOverviewPage(
+              builder: (context) => MaintenancePage(
                 maintenanceObjectId: maintenanceObject.id,
                 maintenanceObjectName: maintenanceObject.header,
                 maintenanceId: item.id,
@@ -134,6 +134,7 @@ class MaintenanceItemsCardsBuilder {
       {bool Function()? additionalValidation}) {
     return additionalValidation == null || additionalValidation()
         ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -150,9 +151,13 @@ class MaintenanceItemsCardsBuilder {
                   ),
                 ),
               ),
-              Text(
-                value,
-                style: TextStyle(color: colorBlue),
+              Expanded(
+                child: Text(
+                  value,
+                  style: TextStyle(color: colorBlue),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           )
