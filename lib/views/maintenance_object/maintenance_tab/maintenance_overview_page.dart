@@ -337,6 +337,7 @@ class MaintenanceOverviewPage extends StatelessWidget {
 
   Widget _row(String text, IconData icon) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 2, right: 10, bottom: 2, top: 2),
@@ -352,9 +353,12 @@ class MaintenanceOverviewPage extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12, color: colorBlue),
+        Expanded(
+          child: Text(
+            text,
+            // overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 12, color: colorBlue),
+          ),
         ),
       ],
     );
