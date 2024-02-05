@@ -24,6 +24,7 @@ final class MaintenanceObjectSaveEvent extends MaintenanceObjectEvent {
   MaintenanceObjectSaveEvent({required this.maintenanceObject});
 }
 
+// M a i n t e n a n c e
 final class MaintenanceAddedEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;
   final Maintenance maintenance;
@@ -32,6 +33,15 @@ final class MaintenanceAddedEvent extends MaintenanceObjectEvent {
       {required this.maintenanceObject, required this.maintenance});
 }
 
+final class MaintenanceDeletedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final String maintenanceId;
+
+  MaintenanceDeletedEvent(
+      {required this.maintenanceObject, required this.maintenanceId});
+}
+
+// M a i n t e n a n c e I t e m
 final class MaintenanceItemChangedEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;
   final MaintenanceItem maintenanceItem;

@@ -287,9 +287,6 @@ class MaintenanceOverviewPage extends StatelessWidget {
 
             return Future.value(false);
           },
-          onDismissed: (direction) {
-            // Do STUFF
-          },
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,

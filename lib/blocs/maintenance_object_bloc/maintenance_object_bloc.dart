@@ -21,7 +21,13 @@ class MaintenanceObjectBloc
 
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
 
+// M a i n t e n a n c e
+
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
+
+    on<MaintenanceDeletedEvent>(onMaintenanceDeletedEvent);
+
+    // M a i n t e n a n c e I t e m
 
     on<MaintenanceItemChangedEvent>(onMaintenanceItemChangedEvent);
 
@@ -77,6 +83,17 @@ class MaintenanceObjectBloc
     if (maintenanceObject != null) {
       emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
     }
+  }
+
+  FutureOr<void> onMaintenanceDeletedEvent(
+      MaintenanceDeletedEvent event, Emitter<MaintenanceObjectState> emit) {
+    final currentMaintenances = event.maintenanceObject.maintenances;
+    currentMaintenances
+        .removeWhere((element) => element.id == event.maintenanceId);
+
+    _maintenanceObjectRepository.setMaintenanceObject(
+      event.maintenanceObject.copyWith(maintenances: currentMaintenances),
+    );
   }
 
   FutureOr<void> onMaintenanceItemChangedEvent(

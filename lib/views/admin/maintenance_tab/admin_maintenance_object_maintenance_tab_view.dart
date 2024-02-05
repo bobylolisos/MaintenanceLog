@@ -151,17 +151,11 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                               return Future.value(false);
                             },
                             onDismissed: (direction) {
-                              final currentMaintenances =
-                                  maintenanceObject.maintenances;
-                              currentMaintenances.removeWhere(
-                                  (element) => element.id == maintenance.id);
-
                               context.read<MaintenanceObjectBloc>().add(
-                                  MaintenanceObjectSaveEvent(
-                                      maintenanceObject:
-                                          maintenanceObject.copyWith(
-                                              maintenances:
-                                                  currentMaintenances)));
+                                    MaintenanceDeletedEvent(
+                                        maintenanceObject: maintenanceObject,
+                                        maintenanceId: maintenance.id),
+                                  );
                             },
                             child: MaintenanceObjectItemCard(
                               margins: EdgeInsets.only(bottom: 20),
