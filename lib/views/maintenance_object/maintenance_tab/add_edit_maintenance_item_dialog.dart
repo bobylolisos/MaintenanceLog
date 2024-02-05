@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
@@ -30,8 +31,7 @@ class _AddEditMaintenanceItemDialogState
   @override
   void initState() {
     if (widget.maintenanceItem != null) {
-      dateController.text =
-          widget.maintenanceItem!.date.toString().substring(0, 16);
+      dateController.text = widget.maintenanceItem!.date.toDateAndTime();
       headerController.text = widget.maintenanceItem!.header;
       meterController.text =
           widget.maintenanceItem!.meterValue?.toString() ?? '';

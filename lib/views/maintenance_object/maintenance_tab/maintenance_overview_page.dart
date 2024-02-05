@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
+import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
@@ -305,14 +305,13 @@ class MaintenanceOverviewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  DateFormat.yMMMMd('sv').format(maintenanceItem.date),
+                  maintenanceItem.date.toDateText(),
                   style: TextStyle(fontSize: 20, color: colorBlue),
                 ),
                 SizedBox(
                   height: 7,
                 ),
-                _row(maintenanceItem.date.toString().substring(11, 16),
-                    FontAwesomeIcons.clock),
+                _row(maintenanceItem.date.toTime(), FontAwesomeIcons.clock),
                 _row(maintenanceItem.header, FontAwesomeIcons.tag),
                 meterType != MeterType.none
                     ? _row(

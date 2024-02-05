@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
@@ -87,7 +88,7 @@ class MaintenanceItemsCardsBuilder {
                             ),
                           ),
                           _previousPostRowItem(
-                            latestPost.date.toString().substring(0, 10),
+                            latestPost.date.toDate(),
                             FontAwesomeIcons.calendar,
                           ),
                           _previousPostRowItem(
