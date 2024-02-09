@@ -124,6 +124,7 @@ class _AddEditMaintenanceItemDialogState
           CustomTextFormField(
             label: 'Notering',
             textController: noteController,
+            minLines: 3,
           ),
         ]),
       ),

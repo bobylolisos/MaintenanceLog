@@ -13,7 +13,7 @@ import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_page.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -296,8 +296,9 @@ class MaintenancePage extends StatelessWidget {
             highlightColor: Colors.transparent,
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MaintenanceItemPage(
-                  maintenanceObjectName: maintenanceObjectName,
+                builder: (context) => MaintenanceItemEditPage(
+                  maintenanceObject: maintenanceObject,
+                  maintenance: maintenance,
                   maintenanceItem: maintenanceItem,
                 ),
               ));
@@ -310,7 +311,7 @@ class MaintenancePage extends StatelessWidget {
                   style: TextStyle(fontSize: 20, color: colorBlue),
                 ),
                 SizedBox(
-                  height: 7,
+                  height: 5,
                 ),
                 _row(maintenanceItem.date.toTime(), FontAwesomeIcons.clock),
                 _row(maintenanceItem.header, FontAwesomeIcons.tag),

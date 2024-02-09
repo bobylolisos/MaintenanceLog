@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 class MaintenanceItem {
@@ -85,4 +87,30 @@ class MaintenanceItem {
 
   factory MaintenanceItem.fromJson(String source) =>
       MaintenanceItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool operator ==(covariant MaintenanceItem other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.maintenanceId == maintenanceId &&
+        other.header == header &&
+        other.date == date &&
+        other.meterValue == meterValue &&
+        other.costs == costs &&
+        other.note == note &&
+        listEquals(other.images, images);
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        maintenanceId.hashCode ^
+        header.hashCode ^
+        date.hashCode ^
+        meterValue.hashCode ^
+        costs.hashCode ^
+        note.hashCode ^
+        images.hashCode;
+  }
 }

@@ -115,6 +115,8 @@ class MaintenanceObjectBloc
     maintenance.posts.sort((a, b) =>
         b.date.millisecondsSinceEpoch.compareTo(a.date.millisecondsSinceEpoch));
 
+    // Check so dates and metervalue are in equal sequence
+
     _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
   }
 
