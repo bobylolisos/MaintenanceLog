@@ -21,7 +21,11 @@ class MaintenanceObjectBloc
 
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
 
-// M a i n t e n a n c e
+    // C o n s u m p t i o n
+
+    on<ConsumptionAddedEvent>(onConsumptionAddedEvent);
+
+    // M a i n t e n a n c e
 
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
 
@@ -69,6 +73,26 @@ class MaintenanceObjectBloc
     }
   }
 
+  // C o n s u m p t i o n
+
+  FutureOr<void> onConsumptionAddedEvent(
+      ConsumptionAddedEvent event, Emitter<MaintenanceObjectState> emit) async {
+    emit(MaintenanceObjectWorkInProgressState());
+    final consumptions = [
+      ...[event.consumption],
+      ...event.maintenanceObject.consumptions
+    ];
+    var maintenanceObject =
+        await _maintenanceObjectRepository.setMaintenanceObject(
+            event.maintenanceObject.copyWith(consumptions: consumptions));
+
+    if (maintenanceObject != null) {
+      emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
+    }
+  }
+
+  // M a i n t e n a n c e
+
   FutureOr<void> onMaintenanceAddedEvent(
       MaintenanceAddedEvent event, Emitter<MaintenanceObjectState> emit) async {
     emit(MaintenanceObjectWorkInProgressState());
@@ -95,6 +119,8 @@ class MaintenanceObjectBloc
       event.maintenanceObject.copyWith(maintenances: currentMaintenances),
     );
   }
+
+  // M a i n t e n a n c e I t e m
 
   FutureOr<void> onMaintenanceItemChangedEvent(
       MaintenanceItemChangedEvent event, Emitter<MaintenanceObjectState> emit) {

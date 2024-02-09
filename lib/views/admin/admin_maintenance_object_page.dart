@@ -4,10 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
+import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
+import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_dialog.dart';
 import 'package:maintenance_log/views/admin/consumption_tab/admin_maintenance_object_consumption_tab_view.dart';
 import 'package:maintenance_log/views/admin/information_tab/admin_maintenance_object_information_tab_view.dart';
 import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_dialog.dart';
@@ -117,7 +119,29 @@ class _AdminMaintenanceObjectPageState
     BuildContext context,
   ) {
     if (selectedTabIndex == 1) {
-      return SubHeaderAppBar(title: maintenanceObject.header);
+      return SubHeaderAppBar(
+          title: maintenanceObject.header,
+          onTrailingAddTap: () async {
+            final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
+            final addedConsumption = await showDialog<Consumption?>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AddEditConsumptionDialog(
+                  maintenanceObject: maintenanceObject,
+                );
+              },
+            );
+
+            if (addedConsumption != null) {
+              maintenanceObjectBloc.add(
+                ConsumptionAddedEvent(
+                  maintenanceObject: maintenanceObject,
+                  consumption: addedConsumption,
+                ),
+              );
+            }
+          });
     }
 
     if (selectedTabIndex == 2) {

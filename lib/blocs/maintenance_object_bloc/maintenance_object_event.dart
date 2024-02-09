@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
@@ -22,6 +23,15 @@ final class MaintenanceObjectSaveEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;
 
   MaintenanceObjectSaveEvent({required this.maintenanceObject});
+}
+
+// C o n s u m p t i o n
+final class ConsumptionAddedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final Consumption consumption;
+
+  ConsumptionAddedEvent(
+      {required this.maintenanceObject, required this.consumption});
 }
 
 // M a i n t e n a n c e

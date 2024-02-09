@@ -96,26 +96,30 @@ class MaintenancePage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          maintenance.name,
-                                          style: TextStyle(
-                                            fontSize: 22,
-                                            color: colorBlue,
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                            maintenance.name,
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                              color: colorBlue,
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          maintenance.description,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: colorBlue,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
+                                        maintenance.description.isNotEmpty
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 10),
+                                                child: Text(
+                                                  maintenance.description,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: colorBlue,
+                                                  ),
+                                                ),
+                                              )
+                                            : SizedBox(),
                                         Row(
                                           children: [
                                             FaIcon(
