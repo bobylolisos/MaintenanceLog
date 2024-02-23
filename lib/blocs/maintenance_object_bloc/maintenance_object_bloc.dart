@@ -22,19 +22,15 @@ class MaintenanceObjectBloc
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
 
     // C o n s u m p t i o n
-
     on<ConsumptionAddedEvent>(onConsumptionAddedEvent);
+    on<ConsumptionDeletedEvent>(onConsumptionDeletedEvent);
 
     // M a i n t e n a n c e
-
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
-
     on<MaintenanceDeletedEvent>(onMaintenanceDeletedEvent);
 
     // M a i n t e n a n c e I t e m
-
     on<MaintenanceItemChangedEvent>(onMaintenanceItemChangedEvent);
-
     on<MaintenanceItemDeletedEvent>(onMaintenanceItemDeletedEvent);
   }
 
@@ -89,6 +85,17 @@ class MaintenanceObjectBloc
     if (maintenanceObject != null) {
       emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
     }
+  }
+
+  FutureOr<void> onConsumptionDeletedEvent(
+      ConsumptionDeletedEvent event, Emitter<MaintenanceObjectState> emit) {
+    final currentConsumptions = event.maintenanceObject.consumptions;
+    currentConsumptions
+        .removeWhere((element) => element.id == event.consumptionId);
+
+    _maintenanceObjectRepository.setMaintenanceObject(
+      event.maintenanceObject.copyWith(consumptions: currentConsumptions),
+    );
   }
 
   // M a i n t e n a n c e
