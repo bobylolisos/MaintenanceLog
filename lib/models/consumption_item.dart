@@ -5,12 +5,14 @@ class ConsumptionItem {
   final DateTime date;
   final num pricePerLitre;
   final num litre;
-  final int trip;
+  final int? meterValue;
   final String note;
   final List<String> images;
 
-  ConsumptionItem(this.id, this.date, this.pricePerLitre, this.litre, this.trip,
-      this.note, this.images);
+  ConsumptionItem(this.id, this.date, this.pricePerLitre, this.litre,
+      this.meterValue, this.note, this.images);
+
+  num get costs => pricePerLitre * litre;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -18,7 +20,7 @@ class ConsumptionItem {
       'date': date.millisecondsSinceEpoch,
       'pricePerLitre': pricePerLitre,
       'litre': litre,
-      'trip': trip,
+      'meterValue': meterValue,
       'note': note,
       'images': images.toList(),
     };
@@ -30,7 +32,7 @@ class ConsumptionItem {
       DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       map['pricePerLitre'] as num,
       map['litre'] as num,
-      map['trip'] as int,
+      map['meterValue'] as int?,
       map['note'] as String,
       List<String>.from(map['images'] as List),
     );

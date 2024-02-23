@@ -5,6 +5,7 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class ConsumptionItemsCardsBuilder {
@@ -26,6 +27,13 @@ class ConsumptionItemsCardsBuilder {
           title: item.name,
           postCount: postCount,
           onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ConsumptionPage(
+                maintenanceObjectId: maintenanceObject.id,
+                maintenanceObjectName: maintenanceObject.header,
+                consumptionId: item.id,
+              ),
+            ));
             // Navigator.of(context).push(MaterialPageRoute(
             //   builder: (context) => MaintenancePage(
             //     maintenanceObjectId: maintenanceObject.id,
@@ -93,8 +101,8 @@ class ConsumptionItemsCardsBuilder {
                             FontAwesomeIcons.calendar,
                           ),
                           _previousPostRowItem(
-                              latestPost.trip != null
-                                  ? '${latestPost.trip} ${maintenanceObject.meterType.displaySuffix}'
+                              latestPost.meterValue != null
+                                  ? '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}'
                                   : '-',
                               FontAwesomeIcons.leftRight,
                               additionalValidation: () =>

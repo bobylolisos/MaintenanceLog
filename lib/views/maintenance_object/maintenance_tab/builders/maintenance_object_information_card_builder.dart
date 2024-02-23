@@ -28,9 +28,6 @@ class MaintenanceObjectInformationCardBuilder {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: colorBlue, fontSize: 20),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Text(
                       maintenanceObject.subHeader,
                       style: TextStyle(color: colorBlue, fontSize: 16),

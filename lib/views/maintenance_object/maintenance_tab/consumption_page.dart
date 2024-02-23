@@ -5,30 +5,26 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
-import 'package:maintenance_log/extensions/meter_type_extensions.dart';
-import 'package:maintenance_log/models/maintenance.dart';
-import 'package:maintenance_log/models/maintenance_item.dart';
+import 'package:maintenance_log/models/consumption.dart';
+import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
-// ignore: must_be_immutable
-class MaintenancePage extends StatelessWidget {
+class ConsumptionPage extends StatelessWidget {
   final String maintenanceObjectId;
   final String maintenanceObjectName;
-  final String maintenanceId;
+  final String consumptionId;
   late MaintenanceObject maintenanceObject;
-  late Maintenance maintenance;
+  late Consumption consumption;
 
-  MaintenancePage(
+  ConsumptionPage(
       {required this.maintenanceObjectId,
       required this.maintenanceObjectName,
-      required this.maintenanceId,
+      required this.consumptionId,
       super.key});
 
   @override
@@ -45,22 +41,23 @@ class MaintenancePage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final changedMaintenanceItem = await showDialog<MaintenanceItem?>(
+              final changedConsumptionItem = await showDialog<ConsumptionItem?>(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return AddEditMaintenanceItemDialog(
-                    maintenance: maintenance,
-                  );
+                  return Placeholder();
+                  // return AddEditMaintenanceItemDialog(
+                  //   maintenance: maintenance,
+                  // );
                 },
               );
 
-              if (changedMaintenanceItem != null) {
-                maintenanceObjectBloc.add(
-                  MaintenanceItemChangedEvent(
-                      maintenanceObject: maintenanceObject,
-                      maintenanceItem: changedMaintenanceItem),
-                );
+              if (changedConsumptionItem != null) {
+                // maintenanceObjectBloc.add(
+                //   ConsumptionItemChangedEvent(
+                //       maintenanceObject: maintenanceObject,
+                //       maintenanceItem: changedConsumptionItem),
+                // );
               }
             },
           ),
@@ -72,11 +69,11 @@ class MaintenancePage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is MaintenanceObjectUpdatedState) {
                     maintenanceObject = state.maintenanceObject;
-                    maintenance = state.maintenanceObject.maintenances
-                        .firstWhere((x) => x.id == maintenanceId);
+                    consumption = state.maintenanceObject.consumptions
+                        .firstWhere((x) => x.id == consumptionId);
 
-                    var totalCosts = maintenance.posts.isNotEmpty
-                        ? maintenance.posts
+                    var totalCosts = consumption.posts.isNotEmpty
+                        ? consumption.posts
                             .map((e) => e.costs)
                             .reduce((a, b) => a + b)
                         : 0;
@@ -91,7 +88,7 @@ class MaintenancePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   MaintenanceObjectItemCard(
-                                    title: 'Underhållspunkt',
+                                    title: 'Förbrukning',
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -100,19 +97,19 @@ class MaintenancePage extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(bottom: 10),
                                           child: Text(
-                                            maintenance.name,
+                                            consumption.name,
                                             style: TextStyle(
                                               fontSize: 22,
                                               color: colorBlue,
                                             ),
                                           ),
                                         ),
-                                        maintenance.description.isNotEmpty
+                                        consumption.description.isNotEmpty
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
                                                     bottom: 10),
                                                 child: Text(
-                                                  maintenance.description,
+                                                  consumption.description,
                                                   style: TextStyle(
                                                     fontSize: 14,
                                                     color: colorBlue,
@@ -167,7 +164,7 @@ class MaintenancePage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: _createPosts(context,
-                                          state.maintenanceObject, maintenance),
+                                          state.maintenanceObject, consumption),
                                     ),
                                   ),
                                 ],
@@ -193,8 +190,8 @@ class MaintenancePage extends StatelessWidget {
   }
 
   List<Widget> _createPosts(BuildContext context,
-      MaintenanceObject maintenanceObject, Maintenance maintenance) {
-    if (maintenance.posts.isEmpty) {
+      MaintenanceObject maintenanceObject, Consumption consumption) {
+    if (consumption.posts.isEmpty) {
       return [
         Padding(
           padding: const EdgeInsets.all(20.0),
@@ -209,24 +206,24 @@ class MaintenancePage extends StatelessWidget {
     }
 
     final result = List<Widget>.empty(growable: true);
-    for (var i = 0; i < maintenance.posts.length; i++) {
-      final maintenanceItem = maintenance.posts.elementAt(i);
+    for (var i = 0; i < consumption.posts.length; i++) {
+      final maintenanceItem = consumption.posts.elementAt(i);
 
       result.add(_createPost(
-          context, maintenanceObject, maintenanceItem, maintenance.meterType));
+          context, maintenanceObject, maintenanceItem, consumption.meterType));
     }
     return result;
   }
 
   Widget _createPost(BuildContext context, MaintenanceObject maintenanceObject,
-      MaintenanceItem maintenanceItem, MeterType meterType) {
+      ConsumptionItem consumptionItem, MeterType meterType) {
     final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Dismissible(
-          key: ValueKey(maintenanceItem.id),
+          key: ValueKey(consumptionItem.id),
           background: Container(
             color: Colors.transparent,
           ),
@@ -289,47 +286,46 @@ class MaintenancePage extends StatelessWidget {
             return Future.value(false);
           },
           onDismissed: (direction) {
-            maintenanceObjectBloc.add(
-              MaintenanceItemDeletedEvent(
-                  maintenanceObject: maintenanceObject,
-                  maintenanceItem: maintenanceItem),
-            );
+            // maintenanceObjectBloc.add(
+            //   MaintenanceItemDeletedEvent(
+            //       maintenanceObject: maintenanceObject,
+            //       maintenanceItem: consumptionItem),
+            // );
           },
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MaintenanceItemEditPage(
-                  maintenanceObject: maintenanceObject,
-                  maintenance: maintenance,
-                  maintenanceItem: maintenanceItem,
-                ),
-              ));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //   builder: (context) => MaintenanceItemEditPage(
+              //     maintenanceObject: maintenanceObject,
+              //     maintenance: maintenance,
+              //     maintenanceItem: consumptionItem,
+              //   ),
+              // ));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  maintenanceItem.date.toDateText(),
+                  consumptionItem.date.toDateText(),
                   style: TextStyle(fontSize: 20, color: colorBlue),
                 ),
                 SizedBox(
                   height: 5,
                 ),
-                _row(maintenanceItem.date.toTime(), FontAwesomeIcons.clock),
-                _row(maintenanceItem.header, FontAwesomeIcons.tag),
-                meterType != MeterType.none
-                    ? _row(
-                        maintenanceItem.meterValue != null
-                            ? '${maintenanceItem.meterValue} ${meterType.displaySuffix}'
-                            : '-',
-                        FontAwesomeIcons.leftRight)
-                    : Container(),
-                _row('${maintenanceItem.costs} kr', FontAwesomeIcons.coins),
+                _row(consumptionItem.date.toTime(), FontAwesomeIcons.clock),
+                // meterType != MeterType.none
+                //     ? _row(
+                //         consumptionItem.meterValue != null
+                //             ? '${consumptionItem.meterValue} ${meterType.displaySuffix}'
+                //             : '-',
+                //         FontAwesomeIcons.leftRight)
+                //     : Container(),
+                _row('${consumptionItem.costs} kr', FontAwesomeIcons.coins),
                 _row(
-                    maintenanceItem.note.isNotEmpty
-                        ? maintenanceItem.note
+                    consumptionItem.note.isNotEmpty
+                        ? consumptionItem.note
                         : '-',
                     FontAwesomeIcons.clipboard),
               ],

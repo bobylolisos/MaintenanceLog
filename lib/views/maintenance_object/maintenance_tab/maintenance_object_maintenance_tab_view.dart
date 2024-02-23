@@ -35,10 +35,8 @@ class MaintenanceObjectMaintenanceTabView extends StatelessWidget {
                   // ----------- Object information ----------
                   MaintenanceObjectInformationCardBuilder.create(
                       maintenanceObject),
-                  SizedBox(
-                    height: 10,
-                  ),
 
+                  // ----------- If no consumptions or maintenances, display a message ----------
                   maintenanceObject.consumptions.isEmpty &&
                           maintenanceObject.maintenances.isEmpty
                       ? Padding(
@@ -70,11 +68,6 @@ class MaintenanceObjectMaintenanceTabView extends StatelessWidget {
                     children: ConsumptionItemsCardsBuilder.create(
                         context, maintenanceObject),
                   ),
-                  maintenanceObject.consumptions.isNotEmpty
-                      ? SizedBox(
-                          height: 10,
-                        )
-                      : SizedBox(),
 
                   // ----------- Maintenance items ----------
                   Column(
