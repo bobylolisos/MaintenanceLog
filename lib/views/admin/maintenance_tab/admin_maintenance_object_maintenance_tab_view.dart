@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_bloc.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
+import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
+import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_dialog.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
@@ -74,7 +76,7 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Radera underhållspunkt'),
+                                title: Text(maintenance.name),
                                 content: const Text(
                                     'Underhållspunkten kommer nu tas bort och kan inte återskapas.\n\n Vill du fortsätta med att radera?'),
                                 actions: <Widget>[
@@ -123,7 +125,36 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                       child: MaintenanceObjectItemCard(
                         title: maintenance.name,
                         postCount: maintenance.posts.length,
-                        onTap: () {},
+                        onTap: () async {
+                          var bloc = context.read<MaintenanceObjectBloc>();
+                          final changedMaintenance =
+                              await showDialog<Maintenance?>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AddEditMaintenanceDialog(
+                                maintenanceObject: maintenanceObject,
+                                maintenance: maintenance,
+                              );
+                            },
+                          );
+
+                          if (changedMaintenance != null) {
+                            var updatedMaintenances =
+                                maintenanceObject.maintenances.toList();
+                            final index = updatedMaintenances.indexWhere(
+                                (x) => x.id == changedMaintenance.id);
+                            updatedMaintenances.removeAt(index);
+                            updatedMaintenances.insert(
+                                index, changedMaintenance);
+                            final updatedMaintenanceObject = maintenanceObject
+                                .copyWith(maintenances: updatedMaintenances);
+                            bloc.add(
+                              MaintenanceObjectSaveEvent(
+                                  maintenanceObject: updatedMaintenanceObject),
+                            );
+                          }
+                        },
                         trailing: InkWell(
                           splashColor: colorGold.withOpacity(0.4),
                           borderRadius: BorderRadius.circular(20),
@@ -143,8 +174,6 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
 
                   itemCount: maintenanceObject.maintenances.length,
                   onReorder: (oldIndex, newIndex) {
-                    print('Old: ' + oldIndex.toString());
-                    print('New: ' + newIndex.toString());
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }

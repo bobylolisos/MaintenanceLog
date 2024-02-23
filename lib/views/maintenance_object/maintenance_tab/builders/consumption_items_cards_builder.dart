@@ -49,7 +49,9 @@ class ConsumptionItemsCardsBuilder {
                     ? SizedBox(
                         height: 10,
                       )
-                    : Container(),
+                    : SizedBox(
+                        height: 5,
+                      ),
                 Row(
                   children: [
                     SizedBox(

@@ -184,7 +184,7 @@ class _AdminMaintenanceObjectPageState
     }
     if (selectedTabIndex == 1) {
       return AdminMaintenanceObjectConsumptionTabView(
-        maintenanceObject: maintenanceObject,
+        maintenanceObjectId: maintenanceObject.id,
       );
     }
     if (selectedTabIndex == 2) {

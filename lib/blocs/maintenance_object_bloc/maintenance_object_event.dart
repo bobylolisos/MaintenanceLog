@@ -34,6 +34,14 @@ final class ConsumptionAddedEvent extends MaintenanceObjectEvent {
       {required this.maintenanceObject, required this.consumption});
 }
 
+final class ConsumptionDeletedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final String consumptionId;
+
+  ConsumptionDeletedEvent(
+      {required this.maintenanceObject, required this.consumptionId});
+}
+
 // M a i n t e n a n c e
 final class MaintenanceAddedEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;

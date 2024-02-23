@@ -52,22 +52,34 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
                           _paddedText(maintenanceObject.header, fontSize: 24),
                     ),
                     SizedBox(
-                      height: 30,
-                      child: Switch(
-                        value: maintenanceObject.isActive,
-                        inactiveThumbColor: Colors.red,
-                        inactiveTrackColor: Colors.red.withOpacity(0.5),
-                        activeColor: Colors.green,
-                        onChanged: (value) {
-                          final maintenanceObjectBloc =
-                              context.read<MaintenanceObjectBloc>();
-                          maintenanceObjectBloc.add(
-                            MaintenanceObjectSaveEvent(
-                              maintenanceObject: maintenanceObject.copyWith(
-                                  isActive: value, sortOrder: 2000),
-                            ),
-                          );
-                        },
+                      height: 40,
+                      width: 60,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Switch(
+                          value: maintenanceObject.isActive,
+                          inactiveThumbColor: Colors.red,
+                          inactiveTrackColor: Colors.red.withOpacity(0.5),
+                          trackOutlineColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.selected)) {
+                              return Colors.green.withOpacity(0.3);
+                            }
+                            return Colors.red.withOpacity(0.3);
+                          }),
+                          activeColor: Colors.green,
+                          onChanged: (value) {
+                            final maintenanceObjectBloc =
+                                context.read<MaintenanceObjectBloc>();
+                            maintenanceObjectBloc.add(
+                              MaintenanceObjectSaveEvent(
+                                maintenanceObject: maintenanceObject.copyWith(
+                                    isActive: value, sortOrder: 2000),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -80,7 +92,7 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
           ),
           MaintenanceObjectItemCard(
             title: 'Bilder',
-            child: Container(
+            child: SizedBox(
               height: 300,
               child: Text('Fina bilder här'),
             ),
