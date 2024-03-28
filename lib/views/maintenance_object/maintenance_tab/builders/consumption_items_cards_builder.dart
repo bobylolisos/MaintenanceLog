@@ -74,7 +74,7 @@ class ConsumptionItemsCardsBuilder {
                       width: 10,
                     ),
                     Text(
-                      '$totalCosts kr',
+                      '${totalCosts.toStringAsFixed(0)} kr',
                       style: TextStyle(color: colorBlue),
                     ),
                   ],
@@ -102,14 +102,14 @@ class ConsumptionItemsCardsBuilder {
                           ),
                           _previousPostRowItem(
                               latestPost.meterValue != null
-                                  ? '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}'
+                                  ? '${latestPost.meterValueString} ${maintenanceObject.meterType.displaySuffix}'
                                   : '-',
-                              FontAwesomeIcons.leftRight,
+                              FontAwesomeIcons.rightToBracket,
                               additionalValidation: () =>
                                   maintenanceObject.meterType !=
                                   MeterType.none),
                           _previousPostRowItem(
-                            '${latestPost.pricePerLitre * latestPost.litre} kr',
+                            '${(latestPost.pricePerLitre * latestPost.litre).toStringAsFixed(0)} kr',
                             FontAwesomeIcons.coins,
                           ),
                           _previousPostRowItem(

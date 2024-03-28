@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/consumption.dart';
+import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
@@ -40,6 +41,23 @@ final class ConsumptionDeletedEvent extends MaintenanceObjectEvent {
 
   ConsumptionDeletedEvent(
       {required this.maintenanceObject, required this.consumptionId});
+}
+
+// C o n s u m p t i o n I t e m
+final class ConsumptionItemChangedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final ConsumptionItem consumptionItem;
+
+  ConsumptionItemChangedEvent(
+      {required this.maintenanceObject, required this.consumptionItem});
+}
+
+final class ConsumptionItemDeletedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final ConsumptionItem consumptionItem;
+
+  ConsumptionItemDeletedEvent(
+      {required this.maintenanceObject, required this.consumptionItem});
 }
 
 // M a i n t e n a n c e

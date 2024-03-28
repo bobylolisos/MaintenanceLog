@@ -25,6 +25,10 @@ class MaintenanceObjectBloc
     on<ConsumptionAddedEvent>(onConsumptionAddedEvent);
     on<ConsumptionDeletedEvent>(onConsumptionDeletedEvent);
 
+    // C o n s u m p t i o n I t e m
+    on<ConsumptionItemChangedEvent>(onConsumptionItemChangedEvent);
+    on<ConsumptionItemDeletedEvent>(onConsumptionItemDeletedEvent);
+
     // M a i n t e n a n c e
     on<MaintenanceAddedEvent>(onMaintenanceAddedEvent);
     on<MaintenanceDeletedEvent>(onMaintenanceDeletedEvent);
@@ -96,6 +100,48 @@ class MaintenanceObjectBloc
     _maintenanceObjectRepository.setMaintenanceObject(
       event.maintenanceObject.copyWith(consumptions: currentConsumptions),
     );
+  }
+
+  // C o n s u m p t i o n I t e m
+
+  FutureOr<void> onConsumptionItemChangedEvent(
+      ConsumptionItemChangedEvent event, Emitter<MaintenanceObjectState> emit) {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenanceObject = event.maintenanceObject;
+    final consumption = maintenanceObject.consumptions.firstWhere(
+        (element) => element.id == event.consumptionItem.consumptionId);
+    final index = consumption.posts
+        .indexWhere((element) => element.id == event.consumptionItem.id);
+
+    if (index >= 0) {
+      consumption.posts.removeAt(index);
+      consumption.posts.insert(index, event.consumptionItem);
+    } else {
+      consumption.posts.add(event.consumptionItem);
+    }
+
+    consumption.posts.sort((a, b) =>
+        b.date.millisecondsSinceEpoch.compareTo(a.date.millisecondsSinceEpoch));
+
+    // Check so dates and metervalue are in equal sequence
+
+    _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
+  }
+
+  FutureOr<void> onConsumptionItemDeletedEvent(
+      ConsumptionItemDeletedEvent event, Emitter<MaintenanceObjectState> emit) {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenanceObject = event.maintenanceObject;
+    final consumption = maintenanceObject.consumptions.firstWhere(
+        (element) => element.id == event.consumptionItem.consumptionId);
+    final index = consumption.posts
+        .indexWhere((element) => element.id == event.consumptionItem.id);
+
+    if (index >= 0) {
+      consumption.posts.removeAt(index);
+    }
+
+    _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
   }
 
   // M a i n t e n a n c e

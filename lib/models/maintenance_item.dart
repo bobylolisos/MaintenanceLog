@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,7 +11,7 @@ class MaintenanceItem {
   final String header;
   final DateTime date;
   final int? meterValue;
-  final int costs;
+  final num costs;
   final String note;
   final List<String> images;
 
@@ -22,7 +23,7 @@ class MaintenanceItem {
     required String header,
     required DateTime date,
     int? meterValue,
-    int? costs,
+    num? costs,
     String? note,
   }) {
     return MaintenanceItem(
@@ -41,7 +42,7 @@ class MaintenanceItem {
     String? header,
     DateTime? date,
     int? meterValue,
-    int? costs,
+    num? costs,
     String? note,
     List<String>? images,
   }) {
@@ -77,7 +78,7 @@ class MaintenanceItem {
       map['header'] as String,
       DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       map['meterValue'] as int?,
-      map['costs'] as int,
+      map['costs'] as num,
       map['note'] as String,
       List<String>.from(map['images'] as List),
     );
@@ -112,5 +113,14 @@ class MaintenanceItem {
         costs.hashCode ^
         note.hashCode ^
         images.hashCode;
+  }
+
+  String get meterValueString {
+    var str = meterValue?.toString() ?? '';
+    if (str.length < 4) {
+      return str;
+    }
+
+    return StringUtils.addCharAtPosition(str, '.', 3);
   }
 }

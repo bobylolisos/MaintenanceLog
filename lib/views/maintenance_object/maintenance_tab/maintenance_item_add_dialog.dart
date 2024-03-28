@@ -8,19 +8,16 @@ import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
-class AddEditMaintenanceItemDialog extends StatefulWidget {
+class MaintenanceItemAddDialog extends StatefulWidget {
   final Maintenance maintenance;
-  final MaintenanceItem? maintenanceItem;
-  const AddEditMaintenanceItemDialog(
-      {required this.maintenance, this.maintenanceItem, super.key});
+  const MaintenanceItemAddDialog({required this.maintenance, super.key});
 
   @override
-  State<AddEditMaintenanceItemDialog> createState() =>
-      _AddEditMaintenanceItemDialogState();
+  State<MaintenanceItemAddDialog> createState() =>
+      _MaintenanceItemAddDialogState();
 }
 
-class _AddEditMaintenanceItemDialogState
-    extends State<AddEditMaintenanceItemDialog> {
+class _MaintenanceItemAddDialogState extends State<MaintenanceItemAddDialog> {
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final headerController = TextEditingController();
@@ -30,56 +27,33 @@ class _AddEditMaintenanceItemDialogState
 
   @override
   void initState() {
-    if (widget.maintenanceItem != null) {
-      dateController.text = widget.maintenanceItem!.date.toDateAndTime();
-      headerController.text = widget.maintenanceItem!.header;
-      meterController.text =
-          widget.maintenanceItem!.meterValue?.toString() ?? '';
-      costController.text = widget.maintenanceItem!.costs.toString();
-      noteController.text = widget.maintenanceItem!.note;
-    } else {
-      dateController.text = DateTime.now().toDateAndTime();
-    }
+    dateController.text = DateTime.now().toDateAndTime();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlsDialog(
-      title:
-          widget.maintenanceItem != null ? 'Ändra post' : 'Lägg till ny post',
+      title: 'Lägg till ny post',
       okText: 'Spara',
       cancelText: 'Avbryt',
       onOkPressed: () {
         if (formKey.currentState?.validate() == true) {
-          final maintenanceItem = widget.maintenanceItem != null
-              ? widget.maintenanceItem!.copyWith(
-                  header: headerController.text.trim(),
-                  date: DateTime.parse(
-                    dateController.text.trim(),
-                  ),
-                  meterValue: meterController.text.trim().isNotEmpty
-                      ? int.parse(meterController.text.trim())
-                      : null,
-                  costs: costController.text.trim().isNotEmpty
-                      ? int.parse(costController.text.trim())
-                      : 0,
-                  note: noteController.text.trim(),
-                )
-              : MaintenanceItem.createNew(
-                  maintenanceId: widget.maintenance.id,
-                  header: headerController.text.trim(),
-                  date: DateTime.parse(
-                    dateController.text.trim(),
-                  ),
-                  meterValue: meterController.text.trim().isNotEmpty
-                      ? int.parse(meterController.text.trim())
-                      : null,
-                  costs: costController.text.trim().isNotEmpty
-                      ? int.parse(costController.text.trim())
-                      : 0,
-                  note: noteController.text.trim(),
-                );
+          final maintenanceItem = MaintenanceItem.createNew(
+            maintenanceId: widget.maintenance.id,
+            header: headerController.text.trim(),
+            date: DateTime.parse(
+              dateController.text.trim(),
+            ),
+            meterValue: meterController.text.trim().isNotEmpty
+                ? int.parse(meterController.text.trim())
+                : null,
+            costs: costController.text.trim().isNotEmpty
+                ? num.parse(costController.text.replaceAll(',', '.').trim())
+                : 0,
+            note: noteController.text.trim(),
+          );
 
           Navigator.pop(context, maintenanceItem);
         }

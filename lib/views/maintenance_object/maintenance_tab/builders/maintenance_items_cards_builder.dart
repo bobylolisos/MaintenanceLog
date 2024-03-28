@@ -16,7 +16,7 @@ class MaintenanceItemsCardsBuilder {
     final items = maintenanceObject.maintenances;
 
     for (var item in items) {
-      var totalCosts = 0;
+      num totalCosts = 0;
       for (var post in item.posts) {
         totalCosts += post.costs;
       }
@@ -65,7 +65,7 @@ class MaintenanceItemsCardsBuilder {
                       width: 10,
                     ),
                     Text(
-                      '$totalCosts kr',
+                      '${totalCosts.toStringAsFixed(0)} kr',
                       style: TextStyle(color: colorBlue),
                     ),
                   ],
@@ -97,14 +97,14 @@ class MaintenanceItemsCardsBuilder {
                           ),
                           _previousPostRowItem(
                               latestPost.meterValue != null
-                                  ? '${latestPost.meterValue} ${maintenanceObject.meterType.displaySuffix}'
+                                  ? '${latestPost.meterValueString} ${maintenanceObject.meterType.displaySuffix}'
                                   : '-',
-                              FontAwesomeIcons.leftRight,
+                              FontAwesomeIcons.rightToBracket,
                               additionalValidation: () =>
                                   maintenanceObject.meterType !=
                                   MeterType.none),
                           _previousPostRowItem(
-                            '${latestPost.costs} kr',
+                            '${latestPost.costs.toStringAsFixed(0)} kr',
                             FontAwesomeIcons.coins,
                           ),
                           _previousPostRowItem(

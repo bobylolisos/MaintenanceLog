@@ -5,12 +5,15 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_event.dart';
 import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object_state.dart';
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
+import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -41,23 +44,22 @@ class ConsumptionPage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final changedConsumptionItem = await showDialog<ConsumptionItem?>(
+              final addedConsumptionItem = await showDialog<ConsumptionItem?>(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return Placeholder();
-                  // return AddEditMaintenanceItemDialog(
-                  //   maintenance: maintenance,
-                  // );
+                  return ConsumptionItemAddDialog(
+                    consumption: consumption,
+                  );
                 },
               );
 
-              if (changedConsumptionItem != null) {
-                // maintenanceObjectBloc.add(
-                //   ConsumptionItemChangedEvent(
-                //       maintenanceObject: maintenanceObject,
-                //       maintenanceItem: changedConsumptionItem),
-                // );
+              if (addedConsumptionItem != null) {
+                maintenanceObjectBloc.add(
+                  ConsumptionItemChangedEvent(
+                      maintenanceObject: maintenanceObject,
+                      consumptionItem: addedConsumptionItem),
+                );
               }
             },
           ),
@@ -128,7 +130,7 @@ class ConsumptionPage extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Text(
-                                              '$totalCosts kr',
+                                              '${totalCosts.toStringAsFixed(0)} kr',
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: colorBlue,
@@ -147,7 +149,7 @@ class ConsumptionPage extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Text(
-                                              '${totalCosts} kr/km', // TODO
+                                              '${totalCosts.toStringAsFixed(2)} kr/km', // TODO: Only if metervalue
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: colorBlue,
@@ -160,6 +162,7 @@ class ConsumptionPage extends StatelessWidget {
                                   ),
                                   MaintenanceObjectItemCard(
                                     title: 'Poster',
+                                    postCount: consumption.posts.length,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -286,43 +289,53 @@ class ConsumptionPage extends StatelessWidget {
             return Future.value(false);
           },
           onDismissed: (direction) {
-            // maintenanceObjectBloc.add(
-            //   MaintenanceItemDeletedEvent(
-            //       maintenanceObject: maintenanceObject,
-            //       maintenanceItem: consumptionItem),
-            // );
+            maintenanceObjectBloc.add(
+              ConsumptionItemDeletedEvent(
+                  maintenanceObject: maintenanceObject,
+                  consumptionItem: consumptionItem),
+            );
           },
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,
             onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => MaintenanceItemEditPage(
-              //     maintenanceObject: maintenanceObject,
-              //     maintenance: maintenance,
-              //     maintenanceItem: consumptionItem,
-              //   ),
-              // ));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ConsumptionItemEditPage(
+                  maintenanceObject: maintenanceObject,
+                  consumption: consumption,
+                  consumptionItem: consumptionItem,
+                ),
+              ));
             },
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  consumptionItem.date.toDateText(),
-                  style: TextStyle(fontSize: 20, color: colorBlue),
+                Row(
+                  children: [
+                    Text(
+                      consumptionItem.date.toDateText(),
+                      style: TextStyle(fontSize: 20, color: colorBlue),
+                    ),
+                    Expanded(child: Container()),
+                    Text('${consumptionItem.costs.toStringAsFixed(2)} kr',
+                        style: TextStyle(fontSize: 18, color: colorBlue)),
+                  ],
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 _row(consumptionItem.date.toTime(), FontAwesomeIcons.clock),
-                // meterType != MeterType.none
-                //     ? _row(
-                //         consumptionItem.meterValue != null
-                //             ? '${consumptionItem.meterValue} ${meterType.displaySuffix}'
-                //             : '-',
-                //         FontAwesomeIcons.leftRight)
-                //     : Container(),
-                _row('${consumptionItem.costs} kr', FontAwesomeIcons.coins),
+                meterType != MeterType.none
+                    ? _row(
+                        consumptionItem.meterValue != null
+                            ? '${consumptionItem.meterValueString} ${meterType.displaySuffix}'
+                            : '-',
+                        FontAwesomeIcons.rightToBracket)
+                    : Container(),
+                _row(
+                    '${consumptionItem.pricePerLitre.toStringAsFixed(2)} kr / liter',
+                    FontAwesomeIcons.coins),
+                _row('${consumptionItem.litre.toStringAsFixed(2)} liter',
+                    FontAwesomeIcons.gasPump),
                 _row(
                     consumptionItem.note.isNotEmpty
                         ? consumptionItem.note

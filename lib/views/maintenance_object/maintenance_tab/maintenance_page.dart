@@ -12,7 +12,7 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/add_edit_maintenance_item_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_dialog.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
@@ -45,21 +45,21 @@ class MaintenancePage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final changedMaintenanceItem = await showDialog<MaintenanceItem?>(
+              final addedMaintenanceItem = await showDialog<MaintenanceItem?>(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return AddEditMaintenanceItemDialog(
+                  return MaintenanceItemAddDialog(
                     maintenance: maintenance,
                   );
                 },
               );
 
-              if (changedMaintenanceItem != null) {
+              if (addedMaintenanceItem != null) {
                 maintenanceObjectBloc.add(
                   MaintenanceItemChangedEvent(
                       maintenanceObject: maintenanceObject,
-                      maintenanceItem: changedMaintenanceItem),
+                      maintenanceItem: addedMaintenanceItem),
                 );
               }
             },
@@ -131,7 +131,7 @@ class MaintenancePage extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Text(
-                                              '$totalCosts kr',
+                                              '${totalCosts.toStringAsFixed(0)} kr',
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: colorBlue,
@@ -150,7 +150,7 @@ class MaintenancePage extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Text(
-                                              '${totalCosts} kr/km', // TODO
+                                              '${totalCosts.toStringAsFixed(2)} kr/km', // TODO: Only if metervalue
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: colorBlue,
@@ -163,6 +163,7 @@ class MaintenancePage extends StatelessWidget {
                                   ),
                                   MaintenanceObjectItemCard(
                                     title: 'Poster',
+                                    postCount: maintenance.posts.length,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -310,9 +311,16 @@ class MaintenancePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  maintenanceItem.date.toDateText(),
-                  style: TextStyle(fontSize: 20, color: colorBlue),
+                Row(
+                  children: [
+                    Text(
+                      maintenanceItem.date.toDateText(),
+                      style: TextStyle(fontSize: 20, color: colorBlue),
+                    ),
+                    Expanded(child: Container()),
+                    Text('${maintenanceItem.costs.toStringAsFixed(2)} kr',
+                        style: TextStyle(fontSize: 18, color: colorBlue)),
+                  ],
                 ),
                 SizedBox(
                   height: 5,
@@ -322,11 +330,10 @@ class MaintenancePage extends StatelessWidget {
                 meterType != MeterType.none
                     ? _row(
                         maintenanceItem.meterValue != null
-                            ? '${maintenanceItem.meterValue} ${meterType.displaySuffix}'
+                            ? '${maintenanceItem.meterValueString} ${meterType.displaySuffix}'
                             : '-',
-                        FontAwesomeIcons.leftRight)
+                        FontAwesomeIcons.rightToBracket)
                     : Container(),
-                _row('${maintenanceItem.costs} kr', FontAwesomeIcons.coins),
                 _row(
                     maintenanceItem.note.isNotEmpty
                         ? maintenanceItem.note

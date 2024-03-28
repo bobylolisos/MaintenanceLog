@@ -23,33 +23,33 @@ class MaintenanceObjectItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final card = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Title container
-        Row(
-          children: [
-            Container(
-              height: 27,
-              width: 180,
-              decoration: BoxDecoration(
-                color: colorBlue,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, top: 3),
-                child: Text(
-                  title,
-                  style: TextStyle(color: colorGold, fontSize: 18),
-                ),
-              ),
-            ),
-            postCount != null
-                ? Container(
+        postCount != null
+            ? Row(
+                children: [
+                  Container(
+                    height: 32,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: colorBlue,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0, top: 3),
+                      child: Text(
+                        title,
+                        style: TextStyle(color: colorGold, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  Container(
                     margin: EdgeInsets.only(left: 2),
-                    height: 27,
+                    height: 32,
                     width: 50,
                     decoration: BoxDecoration(
                       color: colorBlue,
@@ -67,10 +67,32 @@ class MaintenanceObjectItemCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
-                : Container(),
-          ],
-        ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: colorBlue,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 3),
+                        child: Text(
+                          title,
+                          style: TextStyle(color: colorGold, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
         // Content container
         Container(

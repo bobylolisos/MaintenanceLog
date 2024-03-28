@@ -6,16 +6,20 @@ class CustomNumericFormField extends StatelessWidget {
   const CustomNumericFormField({
     super.key,
     required this.label,
+    // this.formKey,
     this.controller,
     this.value,
     this.onChanged,
+    this.validator,
     this.allowDecimal = false,
   });
 
+  // final GlobalKey<FormState>? formKey;
   final TextEditingController? controller;
   final String? value;
   final String label;
-  final Function? onChanged;
+  final ValueChanged<String>? onChanged;
+  final FormFieldValidator<String>? validator;
   final bool allowDecimal;
 
   @override
@@ -23,6 +27,7 @@ class CustomNumericFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: TextFormField(
+        // key: formKey,
         controller: controller,
         style: TextStyle(color: colorBlue),
         decoration: InputDecoration(
@@ -43,20 +48,20 @@ class CustomNumericFormField extends StatelessWidget {
           labelStyle: TextStyle(color: colorBlue),
         ),
         initialValue: value,
-        onChanged: onChanged as void Function(String)?,
+        onChanged: onChanged,
         keyboardType: TextInputType.numberWithOptions(decimal: allowDecimal),
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.allow(RegExp(_getRegexString())),
-          TextInputFormatter.withFunction(
-            (oldValue, newValue) => newValue.copyWith(
-              text: newValue.text.replaceAll('.', ','),
-            ),
-          ),
+          // TextInputFormatter.withFunction(
+          //   (oldValue, newValue) => newValue.copyWith(
+          //     text: newValue.text.replaceAll('.', ','),
+          //   ),
+          // ),
         ],
+        validator: validator,
       ),
     );
   }
 
-  String _getRegexString() =>
-      allowDecimal ? r'[0-9]+[,.]{0,1}[0-9]*' : r'[0-9]';
+  String _getRegexString() => allowDecimal ? r'^\d+\.?\d{0,2}' : r'[0-9]';
 }

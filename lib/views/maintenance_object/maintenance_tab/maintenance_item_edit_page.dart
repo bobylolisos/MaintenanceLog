@@ -74,7 +74,7 @@ class _MaintenanceItemEditPageState extends State<MaintenanceItemEditPage> {
               ? int.parse(meterController.text.trim())
               : null,
           costs: costController.text.trim().isNotEmpty
-              ? int.parse(costController.text.trim())
+              ? num.parse(costController.text.replaceAll(',', '.').trim())
               : 0,
           note: noteController.text.trim(),
         );
@@ -104,7 +104,7 @@ class _MaintenanceItemEditPageState extends State<MaintenanceItemEditPage> {
               child: Column(
                 children: [
                   MaintenanceObjectItemCard(
-                    title: 'Information',
+                    title: 'Redigera post',
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -149,6 +149,7 @@ class _MaintenanceItemEditPageState extends State<MaintenanceItemEditPage> {
                   ),
                   MaintenanceObjectItemCard(
                     title: 'Bilder',
+                    postCount: widget.maintenanceItem.images.length,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -174,5 +175,16 @@ class _MaintenanceItemEditPageState extends State<MaintenanceItemEditPage> {
             ),
           )),
     );
+  }
+
+  @override
+  void dispose() {
+    dateController.dispose();
+    headerController.dispose();
+    meterController.dispose();
+    costController.dispose();
+    noteController.dispose();
+
+    super.dispose();
   }
 }
