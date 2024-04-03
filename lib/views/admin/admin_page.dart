@@ -9,7 +9,7 @@ import 'package:maintenance_log/blocs/maintenance_objects_bloc/maintenance_objec
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/information_tab/add_edit_maintenance_object_dialog.dart';
+import 'package:maintenance_log/views/admin/information_tab/add_edit_maintenance_object_bottom_sheet.dart';
 import 'package:maintenance_log/views/admin/admin_maintenance_object_page.dart';
 import 'package:maintenance_log/widgets/maintenace_object_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
@@ -55,12 +55,13 @@ class _AdminPageState extends State<AdminPage> {
                                 context.read<MaintenanceObjectBloc>();
 
                             final addedMaintenanceObject =
-                                await showDialog<MaintenanceObject?>(
+                                await showModalBottomSheet<MaintenanceObject>(
+                              isScrollControlled: true,
+                              isDismissible: false,
+                              backgroundColor: colorBlue,
                               context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AddEditMaintenanceObjectDialog();
-                              },
+                              builder: (context) =>
+                                  AddEditMaintenanceObjectBottomSheet(),
                             );
 
                             if (addedMaintenanceObject != null) {

@@ -3,20 +3,21 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
-import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
-class AddEditMaintenanceObjectDialog extends StatefulWidget {
+class AddEditMaintenanceObjectBottomSheet extends StatefulWidget {
   final MaintenanceObject? maintenanceObject;
-  const AddEditMaintenanceObjectDialog({this.maintenanceObject, super.key});
+  const AddEditMaintenanceObjectBottomSheet(
+      {this.maintenanceObject, super.key});
 
   @override
-  State<AddEditMaintenanceObjectDialog> createState() =>
-      _AddEditMaintenanceObjectDialogState();
+  State<AddEditMaintenanceObjectBottomSheet> createState() =>
+      _AddEditMaintenanceObjectBottomSheetState();
 }
 
-class _AddEditMaintenanceObjectDialogState
-    extends State<AddEditMaintenanceObjectDialog> {
+class _AddEditMaintenanceObjectBottomSheetState
+    extends State<AddEditMaintenanceObjectBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final headerController = TextEditingController();
   final subHeaderController = TextEditingController();
@@ -36,7 +37,7 @@ class _AddEditMaintenanceObjectDialogState
 
   @override
   Widget build(BuildContext context) {
-    return BlsDialog(
+    return BlsBottomSheet(
       title: widget.maintenanceObject != null
           ? 'Ändra objekt'
           : 'Lägg till nytt objekt',
