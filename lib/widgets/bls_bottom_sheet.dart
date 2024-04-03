@@ -54,6 +54,9 @@ class BlsBottomSheet extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(
+                        height: 10,
+                      ),
                       child,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
