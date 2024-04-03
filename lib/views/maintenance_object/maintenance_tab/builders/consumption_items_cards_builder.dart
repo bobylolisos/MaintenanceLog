@@ -116,6 +116,12 @@ class ConsumptionItemsCardsBuilder {
                             latestPost.note.isNotEmpty ? latestPost.note : '-',
                             FontAwesomeIcons.clipboard,
                           ),
+                          _previousPostRowItem(
+                              'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
+                              FontAwesomeIcons.triangleExclamation,
+                              additionalValidation: () =>
+                                  latestPost.invalidMeterValue,
+                              color: Colors.red),
                         ],
                       )
                     : Container(),
@@ -130,7 +136,7 @@ class ConsumptionItemsCardsBuilder {
   }
 
   static Widget _previousPostRowItem(String value, IconData icon,
-      {bool Function()? additionalValidation}) {
+      {bool Function()? additionalValidation, Color? color}) {
     return additionalValidation == null || additionalValidation()
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,7 +151,7 @@ class ConsumptionItemsCardsBuilder {
                     child: FaIcon(
                       icon,
                       size: 14,
-                      color: colorBlue,
+                      color: color ?? colorBlue,
                     ),
                   ),
                 ),
@@ -153,7 +159,7 @@ class ConsumptionItemsCardsBuilder {
               Expanded(
                 child: Text(
                   value,
-                  style: TextStyle(color: colorBlue),
+                  style: TextStyle(color: color ?? colorBlue),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
