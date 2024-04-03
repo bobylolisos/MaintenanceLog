@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
-class AddEditMaintenanceDialog extends StatefulWidget {
+class AddEditMaintenanceBottomSheet extends StatefulWidget {
   final MaintenanceObject maintenanceObject;
   final Maintenance? maintenance;
-  const AddEditMaintenanceDialog(
+  const AddEditMaintenanceBottomSheet(
       {required this.maintenanceObject, this.maintenance, super.key});
 
   @override
-  State<AddEditMaintenanceDialog> createState() =>
-      _AddEditMaintenanceDialogState();
+  State<AddEditMaintenanceBottomSheet> createState() =>
+      _AddEditMaintenanceBottomSheetState();
 }
 
-class _AddEditMaintenanceDialogState extends State<AddEditMaintenanceDialog> {
+class _AddEditMaintenanceBottomSheetState
+    extends State<AddEditMaintenanceBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -31,7 +32,7 @@ class _AddEditMaintenanceDialogState extends State<AddEditMaintenanceDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlsDialog(
+    return BlsBottomSheet(
       title: widget.maintenance != null
           ? 'Ändra underhållspunkt'
           : 'Lägg till ny underhållspunkt',

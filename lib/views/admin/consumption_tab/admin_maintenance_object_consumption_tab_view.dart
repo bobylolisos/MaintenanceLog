@@ -6,7 +6,7 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_dialog.dart';
+import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectConsumptionTabView extends StatelessWidget {
@@ -128,11 +128,13 @@ class AdminMaintenanceObjectConsumptionTabView extends StatelessWidget {
                         onTap: () async {
                           var bloc = context.read<MaintenanceObjectBloc>();
                           final changedConsumption =
-                              await showDialog<Consumption?>(
+                              await showModalBottomSheet<Consumption?>(
                             context: context,
-                            barrierDismissible: false,
+                            isScrollControlled: true,
+                            isDismissible: false,
+                            backgroundColor: colorBlue,
                             builder: (context) {
-                              return AddEditConsumptionDialog(
+                              return AddEditConsumptionBottomSheet(
                                 maintenanceObject: maintenanceObject,
                                 consumption: consumption,
                               );

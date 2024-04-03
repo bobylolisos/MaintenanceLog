@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
-import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 
-class AddEditConsumptionDialog extends StatefulWidget {
+class AddEditConsumptionBottomSheet extends StatefulWidget {
   final MaintenanceObject maintenanceObject;
   final Consumption? consumption;
-  const AddEditConsumptionDialog(
+  const AddEditConsumptionBottomSheet(
       {required this.maintenanceObject, this.consumption, super.key});
 
   @override
-  State<AddEditConsumptionDialog> createState() =>
-      _AddEditConsumptionDialogState();
+  State<AddEditConsumptionBottomSheet> createState() =>
+      _AddEditConsumptionBottomSheetState();
 }
 
-class _AddEditConsumptionDialogState extends State<AddEditConsumptionDialog> {
+class _AddEditConsumptionBottomSheetState
+    extends State<AddEditConsumptionBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -31,7 +32,7 @@ class _AddEditConsumptionDialogState extends State<AddEditConsumptionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlsDialog(
+    return BlsBottomSheet(
       title: widget.consumption != null
           ? 'Ändra drivmedel'
           : 'Lägg till nytt drivmedel',

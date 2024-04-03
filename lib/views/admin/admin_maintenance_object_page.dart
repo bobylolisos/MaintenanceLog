@@ -9,10 +9,10 @@ import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_dialog.dart';
+import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_bottom_sheet.dart';
 import 'package:maintenance_log/views/admin/consumption_tab/admin_maintenance_object_consumption_tab_view.dart';
 import 'package:maintenance_log/views/admin/information_tab/admin_maintenance_object_information_tab_view.dart';
-import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_dialog.dart';
+import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_bottom_sheet.dart';
 import 'package:maintenance_log/views/admin/maintenance_tab/admin_maintenance_object_maintenance_tab_view.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -123,11 +123,13 @@ class _AdminMaintenanceObjectPageState
           title: maintenanceObject.header,
           onTrailingAddTap: () async {
             final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
-            final addedConsumption = await showDialog<Consumption?>(
+            final addedConsumption = await showModalBottomSheet<Consumption?>(
               context: context,
-              barrierDismissible: false,
+              isScrollControlled: true,
+              isDismissible: false,
+              backgroundColor: colorBlue,
               builder: (context) {
-                return AddEditConsumptionDialog(
+                return AddEditConsumptionBottomSheet(
                   maintenanceObject: maintenanceObject,
                 );
               },
@@ -149,11 +151,13 @@ class _AdminMaintenanceObjectPageState
           title: maintenanceObject.header,
           onTrailingAddTap: () async {
             final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
-            final addedMaintenance = await showDialog<Maintenance?>(
+            final addedMaintenance = await showModalBottomSheet<Maintenance?>(
               context: context,
-              barrierDismissible: false,
+              isScrollControlled: true,
+              isDismissible: false,
+              backgroundColor: colorBlue,
               builder: (context) {
-                return AddEditMaintenanceDialog(
+                return AddEditMaintenanceBottomSheet(
                   maintenanceObject: maintenanceObject,
                 );
               },

@@ -6,7 +6,7 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_dialog.dart';
+import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
@@ -128,11 +128,13 @@ class AdminMaintenanceObjectMaintenanceTabView extends StatelessWidget {
                         onTap: () async {
                           var bloc = context.read<MaintenanceObjectBloc>();
                           final changedMaintenance =
-                              await showDialog<Maintenance?>(
+                              await showModalBottomSheet<Maintenance?>(
                             context: context,
-                            barrierDismissible: false,
+                            isScrollControlled: true,
+                            isDismissible: false,
+                            backgroundColor: colorBlue,
                             builder: (context) {
-                              return AddEditMaintenanceDialog(
+                              return AddEditMaintenanceBottomSheet(
                                 maintenanceObject: maintenanceObject,
                                 maintenance: maintenance,
                               );
