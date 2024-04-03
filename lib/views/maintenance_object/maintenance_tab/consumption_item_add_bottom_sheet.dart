@@ -3,21 +3,22 @@ import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
-import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
-class ConsumptionItemAddDialog extends StatefulWidget {
+class ConsumptionItemAddBottomSheet extends StatefulWidget {
   final Consumption consumption;
-  const ConsumptionItemAddDialog({required this.consumption, super.key});
+  const ConsumptionItemAddBottomSheet({required this.consumption, super.key});
 
   @override
-  State<ConsumptionItemAddDialog> createState() =>
-      _ConsumptionItemAddDialogState();
+  State<ConsumptionItemAddBottomSheet> createState() =>
+      _ConsumptionItemAddBottomSheetState();
 }
 
-class _ConsumptionItemAddDialogState extends State<ConsumptionItemAddDialog> {
+class _ConsumptionItemAddBottomSheetState
+    extends State<ConsumptionItemAddBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final pricePerLitreController = TextEditingController();
@@ -34,7 +35,7 @@ class _ConsumptionItemAddDialogState extends State<ConsumptionItemAddDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlsDialog(
+    return BlsBottomSheet(
       title: 'Lägg till ny post',
       okText: 'Spara',
       cancelText: 'Avbryt',

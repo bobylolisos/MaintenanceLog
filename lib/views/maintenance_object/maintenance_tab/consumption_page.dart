@@ -12,7 +12,7 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_bottom_sheet.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
@@ -44,11 +44,14 @@ class ConsumptionPage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final addedConsumptionItem = await showDialog<ConsumptionItem?>(
+              final addedConsumptionItem =
+                  await showModalBottomSheet<ConsumptionItem?>(
                 context: context,
-                barrierDismissible: false,
+                backgroundColor: colorBlue,
+                isDismissible: false,
+                isScrollControlled: true,
                 builder: (context) {
-                  return ConsumptionItemAddDialog(
+                  return ConsumptionItemAddBottomSheet(
                     consumption: consumption,
                   );
                 },
