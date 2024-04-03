@@ -90,7 +90,7 @@ class ConsumptionPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   MaintenanceObjectItemCard(
-                                    title: 'Förbrukning',
+                                    title: 'Drivmedel',
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

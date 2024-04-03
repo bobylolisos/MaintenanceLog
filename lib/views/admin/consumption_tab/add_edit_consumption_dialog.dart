@@ -33,8 +33,8 @@ class _AddEditConsumptionDialogState extends State<AddEditConsumptionDialog> {
   Widget build(BuildContext context) {
     return BlsDialog(
       title: widget.consumption != null
-          ? 'Ändra förbrukning'
-          : 'Lägg till ny förbrukning',
+          ? 'Ändra drivmedel'
+          : 'Lägg till nytt drivmedel',
       okText: 'Spara',
       cancelText: 'Avbryt',
       onOkPressed: () {

@@ -53,7 +53,7 @@ class MaintenanceObjectMaintenanceTabView extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                'Gå in i administration för att lägga till underhållspunkter och förbrukningar',
+                                'Gå in i administration för att lägga till underhållspunkter och drivmedel',
                                 style:
                                     TextStyle(color: colorBlue, fontSize: 15),
                                 textAlign: TextAlign.center,

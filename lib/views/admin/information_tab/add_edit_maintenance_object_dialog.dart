@@ -140,7 +140,7 @@ class _AddEditMaintenanceObjectDialogState
             value: selectedMeterType,
           ),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           CustomTextFormField(
             label: 'Notering',

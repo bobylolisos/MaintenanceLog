@@ -78,7 +78,7 @@ class AdminMaintenanceObjectConsumptionTabView extends StatelessWidget {
                               return AlertDialog(
                                 title: Text(consumption.name),
                                 content: const Text(
-                                    'Förbrukningen kommer nu tas bort och kan inte återskapas.\n\n Vill du fortsätta med att radera?'),
+                                    'Drivmedlet kommer nu tas bort och kan inte återskapas.\n\n Vill du fortsätta med att radera?'),
                                 actions: <Widget>[
                                   SizedBox(
                                     width: 130,

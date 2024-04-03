@@ -89,7 +89,7 @@ class _AdminMaintenanceObjectPageState
                                 FontAwesomeIcons.gasPump,
                               ),
                             ),
-                            label: 'Förbrukningar'),
+                            label: 'Drivmedel'),
                         BottomNavigationBarItem(
                             icon: Padding(
                               padding: const EdgeInsets.all(4.0),
