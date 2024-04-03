@@ -6,8 +6,6 @@ import 'package:maintenance_log/blocs/maintenance_object_bloc/maintenance_object
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/consumption_item.dart';
-import 'package:maintenance_log/models/maintenance.dart';
-import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';

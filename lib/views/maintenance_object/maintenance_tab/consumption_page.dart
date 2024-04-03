@@ -17,6 +17,7 @@ import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consump
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
+// ignore: must_be_immutable
 class ConsumptionPage extends StatelessWidget {
   final String maintenanceObjectId;
   final String maintenanceObjectName;
