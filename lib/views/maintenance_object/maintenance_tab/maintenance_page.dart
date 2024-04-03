@@ -12,7 +12,7 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_bottom_sheet.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_edit_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
@@ -45,11 +45,14 @@ class MaintenancePage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final addedMaintenanceItem = await showDialog<MaintenanceItem?>(
+              final addedMaintenanceItem =
+                  await showModalBottomSheet<MaintenanceItem?>(
                 context: context,
-                barrierDismissible: false,
+                isDismissible: false,
+                backgroundColor: colorBlue,
+                isScrollControlled: true,
                 builder: (context) {
-                  return MaintenanceItemAddDialog(
+                  return MaintenanceItemAddBottomSheet(
                     maintenance: maintenance,
                   );
                 },

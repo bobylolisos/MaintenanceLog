@@ -3,21 +3,22 @@ import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
-import 'package:maintenance_log/widgets/bls_dialog.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
-class MaintenanceItemAddDialog extends StatefulWidget {
+class MaintenanceItemAddBottomSheet extends StatefulWidget {
   final Maintenance maintenance;
-  const MaintenanceItemAddDialog({required this.maintenance, super.key});
+  const MaintenanceItemAddBottomSheet({required this.maintenance, super.key});
 
   @override
-  State<MaintenanceItemAddDialog> createState() =>
-      _MaintenanceItemAddDialogState();
+  State<MaintenanceItemAddBottomSheet> createState() =>
+      _MaintenanceItemAddBottomSheetState();
 }
 
-class _MaintenanceItemAddDialogState extends State<MaintenanceItemAddDialog> {
+class _MaintenanceItemAddBottomSheetState
+    extends State<MaintenanceItemAddBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final headerController = TextEditingController();
@@ -34,7 +35,7 @@ class _MaintenanceItemAddDialogState extends State<MaintenanceItemAddDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BlsDialog(
+    return BlsBottomSheet(
       title: 'Lägg till ny post',
       okText: 'Spara',
       cancelText: 'Avbryt',
