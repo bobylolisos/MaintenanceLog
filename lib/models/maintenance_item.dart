@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:maintenance_log/models/meter_type.dart';
 import 'package:uuid/uuid.dart';
 
 class MaintenanceItem {
@@ -115,12 +116,23 @@ class MaintenanceItem {
         images.hashCode;
   }
 
-  String get meterValueString {
+  String toMeterValueString(MeterType meterType) {
     var str = meterValue?.toString() ?? '';
-    if (str.length < 4) {
-      return str;
+
+    if (meterType == MeterType.odometer) {
+      if (str.length < 4) {
+        return str;
+      }
+
+      return StringUtils.addCharAtPosition(str, '.', 3);
     }
 
-    return StringUtils.addCharAtPosition(str, '.', 3);
+    return str;
   }
+
+  int? previousMeterValue;
+  bool get invalidMeterValue =>
+      previousMeterValue != null &&
+      meterValue != null &&
+      previousMeterValue! > meterValue!;
 }

@@ -103,6 +103,10 @@ class _AddEditMaintenanceObjectDialogState
                 value: MeterType.hourmeter,
                 child: Text(MeterType.hourmeter.displayName),
               ),
+              DropdownMenuItem<MeterType>(
+                value: MeterType.dateMeter,
+                child: Text(MeterType.dateMeter.displayName),
+              ),
             ],
             focusColor: Colors.transparent,
             dropdownColor: Colors.white,
@@ -125,6 +129,8 @@ class _AddEditMaintenanceObjectDialogState
                 borderSide: BorderSide(color: colorBlue),
                 borderRadius: BorderRadius.circular(5),
               ),
+              labelText: 'Mätartyp',
+              labelStyle: TextStyle(color: colorBlue),
             ),
             onChanged: widget.maintenanceObject == null
                 ? (value) {

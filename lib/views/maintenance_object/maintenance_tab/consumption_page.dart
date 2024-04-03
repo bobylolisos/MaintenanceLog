@@ -324,10 +324,11 @@ class ConsumptionPage extends StatelessWidget {
                   height: 5,
                 ),
                 _row(consumptionItem.date.toTime(), FontAwesomeIcons.clock),
-                meterType != MeterType.none
+                meterType == MeterType.odometer ||
+                        meterType == MeterType.hourmeter
                     ? _row(
                         consumptionItem.meterValue != null
-                            ? '${consumptionItem.meterValueString} ${meterType.displaySuffix}'
+                            ? '${consumptionItem.toMeterValueString(meterType)} ${meterType.displaySuffix}'
                             : '-',
                         FontAwesomeIcons.rightToBracket)
                     : Container(),
@@ -341,6 +342,12 @@ class ConsumptionPage extends StatelessWidget {
                         ? consumptionItem.note
                         : '-',
                     FontAwesomeIcons.clipboard),
+                consumptionItem.invalidMeterValue
+                    ? _row(
+                        'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
+                        FontAwesomeIcons.triangleExclamation,
+                        color: Colors.red)
+                    : Container(),
               ],
             ),
           ),
@@ -350,7 +357,7 @@ class ConsumptionPage extends StatelessWidget {
     );
   }
 
-  Widget _row(String text, IconData icon) {
+  Widget _row(String text, IconData icon, {Color? color}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -363,7 +370,7 @@ class ConsumptionPage extends StatelessWidget {
               child: FaIcon(
                 icon,
                 size: 14,
-                color: colorBlue,
+                color: color ?? colorBlue,
               ),
             ),
           ),
@@ -373,7 +380,7 @@ class ConsumptionPage extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: 5,
-            style: TextStyle(fontSize: 12, color: colorBlue),
+            style: TextStyle(fontSize: 12, color: color ?? colorBlue),
           ),
         ),
       ],

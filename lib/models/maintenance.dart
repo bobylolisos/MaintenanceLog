@@ -59,13 +59,29 @@ class Maintenance {
       map['name'] as String,
       map['description'] as String,
       MeterType.values[map['meterType']],
-      List<MaintenanceItem>.from(
-        (map['posts'] as List).map<MaintenanceItem>(
-          (x) => MaintenanceItem.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      mapPosts(map),
       map['isActive'] as bool,
     );
+  }
+
+  static List<MaintenanceItem> mapPosts(Map<String, dynamic> map) {
+    final list = List<MaintenanceItem>.from(
+      (map['posts'] as List).map<MaintenanceItem>(
+        (x) => MaintenanceItem.fromMap(x as Map<String, dynamic>),
+      ),
+    );
+
+    int? previousMeterValue;
+    for (var i = list.length - 1; i > 0; i--) {
+      if (list[i].meterValue != null) {
+        previousMeterValue = list[i].meterValue;
+      }
+      if (i > 0) {
+        list[i - 1].previousMeterValue = previousMeterValue;
+      }
+    }
+
+    return list;
   }
 
   String toJson() => json.encode(toMap());

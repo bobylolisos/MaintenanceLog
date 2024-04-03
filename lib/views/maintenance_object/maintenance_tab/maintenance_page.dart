@@ -211,6 +211,9 @@ class MaintenancePage extends StatelessWidget {
 
     final result = List<Widget>.empty(growable: true);
     for (var i = 0; i < maintenance.posts.length; i++) {
+      if (i > 0) {
+        result.add(Divider());
+      }
       final maintenanceItem = maintenance.posts.elementAt(i);
 
       result.add(_createPost(
@@ -327,10 +330,11 @@ class MaintenancePage extends StatelessWidget {
                 ),
                 _row(maintenanceItem.date.toTime(), FontAwesomeIcons.clock),
                 _row(maintenanceItem.header, FontAwesomeIcons.tag),
-                meterType != MeterType.none
+                meterType == MeterType.odometer ||
+                        meterType == MeterType.hourmeter
                     ? _row(
                         maintenanceItem.meterValue != null
-                            ? '${maintenanceItem.meterValueString} ${meterType.displaySuffix}'
+                            ? '${maintenanceItem.toMeterValueString(meterType)} ${meterType.displaySuffix}'
                             : '-',
                         FontAwesomeIcons.rightToBracket)
                     : Container(),
@@ -339,16 +343,22 @@ class MaintenancePage extends StatelessWidget {
                         ? maintenanceItem.note
                         : '-',
                     FontAwesomeIcons.clipboard),
+                maintenanceItem.invalidMeterValue
+                    ? _row(
+                        'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
+                        FontAwesomeIcons.triangleExclamation,
+                        color: Colors.red)
+                    : Container(),
               ],
             ),
           ),
         ),
-        Divider(),
+        // Divider(),
       ],
     );
   }
 
-  Widget _row(String text, IconData icon) {
+  Widget _row(String text, IconData icon, {Color? color}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -361,7 +371,7 @@ class MaintenancePage extends StatelessWidget {
               child: FaIcon(
                 icon,
                 size: 14,
-                color: colorBlue,
+                color: color ?? colorBlue,
               ),
             ),
           ),
@@ -371,7 +381,7 @@ class MaintenancePage extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: 5,
-            style: TextStyle(fontSize: 12, color: colorBlue),
+            style: TextStyle(fontSize: 12, color: color ?? colorBlue),
           ),
         ),
       ],

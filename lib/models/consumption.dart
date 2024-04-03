@@ -57,13 +57,29 @@ class Consumption {
       map['name'] as String,
       map['description'] as String,
       MeterType.values[map['meterType']],
-      List<ConsumptionItem>.from(
-        (map['posts'] as List).map<ConsumptionItem>(
-          (x) => ConsumptionItem.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      mapPosts(map),
       map['isActive'] as bool,
     );
+  }
+
+  static List<ConsumptionItem> mapPosts(Map<String, dynamic> map) {
+    final list = List<ConsumptionItem>.from(
+      (map['posts'] as List).map<ConsumptionItem>(
+        (x) => ConsumptionItem.fromMap(x as Map<String, dynamic>),
+      ),
+    );
+
+    int? previousMeterValue;
+    for (var i = list.length - 1; i > 0; i--) {
+      if (list[i].meterValue != null) {
+        previousMeterValue = list[i].meterValue;
+      }
+      if (i > 0) {
+        list[i - 1].previousMeterValue = previousMeterValue;
+      }
+    }
+
+    return list;
   }
 
   String toJson() => json.encode(toMap());

@@ -55,8 +55,7 @@ class CustomDateTimePicker extends StatelessWidget {
                       initialDate: textController.text.isNotEmpty
                           ? DateTime.parse(textController.text)
                           : DateTime.now(),
-                      firstDate:
-                          DateTime.now().subtract(const Duration(days: 100)),
+                      firstDate: DateTime(1900, 01, 01),
                       lastDate: DateTime.now().add(const Duration(days: 1000)));
                   if (date != null) {
                     // ignore: use_build_context_synchronously

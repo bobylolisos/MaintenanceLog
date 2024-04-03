@@ -6,9 +6,11 @@ extension MeterTypeExtensions on MeterType {
       case MeterType.none:
         return 'Ingen mätare';
       case MeterType.odometer:
-        return 'Vägmätare (km)';
+        return 'Sträcka (km)';
       case MeterType.hourmeter:
-        return 'Timräknare (timmar)';
+        return 'Tid (timmar)';
+      case MeterType.dateMeter:
+        return 'Datum';
     }
   }
 
@@ -20,6 +22,8 @@ extension MeterTypeExtensions on MeterType {
         return 'km';
       case MeterType.hourmeter:
         return 'timmar';
+      case MeterType.dateMeter:
+        return '';
     }
   }
 }
