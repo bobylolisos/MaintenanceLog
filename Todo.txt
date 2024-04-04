@@ -15,5 +15,8 @@ X Byt ut tomma Container() till const SizedBox()
 
 - Det är knas med sortorder när man lägger till nya objekt
 
+- Beräkna liter per km
 
+- Beräkna pris per km
 
+- num.parse(pricePerLitreController.text.replaceAll(',', '.')) -> toNumeric(), asNumeric(), asNullableNumeric(), extension typ på controller-nivå
