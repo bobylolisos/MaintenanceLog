@@ -13,6 +13,7 @@ import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_edit_bottom_sheet.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -45,11 +46,8 @@ class ConsumptionPage extends StatelessWidget {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
               final addedConsumptionItem =
-                  await showModalBottomSheet<ConsumptionItem?>(
+                  await showBlsBottomSheet<ConsumptionItem?>(
                 context: context,
-                backgroundColor: colorBlue,
-                isDismissible: false,
-                isScrollControlled: true,
                 builder: (context) {
                   return ConsumptionItemAddEditBottomSheet(
                     consumption: consumption,
@@ -306,11 +304,8 @@ class ConsumptionPage extends StatelessWidget {
                   context.read<MaintenanceObjectBloc>();
 
               var changedConsumptionItem =
-                  await showModalBottomSheet<ConsumptionItem>(
+                  await showBlsBottomSheet<ConsumptionItem>(
                 context: context,
-                isDismissible: false,
-                backgroundColor: colorBlue,
-                isScrollControlled: true,
                 builder: (context) => ConsumptionItemAddEditBottomSheet(
                   consumption: consumption,
                   consumptionItem: consumptionItem,

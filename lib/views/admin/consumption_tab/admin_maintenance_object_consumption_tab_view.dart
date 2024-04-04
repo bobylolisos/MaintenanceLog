@@ -9,6 +9,8 @@ import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/admin/consumption_tab/add_edit_consumption_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
+import '../../../widgets/bls_bottom_sheet.dart';
+
 class AdminMaintenanceObjectConsumptionTabView extends StatelessWidget {
   final String maintenanceObjectId;
   const AdminMaintenanceObjectConsumptionTabView(
@@ -128,11 +130,8 @@ class AdminMaintenanceObjectConsumptionTabView extends StatelessWidget {
                         onTap: () async {
                           var bloc = context.read<MaintenanceObjectBloc>();
                           final changedConsumption =
-                              await showModalBottomSheet<Consumption?>(
+                              await showBlsBottomSheet<Consumption?>(
                             context: context,
-                            isScrollControlled: true,
-                            isDismissible: false,
-                            backgroundColor: colorBlue,
                             builder: (context) {
                               return AddEditConsumptionBottomSheet(
                                 maintenanceObject: maintenanceObject,

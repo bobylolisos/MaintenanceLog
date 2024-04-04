@@ -6,6 +6,7 @@ import 'package:maintenance_log/extensions/meter_type_extensions.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/views/admin/information_tab/add_edit_maintenance_object_bottom_sheet.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 
 class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
@@ -25,11 +26,8 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
               final changedMaintenanceObject =
-                  await showModalBottomSheet<MaintenanceObject?>(
+                  await showBlsBottomSheet<MaintenanceObject?>(
                 context: context,
-                isScrollControlled: true,
-                isDismissible: false,
-                backgroundColor: colorBlue,
                 builder: (context) {
                   return AddEditMaintenanceObjectBottomSheet(
                     maintenanceObject: maintenanceObject,

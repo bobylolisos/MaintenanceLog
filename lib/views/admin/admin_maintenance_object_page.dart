@@ -14,6 +14,7 @@ import 'package:maintenance_log/views/admin/consumption_tab/admin_maintenance_ob
 import 'package:maintenance_log/views/admin/information_tab/admin_maintenance_object_information_tab_view.dart';
 import 'package:maintenance_log/views/admin/maintenance_tab/add_edit_maintenance_bottom_sheet.dart';
 import 'package:maintenance_log/views/admin/maintenance_tab/admin_maintenance_object_maintenance_tab_view.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
 class AdminMaintenanceObjectPage extends StatefulWidget {
@@ -123,11 +124,8 @@ class _AdminMaintenanceObjectPageState
           title: maintenanceObject.header,
           onTrailingAddTap: () async {
             final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
-            final addedConsumption = await showModalBottomSheet<Consumption?>(
+            final addedConsumption = await showBlsBottomSheet<Consumption?>(
               context: context,
-              isScrollControlled: true,
-              isDismissible: false,
-              backgroundColor: colorBlue,
               builder: (context) {
                 return AddEditConsumptionBottomSheet(
                   maintenanceObject: maintenanceObject,
@@ -151,11 +149,8 @@ class _AdminMaintenanceObjectPageState
           title: maintenanceObject.header,
           onTrailingAddTap: () async {
             final maintenanceObjectBloc = context.read<MaintenanceObjectBloc>();
-            final addedMaintenance = await showModalBottomSheet<Maintenance?>(
+            final addedMaintenance = await showBlsBottomSheet<Maintenance?>(
               context: context,
-              isScrollControlled: true,
-              isDismissible: false,
-              backgroundColor: colorBlue,
               builder: (context) {
                 return AddEditMaintenanceBottomSheet(
                   maintenanceObject: maintenanceObject,

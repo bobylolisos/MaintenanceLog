@@ -13,6 +13,7 @@ import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
 import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_edit_bottom_sheet.dart';
+import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -44,18 +45,13 @@ class MaintenancePage extends StatelessWidget {
             onTrailingAddTap: () async {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
-              final addedMaintenanceItem =
-                  await showModalBottomSheet<MaintenanceItem?>(
-                context: context,
-                isDismissible: false,
-                backgroundColor: colorBlue,
-                isScrollControlled: true,
-                builder: (context) {
-                  return MaintenanceItemAddEditBottomSheet(
-                    maintenance: maintenance,
-                  );
-                },
-              );
+              final addedMaintenanceItem = await showBlsBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return MaintenanceItemAddEditBottomSheet(
+                      maintenance: maintenance,
+                    );
+                  });
 
               if (addedMaintenanceItem != null) {
                 maintenanceObjectBloc.add(
@@ -309,11 +305,8 @@ class MaintenancePage extends StatelessWidget {
                   context.read<MaintenanceObjectBloc>();
 
               var changedMaintenanceItem =
-                  await showModalBottomSheet<MaintenanceItem>(
+                  await showBlsBottomSheet<MaintenanceItem>(
                 context: context,
-                isDismissible: false,
-                backgroundColor: colorBlue,
-                isScrollControlled: true,
                 builder: (context) => MaintenanceItemAddEditBottomSheet(
                   maintenance: maintenance,
                   maintenanceItem: maintenanceItem,

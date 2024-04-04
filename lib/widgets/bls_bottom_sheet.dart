@@ -111,3 +111,16 @@ class BlsBottomSheet extends StatelessWidget {
     );
   }
 }
+
+Future<T?> showBlsBottomSheet<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+}) {
+  return showModalBottomSheet<T?>(
+    context: context,
+    isDismissible: false,
+    backgroundColor: colorBlue,
+    isScrollControlled: true,
+    builder: builder,
+  );
+}
