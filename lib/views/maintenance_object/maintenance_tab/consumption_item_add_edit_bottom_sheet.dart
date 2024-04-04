@@ -8,17 +8,19 @@ import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
-class ConsumptionItemAddBottomSheet extends StatefulWidget {
+class ConsumptionItemAddEditBottomSheet extends StatefulWidget {
   final Consumption consumption;
-  const ConsumptionItemAddBottomSheet({required this.consumption, super.key});
+  final ConsumptionItem? consumptionItem;
+  const ConsumptionItemAddEditBottomSheet(
+      {required this.consumption, this.consumptionItem, super.key});
 
   @override
-  State<ConsumptionItemAddBottomSheet> createState() =>
-      _ConsumptionItemAddBottomSheetState();
+  State<ConsumptionItemAddEditBottomSheet> createState() =>
+      _ConsumptionItemAddEditBottomSheetState();
 }
 
-class _ConsumptionItemAddBottomSheetState
-    extends State<ConsumptionItemAddBottomSheet> {
+class _ConsumptionItemAddEditBottomSheetState
+    extends State<ConsumptionItemAddEditBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final pricePerLitreController = TextEditingController();
@@ -28,7 +30,16 @@ class _ConsumptionItemAddBottomSheetState
 
   @override
   void initState() {
-    dateController.text = DateTime.now().toDateAndTime();
+    if (widget.consumptionItem != null) {
+      dateController.text = widget.consumptionItem!.date.toDateAndTime();
+      pricePerLitreController.text =
+          widget.consumptionItem!.pricePerLitre.toString();
+      litreController.text = widget.consumptionItem!.litre.toString();
+      meterController.text = widget.consumptionItem!.meterValue.toString();
+      noteController.text = widget.consumptionItem!.note;
+    } else {
+      dateController.text = DateTime.now().toDateAndTime();
+    }
 
     super.initState();
   }
@@ -36,26 +47,47 @@ class _ConsumptionItemAddBottomSheetState
   @override
   Widget build(BuildContext context) {
     return BlsBottomSheet(
-      title: 'Lägg till ny post',
+      title: widget.consumptionItem != null
+          ? 'Redigera post'
+          : 'Lägg till ny post',
       okText: 'Spara',
       cancelText: 'Avbryt',
       onOkPressed: () {
         if (formKey.currentState?.validate() == true) {
-          final consumptionItem = ConsumptionItem.createNew(
-            consumptionId: widget.consumption.id,
-            date: DateTime.parse(
-              dateController.text.trim(),
-            ),
-            pricePerLitre:
-                num.parse(pricePerLitreController.text.replaceAll(',', '.')),
-            litre: num.parse(litreController.text.replaceAll(',', '.')),
-            meterValue: meterController.text.trim().isNotEmpty
-                ? int.parse(meterController.text.trim())
-                : null,
-            note: noteController.text.trim(),
-          );
+          if (widget.consumptionItem != null) {
+            final consumptionItem = widget.consumptionItem!;
+            final newConsumptionItem = consumptionItem.copyWith(
+              date: DateTime.parse(dateController.text.trim()),
+              meterValue: meterController.text.trim().isNotEmpty
+                  ? int.parse(meterController.text.trim())
+                  : null,
+              pricePerLitre: pricePerLitreController.text.trim().isNotEmpty
+                  ? num.parse(
+                      pricePerLitreController.text.replaceAll(',', '.').trim())
+                  : 0,
+              litre: litreController.text.trim().isNotEmpty
+                  ? num.parse(litreController.text.replaceAll(',', '.').trim())
+                  : 0,
+              note: noteController.text.trim(),
+            );
+            Navigator.pop(context, newConsumptionItem);
+          } else {
+            final consumptionItem = ConsumptionItem.createNew(
+              consumptionId: widget.consumption.id,
+              date: DateTime.parse(
+                dateController.text.trim(),
+              ),
+              pricePerLitre:
+                  num.parse(pricePerLitreController.text.replaceAll(',', '.')),
+              litre: num.parse(litreController.text.replaceAll(',', '.')),
+              meterValue: meterController.text.trim().isNotEmpty
+                  ? int.parse(meterController.text.trim())
+                  : null,
+              note: noteController.text.trim(),
+            );
 
-          Navigator.pop(context, consumptionItem);
+            Navigator.pop(context, consumptionItem);
+          }
         }
       },
       onCancelPressed: () {
@@ -63,7 +95,7 @@ class _ConsumptionItemAddBottomSheetState
       },
       child: Form(
         key: formKey,
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(
             // Needed for text in border to be visible when scroll is used
             height: 10,

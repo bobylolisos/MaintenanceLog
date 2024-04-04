@@ -12,8 +12,7 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_bottom_sheet.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_edit_page.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/consumption_item_add_edit_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -52,7 +51,7 @@ class ConsumptionPage extends StatelessWidget {
                 isDismissible: false,
                 isScrollControlled: true,
                 builder: (context) {
-                  return ConsumptionItemAddBottomSheet(
+                  return ConsumptionItemAddEditBottomSheet(
                     consumption: consumption,
                   );
                 },
@@ -302,14 +301,29 @@ class ConsumptionPage extends StatelessWidget {
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ConsumptionItemEditPage(
-                  maintenanceObject: maintenanceObject,
+            onTap: () async {
+              final maintenanceObjectBloc =
+                  context.read<MaintenanceObjectBloc>();
+
+              var changedConsumptionItem = await showModalBottomSheet(
+                context: context,
+                isDismissible: false,
+                backgroundColor: colorBlue,
+                isScrollControlled: true,
+                builder: (context) => ConsumptionItemAddEditBottomSheet(
                   consumption: consumption,
                   consumptionItem: consumptionItem,
                 ),
-              ));
+              );
+
+              if (changedConsumptionItem != null &&
+                  changedConsumptionItem != consumptionItem) {
+                maintenanceObjectBloc.add(
+                  ConsumptionItemChangedEvent(
+                      maintenanceObject: maintenanceObject,
+                      consumptionItem: changedConsumptionItem),
+                );
+              }
             },
             child: Column(
               children: [

@@ -9,14 +9,15 @@ class BlsBottomSheet extends StatelessWidget {
   final VoidCallback? onCancelPressed;
   final Widget child;
 
-  const BlsBottomSheet(
-      {required this.title,
-      required this.okText,
-      required this.onOkPressed,
-      this.cancelText,
-      this.onCancelPressed,
-      required this.child,
-      super.key});
+  const BlsBottomSheet({
+    required this.title,
+    required this.okText,
+    required this.onOkPressed,
+    this.cancelText,
+    this.onCancelPressed,
+    required this.child,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,56 +45,65 @@ class BlsBottomSheet extends StatelessWidget {
               top: 60,
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: Container(
-              alignment: Alignment.topCenter,
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      child,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          onCancelPressed != null
-                              ? SizedBox(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.topLeft,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.only(top: 0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            child,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                onCancelPressed != null
+                                    ? SizedBox(
+                                        width: 130,
+                                        child: ElevatedButton(
+                                          style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  colorGold.withOpacity(0.5),
+                                              foregroundColor: colorBlue),
+                                          onPressed: onCancelPressed,
+                                          child: Text(cancelText ?? 'Cancel'),
+                                        ),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
                                   width: 130,
+                                  // height: 60,
                                   child: ElevatedButton(
                                     style: TextButton.styleFrom(
-                                        backgroundColor:
-                                            colorGold.withOpacity(0.5),
-                                        foregroundColor: colorBlue),
-                                    onPressed: onCancelPressed,
-                                    child: Text(cancelText ?? 'Cancel'),
+                                        backgroundColor: colorBlue,
+                                        foregroundColor: colorGold),
+                                    onPressed: onOkPressed,
+                                    child: Text(okText),
                                   ),
-                                )
-                              : Container(),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 130,
-                            // height: 60,
-                            child: ElevatedButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: colorBlue,
-                                  foregroundColor: colorGold),
-                              onPressed: onOkPressed,
-                              child: Text(okText),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ],

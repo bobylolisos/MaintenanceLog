@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:basic_utils/basic_utils.dart';
-import 'package:maintenance_log/models/meter_type.dart';
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:maintenance_log/models/meter_type.dart';
 
 class ConsumptionItem {
   final String id;
@@ -109,4 +112,30 @@ class ConsumptionItem {
       previousMeterValue != null &&
       meterValue != null &&
       previousMeterValue! > meterValue!;
+
+  @override
+  bool operator ==(covariant ConsumptionItem other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.consumptionId == consumptionId &&
+        other.date == date &&
+        other.pricePerLitre == pricePerLitre &&
+        other.litre == litre &&
+        other.meterValue == meterValue &&
+        other.note == note &&
+        listEquals(other.images, images);
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        consumptionId.hashCode ^
+        date.hashCode ^
+        pricePerLitre.hashCode ^
+        litre.hashCode ^
+        meterValue.hashCode ^
+        note.hashCode ^
+        images.hashCode;
+  }
 }

@@ -48,7 +48,7 @@ class _AddEditConsumptionBottomSheetState
               : Consumption.createNew(
                   name: nameController.text.trim(),
                   description: descriptionController.text.trim(),
-                  meterType: widget.maintenanceObject!.meterType,
+                  meterType: widget.maintenanceObject.meterType,
                 );
 
           Navigator.pop(context, consumption);
