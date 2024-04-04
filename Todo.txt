@@ -1,0 +1,21 @@
+X But ut textfält till CustomTextField så att counter-texten hamnar inuti
+X Öka avstånd mellan fields i add_edit_dialog (kompensera 0/20 text) (kanske löser sig med CustomTextField 
+X Just nu är det olika avstånd mellan MaintenanceObjectItemCard för drift & admin (sätta default margin i kortet?)
+X date.toString().substring(0, 16) till Extension
+
+
+- På bild för objekt, lägg till +5 eller nått om fler bilder finns
+
+- Återanvändbar tidslinje-komponent
+
+- Använd batch vid reorder av objekt
+
+- Det är knas med sortorder när man lägger till nya objekt
+
+- Byt ut tomma Container() till SizedBox()
+
+- Ta bort IsActive på Consumption & Maintenance
+
+- Flytta Images[] från ConsumptionItem & MaintenanceItem till Consumption & Maintenance
+
+- Kan man göra en egen showModalBottomSheet så att de parametrar som krävs alltid används

@@ -70,6 +70,13 @@ class _ConsumptionItemAddEditBottomSheetState
                   : 0,
               note: noteController.text.trim(),
             );
+            if (newConsumptionItem == consumptionItem) {
+              // Nothing changed
+              Navigator.pop(context);
+            } else {
+              Navigator.pop(context, newConsumptionItem);
+            }
+
             Navigator.pop(context, newConsumptionItem);
           } else {
             final consumptionItem = ConsumptionItem.createNew(

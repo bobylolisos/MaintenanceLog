@@ -12,8 +12,7 @@ import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:maintenance_log/resources/colors.dart';
 import 'package:maintenance_log/setup/ioc.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_bottom_sheet.dart';
-import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_edit_page.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/maintenance_item_add_edit_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:maintenance_log/widgets/sub_header_app_bar.dart';
 
@@ -52,7 +51,7 @@ class MaintenancePage extends StatelessWidget {
                 backgroundColor: colorBlue,
                 isScrollControlled: true,
                 builder: (context) {
-                  return MaintenanceItemAddBottomSheet(
+                  return MaintenanceItemAddEditBottomSheet(
                     maintenance: maintenance,
                   );
                 },
@@ -305,14 +304,29 @@ class MaintenancePage extends StatelessWidget {
           child: InkWell(
             splashColor: colorGold.withOpacity(0.4),
             highlightColor: Colors.transparent,
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MaintenanceItemEditPage(
-                  maintenanceObject: maintenanceObject,
+            onTap: () async {
+              final maintenanceObjectBloc =
+                  context.read<MaintenanceObjectBloc>();
+
+              var changedMaintenanceItem =
+                  await showModalBottomSheet<MaintenanceItem>(
+                context: context,
+                isDismissible: false,
+                backgroundColor: colorBlue,
+                isScrollControlled: true,
+                builder: (context) => MaintenanceItemAddEditBottomSheet(
                   maintenance: maintenance,
                   maintenanceItem: maintenanceItem,
                 ),
-              ));
+              );
+
+              if (changedMaintenanceItem != null) {
+                maintenanceObjectBloc.add(
+                  MaintenanceItemChangedEvent(
+                      maintenanceObject: maintenanceObject,
+                      maintenanceItem: changedMaintenanceItem),
+                );
+              }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,17 +8,19 @@ import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
 import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
-class MaintenanceItemAddBottomSheet extends StatefulWidget {
+class MaintenanceItemAddEditBottomSheet extends StatefulWidget {
   final Maintenance maintenance;
-  const MaintenanceItemAddBottomSheet({required this.maintenance, super.key});
+  final MaintenanceItem? maintenanceItem;
+  const MaintenanceItemAddEditBottomSheet(
+      {required this.maintenance, this.maintenanceItem, super.key});
 
   @override
-  State<MaintenanceItemAddBottomSheet> createState() =>
-      _MaintenanceItemAddBottomSheetState();
+  State<MaintenanceItemAddEditBottomSheet> createState() =>
+      _MaintenanceItemAddEditBottomSheetState();
 }
 
-class _MaintenanceItemAddBottomSheetState
-    extends State<MaintenanceItemAddBottomSheet> {
+class _MaintenanceItemAddEditBottomSheetState
+    extends State<MaintenanceItemAddEditBottomSheet> {
   final formKey = GlobalKey<FormState>();
   final dateController = TextEditingController();
   final headerController = TextEditingController();
@@ -28,7 +30,15 @@ class _MaintenanceItemAddBottomSheetState
 
   @override
   void initState() {
-    dateController.text = DateTime.now().toDateAndTime();
+    if (widget.maintenanceItem != null) {
+      dateController.text = widget.maintenanceItem!.date.toDateAndTime();
+      headerController.text = widget.maintenanceItem!.header;
+      meterController.text = widget.maintenanceItem!.meterValue.toString();
+      costController.text = widget.maintenanceItem!.costs.toString();
+      noteController.text = widget.maintenanceItem!.note;
+    } else {
+      dateController.text = DateTime.now().toDateAndTime();
+    }
 
     super.initState();
   }
@@ -36,27 +46,51 @@ class _MaintenanceItemAddBottomSheetState
   @override
   Widget build(BuildContext context) {
     return BlsBottomSheet(
-      title: 'Lägg till ny post',
+      title: widget.maintenanceItem != null
+          ? 'Redigera post'
+          : 'Lägg till ny post',
       okText: 'Spara',
       cancelText: 'Avbryt',
       onOkPressed: () {
         if (formKey.currentState?.validate() == true) {
-          final maintenanceItem = MaintenanceItem.createNew(
-            maintenanceId: widget.maintenance.id,
-            header: headerController.text.trim(),
-            date: DateTime.parse(
-              dateController.text.trim(),
-            ),
-            meterValue: meterController.text.trim().isNotEmpty
-                ? int.parse(meterController.text.trim())
-                : null,
-            costs: costController.text.trim().isNotEmpty
-                ? num.parse(costController.text.replaceAll(',', '.').trim())
-                : 0,
-            note: noteController.text.trim(),
-          );
+          if (widget.maintenanceItem != null) {
+            final maintenanceItem = widget.maintenanceItem!;
+            final newMaintenanceItem = maintenanceItem.copyWith(
+              header: headerController.text.trim(),
+              date: DateTime.parse(dateController.text.trim()),
+              meterValue: meterController.text.trim().isNotEmpty
+                  ? int.parse(meterController.text.trim())
+                  : null,
+              costs: costController.text.trim().isNotEmpty
+                  ? num.parse(costController.text.replaceAll(',', '.').trim())
+                  : 0,
+              note: noteController.text.trim(),
+            );
 
-          Navigator.pop(context, maintenanceItem);
+            if (newMaintenanceItem == maintenanceItem) {
+              // Nothing changed
+              Navigator.pop(context);
+            } else {
+              Navigator.pop(context, newMaintenanceItem);
+            }
+          } else {
+            final maintenanceItem = MaintenanceItem.createNew(
+              maintenanceId: widget.maintenance.id,
+              header: headerController.text.trim(),
+              date: DateTime.parse(
+                dateController.text.trim(),
+              ),
+              meterValue: meterController.text.trim().isNotEmpty
+                  ? int.parse(meterController.text.trim())
+                  : null,
+              costs: costController.text.trim().isNotEmpty
+                  ? num.parse(costController.text.replaceAll(',', '.').trim())
+                  : 0,
+              note: noteController.text.trim(),
+            );
+
+            Navigator.pop(context, maintenanceItem);
+          }
         }
       },
       onCancelPressed: () {

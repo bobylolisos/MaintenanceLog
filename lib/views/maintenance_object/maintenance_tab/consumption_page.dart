@@ -305,7 +305,8 @@ class ConsumptionPage extends StatelessWidget {
               final maintenanceObjectBloc =
                   context.read<MaintenanceObjectBloc>();
 
-              var changedConsumptionItem = await showModalBottomSheet(
+              var changedConsumptionItem =
+                  await showModalBottomSheet<ConsumptionItem>(
                 context: context,
                 isDismissible: false,
                 backgroundColor: colorBlue,
@@ -316,8 +317,7 @@ class ConsumptionPage extends StatelessWidget {
                 ),
               );
 
-              if (changedConsumptionItem != null &&
-                  changedConsumptionItem != consumptionItem) {
+              if (changedConsumptionItem != null) {
                 maintenanceObjectBloc.add(
                   ConsumptionItemChangedEvent(
                       maintenanceObject: maintenanceObject,
