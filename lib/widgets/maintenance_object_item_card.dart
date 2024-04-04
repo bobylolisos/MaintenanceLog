@@ -142,8 +142,8 @@ class MaintenanceObjectItemCard extends StatelessWidget {
                           ? SizedBox(
                               width: 10,
                             )
-                          : Container(),
-                      trailing != null ? trailing! : Container()
+                          : const SizedBox(),
+                      trailing != null ? trailing! : const SizedBox()
                     ],
                   ),
                 ),

@@ -78,7 +78,7 @@ class AddCard extends StatelessWidget {
                                   ),
                                 ],
                               )
-                            : Container()
+                            : const SizedBox()
                       ],
                     ),
                   )

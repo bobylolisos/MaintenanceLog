@@ -328,7 +328,7 @@ class ConsumptionPage extends StatelessWidget {
                       consumptionItem.date.toDateText(),
                       style: TextStyle(fontSize: 20, color: colorBlue),
                     ),
-                    Expanded(child: Container()),
+                    Expanded(child: const SizedBox()),
                     Text('${consumptionItem.costs.toStringAsFixed(2)} kr',
                         style: TextStyle(fontSize: 18, color: colorBlue)),
                   ],
@@ -344,7 +344,7 @@ class ConsumptionPage extends StatelessWidget {
                             ? '${consumptionItem.toMeterValueString(meterType)} ${meterType.displaySuffix}'
                             : '-',
                         FontAwesomeIcons.rightToBracket)
-                    : Container(),
+                    : const SizedBox(),
                 _row(
                     '${consumptionItem.pricePerLitre.toStringAsFixed(2)} kr / liter',
                     FontAwesomeIcons.coins),
@@ -360,7 +360,7 @@ class ConsumptionPage extends StatelessWidget {
                         'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
                         FontAwesomeIcons.triangleExclamation,
                         color: Colors.red)
-                    : Container(),
+                    : const SizedBox(),
               ],
             ),
           ),

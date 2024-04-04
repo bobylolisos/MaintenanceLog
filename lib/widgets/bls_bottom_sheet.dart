@@ -77,7 +77,7 @@ class BlsBottomSheet extends StatelessWidget {
                                           child: Text(cancelText ?? 'Cancel'),
                                         ),
                                       )
-                                    : Container(),
+                                    : const SizedBox(),
                                 SizedBox(
                                   width: 10,
                                 ),

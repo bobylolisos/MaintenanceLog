@@ -21,7 +21,7 @@ class CustomDateTimePicker extends StatelessWidget {
           ),
           Row(
             children: [
-              Expanded(child: Container()),
+              Expanded(child: const SizedBox()),
               InkWell(
                 onTap: () async {
                   final date = await showDatePicker(
@@ -43,7 +43,7 @@ class CustomDateTimePicker extends StatelessWidget {
                           child: MediaQuery(
                             data: MediaQuery.of(context)
                                 .copyWith(alwaysUse24HourFormat: true),
-                            child: child ?? Container(),
+                            child: child ?? const SizedBox(),
                           ),
                         );
                       },
@@ -78,7 +78,7 @@ class CustomDateTimePicker extends StatelessWidget {
                           child: MediaQuery(
                             data: MediaQuery.of(context)
                                 .copyWith(alwaysUse24HourFormat: true),
-                            child: child ?? Container(),
+                            child: child ?? const SizedBox(),
                           ),
                         );
                       },

@@ -330,7 +330,7 @@ class MaintenancePage extends StatelessWidget {
                       maintenanceItem.date.toDateText(),
                       style: TextStyle(fontSize: 20, color: colorBlue),
                     ),
-                    Expanded(child: Container()),
+                    Expanded(child: const SizedBox()),
                     Text('${maintenanceItem.costs.toStringAsFixed(2)} kr',
                         style: TextStyle(fontSize: 18, color: colorBlue)),
                   ],
@@ -347,7 +347,7 @@ class MaintenancePage extends StatelessWidget {
                             ? '${maintenanceItem.toMeterValueString(meterType)} ${meterType.displaySuffix}'
                             : '-',
                         FontAwesomeIcons.rightToBracket)
-                    : Container(),
+                    : const SizedBox(),
                 _row(
                     maintenanceItem.note.isNotEmpty
                         ? maintenanceItem.note
@@ -358,7 +358,7 @@ class MaintenancePage extends StatelessWidget {
                         'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
                         FontAwesomeIcons.triangleExclamation,
                         color: Colors.red)
-                    : Container(),
+                    : const SizedBox(),
               ],
             ),
           ),

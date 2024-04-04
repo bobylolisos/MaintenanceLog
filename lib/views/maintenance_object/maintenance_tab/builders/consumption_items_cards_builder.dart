@@ -52,7 +52,7 @@ class ConsumptionItemsCardsBuilder {
                         item.description,
                         style: TextStyle(color: colorBlue),
                       )
-                    : Container(),
+                    : const SizedBox(),
                 item.description.isNotEmpty
                     ? SizedBox(
                         height: 10,
@@ -124,7 +124,7 @@ class ConsumptionItemsCardsBuilder {
                               color: Colors.red),
                         ],
                       )
-                    : Container(),
+                    : const SizedBox(),
               ],
             );
           }),
@@ -166,6 +166,6 @@ class ConsumptionItemsCardsBuilder {
               ),
             ],
           )
-        : Container();
+        : const SizedBox();
   }
 }

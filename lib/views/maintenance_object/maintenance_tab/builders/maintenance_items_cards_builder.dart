@@ -45,12 +45,12 @@ class MaintenanceItemsCardsBuilder {
                         item.description,
                         style: TextStyle(color: colorBlue),
                       )
-                    : Container(),
+                    : const SizedBox(),
                 item.description.isNotEmpty
                     ? SizedBox(
                         height: 10,
                       )
-                    : Container(),
+                    : const SizedBox(),
                 Row(
                   children: [
                     SizedBox(
@@ -119,7 +119,7 @@ class MaintenanceItemsCardsBuilder {
                               color: Colors.red),
                         ],
                       )
-                    : Container(),
+                    : const SizedBox(),
               ],
             );
           }),
@@ -161,6 +161,6 @@ class MaintenanceItemsCardsBuilder {
               ),
             ],
           )
-        : Container();
+        : const SizedBox();
   }
 }

@@ -104,7 +104,7 @@ class AdminMaintenanceObjectInformationTabView extends StatelessWidget {
 
   Widget _paddedText(String text, {double? fontSize, Color? fontColor}) {
     if (text.isEmpty) {
-      return Container();
+      return const SizedBox();
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3.0),

@@ -42,7 +42,7 @@ class BlsDialog extends StatelessWidget {
                   child: Text(cancelText ?? 'Cancel'),
                 ),
               )
-            : Container(),
+            : const SizedBox(),
         SizedBox(
           width: 130,
           child: ElevatedButton(

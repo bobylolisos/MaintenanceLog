@@ -117,14 +117,14 @@ class _MaintenanceItemAddEditBottomSheetState
                   allowDecimal: false,
                   controller: meterController,
                 )
-              : Container(),
+              : const SizedBox(),
           widget.maintenance.meterType == MeterType.hourmeter
               ? CustomNumericFormField(
                   label: 'Mätarvärde (timmar)',
                   allowDecimal: false,
                   controller: meterController,
                 )
-              : Container(),
+              : const SizedBox(),
           CustomNumericFormField(
             label: 'Utgift (kr)',
             allowDecimal: true,

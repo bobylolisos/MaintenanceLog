@@ -92,7 +92,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     ),
                   ),
                 )
-              : Container(),
+              : const SizedBox(),
         ],
       ),
     );

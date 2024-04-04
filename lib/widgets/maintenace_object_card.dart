@@ -116,7 +116,7 @@ class MaintenanceObjectCard extends StatelessWidget {
                               trailing!,
                             ],
                           )
-                        : Container(),
+                        : const SizedBox(),
                   ],
                 ),
               ),

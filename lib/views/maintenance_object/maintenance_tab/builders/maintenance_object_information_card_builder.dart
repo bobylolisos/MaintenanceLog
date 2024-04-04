@@ -123,7 +123,7 @@ class MaintenanceObjectInformationCardBuilder {
                     ),
                   ],
                 )
-              : Container(),
+              : const SizedBox(),
         ],
       ),
     );

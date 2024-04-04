@@ -48,7 +48,7 @@ PreferredSizeWidget SubHeaderAppBar(
                               )),
                         ),
                       )
-                    : Container(),
+                    : const SizedBox(),
               ],
             ),
           ),

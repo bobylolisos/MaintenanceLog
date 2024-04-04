@@ -114,14 +114,14 @@ class _ConsumptionItemAddEditBottomSheetState
                   allowDecimal: false,
                   controller: meterController,
                 )
-              : Container(),
+              : const SizedBox(),
           widget.consumption.meterType == MeterType.hourmeter
               ? CustomNumericFormField(
                   label: 'Mätarvärde (timmar)',
                   allowDecimal: false,
                   controller: meterController,
                 )
-              : Container(),
+              : const SizedBox(),
           CustomNumericFormField(
             label: 'Literpris',
             allowDecimal: true,
