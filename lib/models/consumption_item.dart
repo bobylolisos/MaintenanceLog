@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:basic_utils/basic_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:maintenance_log/models/meter_type.dart';
@@ -15,10 +14,9 @@ class ConsumptionItem {
   final num litre;
   final int? meterValue;
   final String note;
-  final List<String> images;
 
   ConsumptionItem(this.id, this.consumptionId, this.date, this.pricePerLitre,
-      this.litre, this.meterValue, this.note, this.images);
+      this.litre, this.meterValue, this.note);
 
   num get costs => pricePerLitre * litre;
 
@@ -38,7 +36,6 @@ class ConsumptionItem {
       litre,
       meterValue,
       note ?? '',
-      [],
     );
   }
 
@@ -48,7 +45,6 @@ class ConsumptionItem {
     num? pricePerLitre,
     num? litre,
     String? note,
-    List<String>? images,
   }) {
     return ConsumptionItem(
       id,
@@ -58,7 +54,6 @@ class ConsumptionItem {
       litre ?? this.litre,
       meterValue,
       note ?? this.note,
-      images ?? this.images,
     );
   }
 
@@ -71,7 +66,6 @@ class ConsumptionItem {
       'litre': litre,
       'meterValue': meterValue,
       'note': note,
-      'images': images.toList(),
     };
   }
 
@@ -84,7 +78,6 @@ class ConsumptionItem {
       map['litre'] as num,
       map['meterValue'] as int?,
       map['note'] as String,
-      List<String>.from(map['images'] as List),
     );
   }
 
@@ -123,8 +116,7 @@ class ConsumptionItem {
         other.pricePerLitre == pricePerLitre &&
         other.litre == litre &&
         other.meterValue == meterValue &&
-        other.note == note &&
-        listEquals(other.images, images);
+        other.note == note;
   }
 
   @override
@@ -135,7 +127,6 @@ class ConsumptionItem {
         pricePerLitre.hashCode ^
         litre.hashCode ^
         meterValue.hashCode ^
-        note.hashCode ^
-        images.hashCode;
+        note.hashCode;
   }
 }

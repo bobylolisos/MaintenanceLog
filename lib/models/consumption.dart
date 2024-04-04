@@ -9,11 +9,11 @@ class Consumption {
   final String description;
   final MeterType meterType;
   final List<ConsumptionItem> posts;
-  final bool isActive;
+  final List<String> images;
 //  final List<Reminder> reminders;
 
   Consumption(this.id, this.name, this.description, this.meterType, this.posts,
-      this.isActive);
+      this.images);
 
   factory Consumption.createNew(
       {required String name,
@@ -25,18 +25,19 @@ class Consumption {
       description,
       meterType,
       [],
-      true,
+      [],
     );
   }
 
-  Consumption copyWith({String? name, String? description, bool? isActive}) {
+  Consumption copyWith(
+      {String? name, String? description, List<String>? images}) {
     return Consumption(
       id,
       name ?? this.name,
       description ?? this.description,
       meterType,
       posts,
-      isActive ?? this.isActive,
+      images ?? this.images,
     );
   }
 
@@ -47,7 +48,7 @@ class Consumption {
       'description': description,
       'meterType': meterType.index,
       'posts': posts.map((x) => x.toMap()).toList(),
-      'isActive': isActive,
+      'images': images.toList(),
     };
   }
 
@@ -58,7 +59,7 @@ class Consumption {
       map['description'] as String,
       MeterType.values[map['meterType']],
       mapPosts(map),
-      map['isActive'] as bool,
+      List<String>.from(map['images'] as List),
     );
   }
 

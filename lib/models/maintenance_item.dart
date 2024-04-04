@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:basic_utils/basic_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:maintenance_log/models/meter_type.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,10 +13,16 @@ class MaintenanceItem {
   final int? meterValue;
   final num costs;
   final String note;
-  final List<String> images;
 
-  MaintenanceItem(this.id, this.maintenanceId, this.header, this.date,
-      this.meterValue, this.costs, this.note, this.images);
+  MaintenanceItem(
+    this.id,
+    this.maintenanceId,
+    this.header,
+    this.date,
+    this.meterValue,
+    this.costs,
+    this.note,
+  );
 
   factory MaintenanceItem.createNew({
     required String maintenanceId,
@@ -35,7 +40,6 @@ class MaintenanceItem {
       meterValue,
       costs ?? 0,
       note ?? '',
-      [],
     );
   }
 
@@ -45,7 +49,6 @@ class MaintenanceItem {
     int? meterValue,
     num? costs,
     String? note,
-    List<String>? images,
   }) {
     return MaintenanceItem(
       id,
@@ -55,7 +58,6 @@ class MaintenanceItem {
       meterValue ?? this.meterValue,
       costs ?? this.costs,
       note ?? this.note,
-      images ?? this.images,
     );
   }
 
@@ -68,7 +70,6 @@ class MaintenanceItem {
       'meterValue': meterValue,
       'costs': costs,
       'note': note,
-      'images': images.toList(),
     };
   }
 
@@ -81,7 +82,6 @@ class MaintenanceItem {
       map['meterValue'] as int?,
       map['costs'] as num,
       map['note'] as String,
-      List<String>.from(map['images'] as List),
     );
   }
 
@@ -100,8 +100,7 @@ class MaintenanceItem {
         other.date == date &&
         other.meterValue == meterValue &&
         other.costs == costs &&
-        other.note == note &&
-        listEquals(other.images, images);
+        other.note == note;
   }
 
   @override
@@ -112,8 +111,7 @@ class MaintenanceItem {
         date.hashCode ^
         meterValue.hashCode ^
         costs.hashCode ^
-        note.hashCode ^
-        images.hashCode;
+        note.hashCode;
   }
 
   String toMeterValueString(MeterType meterType) {

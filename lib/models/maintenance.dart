@@ -11,11 +11,11 @@ class Maintenance {
   final String description;
   final MeterType meterType;
   final List<MaintenanceItem> posts;
-  final bool isActive;
+  final List<String> images;
 //  final List<Reminder> reminders;
 
   Maintenance(this.id, this.name, this.description, this.meterType, this.posts,
-      this.isActive);
+      this.images);
 
   factory Maintenance.createNew(
       {required String name,
@@ -27,18 +27,19 @@ class Maintenance {
       description,
       meterType,
       [],
-      true,
+      [],
     );
   }
 
-  Maintenance copyWith({String? name, String? description, bool? isActive}) {
+  Maintenance copyWith(
+      {String? name, String? description, List<String>? images}) {
     return Maintenance(
       id,
       name ?? this.name,
       description ?? this.description,
       meterType,
       posts,
-      isActive ?? this.isActive,
+      images ?? this.images,
     );
   }
 
@@ -49,7 +50,7 @@ class Maintenance {
       'description': description,
       'meterType': meterType.index,
       'posts': posts.map((x) => x.toMap()).toList(),
-      'isActive': isActive,
+      'images': images.toList(),
     };
   }
 
@@ -60,7 +61,7 @@ class Maintenance {
       map['description'] as String,
       MeterType.values[map['meterType']],
       mapPosts(map),
-      map['isActive'] as bool,
+      List<String>.from(map['images'] as List),
     );
   }
 
