@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
+import 'package:maintenance_log/extensions/text_editing_controller_extensions.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
@@ -58,17 +59,10 @@ class _ConsumptionItemAddEditBottomSheetState
             final consumptionItem = widget.consumptionItem!;
             final newConsumptionItem = consumptionItem.copyWith(
               date: DateTime.parse(dateController.text.trim()),
-              meterValue: meterController.text.trim().isNotEmpty
-                  ? int.parse(meterController.text.trim())
-                  : null,
-              pricePerLitre: pricePerLitreController.text.trim().isNotEmpty
-                  ? num.parse(
-                      pricePerLitreController.text.replaceAll(',', '.').trim())
-                  : 0,
-              litre: litreController.text.trim().isNotEmpty
-                  ? num.parse(litreController.text.replaceAll(',', '.').trim())
-                  : 0,
-              note: noteController.text.trim(),
+              meterValue: meterController.toNullableInt(),
+              pricePerLitre: pricePerLitreController.toNumeric(),
+              litre: litreController.toNumeric(),
+              note: noteController.toTrimmedString(),
             );
             if (newConsumptionItem == consumptionItem) {
               // Nothing changed
@@ -84,13 +78,10 @@ class _ConsumptionItemAddEditBottomSheetState
               date: DateTime.parse(
                 dateController.text.trim(),
               ),
-              pricePerLitre:
-                  num.parse(pricePerLitreController.text.replaceAll(',', '.')),
-              litre: num.parse(litreController.text.replaceAll(',', '.')),
-              meterValue: meterController.text.trim().isNotEmpty
-                  ? int.parse(meterController.text.trim())
-                  : null,
-              note: noteController.text.trim(),
+              pricePerLitre: pricePerLitreController.toNumeric(),
+              litre: litreController.toNumeric(),
+              meterValue: meterController.toNullableInt(),
+              note: noteController.toTrimmedString(),
             );
 
             Navigator.pop(context, consumptionItem);

@@ -6,6 +6,8 @@ X Ta bort IsActive på Consumption & Maintenance
 X Flytta Images[] från ConsumptionItem & MaintenanceItem till Consumption & Maintenance
 X Kan man göra en egen showModalBottomSheet så att de parametrar som krävs alltid används
 X Byt ut tomma Container() till const SizedBox()
+X num.parse(pricePerLitreController.text.replaceAll(',', '.')) -> toNumeric(), asNumeric(), asNullableNumeric(), extension typ på controller-nivå
+
 
 - På bild för objekt, lägg till +5 eller nått om fler bilder finns
 
@@ -19,4 +21,4 @@ X Byt ut tomma Container() till const SizedBox()
 
 - Beräkna pris per km
 
-- num.parse(pricePerLitreController.text.replaceAll(',', '.')) -> toNumeric(), asNumeric(), asNullableNumeric(), extension typ på controller-nivå
+- Inloggning + hierarki i firestore

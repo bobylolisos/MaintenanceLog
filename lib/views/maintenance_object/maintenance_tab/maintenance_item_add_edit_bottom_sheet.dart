@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
+import 'package:maintenance_log/extensions/text_editing_controller_extensions.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
@@ -56,15 +57,11 @@ class _MaintenanceItemAddEditBottomSheetState
           if (widget.maintenanceItem != null) {
             final maintenanceItem = widget.maintenanceItem!;
             final newMaintenanceItem = maintenanceItem.copyWith(
-              header: headerController.text.trim(),
-              date: DateTime.parse(dateController.text.trim()),
-              meterValue: meterController.text.trim().isNotEmpty
-                  ? int.parse(meterController.text.trim())
-                  : null,
-              costs: costController.text.trim().isNotEmpty
-                  ? num.parse(costController.text.replaceAll(',', '.').trim())
-                  : 0,
-              note: noteController.text.trim(),
+              header: headerController.toTrimmedString(),
+              date: dateController.toDateTime(),
+              meterValue: meterController.toNullableInt(),
+              costs: costController.toNumeric(),
+              note: noteController.toTrimmedString(),
             );
 
             if (newMaintenanceItem == maintenanceItem) {
@@ -77,16 +74,10 @@ class _MaintenanceItemAddEditBottomSheetState
             final maintenanceItem = MaintenanceItem.createNew(
               maintenanceId: widget.maintenance.id,
               header: headerController.text.trim(),
-              date: DateTime.parse(
-                dateController.text.trim(),
-              ),
-              meterValue: meterController.text.trim().isNotEmpty
-                  ? int.parse(meterController.text.trim())
-                  : null,
-              costs: costController.text.trim().isNotEmpty
-                  ? num.parse(costController.text.replaceAll(',', '.').trim())
-                  : 0,
-              note: noteController.text.trim(),
+              date: dateController.toDateTime(),
+              meterValue: meterController.toNullableInt(),
+              costs: costController.toNumeric(),
+              note: noteController.toTrimmedString(),
             );
 
             Navigator.pop(context, maintenanceItem);
