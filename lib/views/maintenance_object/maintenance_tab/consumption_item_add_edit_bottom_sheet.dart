@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/extensions/date_time_extensions.dart';
 import 'package:maintenance_log/extensions/text_editing_controller_extensions.dart';
 import 'package:maintenance_log/models/consumption.dart';
 import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/meter_type.dart';
+import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/widgets/trip_hour_meter_dialog.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/widgets/trip_odo_meter_dialog.dart';
 import 'package:maintenance_log/widgets/bls_bottom_sheet.dart';
 import 'package:maintenance_log/widgets/custom_date_time_picker.dart';
 import 'package:maintenance_log/widgets/custom_text_form_field.dart';
@@ -36,7 +40,8 @@ class _ConsumptionItemAddEditBottomSheetState
       pricePerLitreController.text =
           widget.consumptionItem!.pricePerLitre.toString();
       litreController.text = widget.consumptionItem!.litre.toString();
-      meterController.text = widget.consumptionItem!.meterValue.toString();
+      meterController.text =
+          widget.consumptionItem!.meterValue?.toString() ?? '';
       noteController.text = widget.consumptionItem!.note;
     } else {
       dateController.text = DateTime.now().toDateAndTime();
@@ -98,17 +103,107 @@ class _ConsumptionItemAddEditBottomSheetState
           ),
           CustomDateTimePicker('Datum', dateController),
           widget.consumption.meterType == MeterType.odometer
-              ? CustomNumericFormField(
-                  label: 'Mätarvärde (km)',
-                  allowDecimal: false,
-                  controller: meterController,
+              ? Stack(
+                  children: [
+                    CustomNumericFormField(
+                      label: 'Mätarvärde (km)',
+                      allowDecimal: false,
+                      controller: meterController,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          height: 60,
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            child: Icon(
+                              size: 30,
+                              FontAwesomeIcons.rightToBracket,
+                              color: colorBlue,
+                            ),
+                            onTap: () async {
+                              var dateControllerDateTime =
+                                  dateController.toDateTime();
+                              var posts = widget.consumption.posts.where((x) {
+                                return x.meterValue != null &&
+                                    x.date.millisecondsSinceEpoch <
+                                        dateControllerDateTime
+                                            .millisecondsSinceEpoch;
+                              });
+                              var previousConsumptionItem = posts.firstOrNull;
+                              var meterValue = await showDialog<num?>(
+                                context: context,
+                                builder: (context) {
+                                  return TripOdoMeterDialog(
+                                      previousMeterValue:
+                                          previousConsumptionItem?.meterValue);
+                                },
+                              );
+                              if (meterValue != null) {
+                                meterController.text = meterValue.toString();
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 )
               : const SizedBox(),
           widget.consumption.meterType == MeterType.hourmeter
-              ? CustomNumericFormField(
-                  label: 'Mätarvärde (timmar)',
-                  allowDecimal: false,
-                  controller: meterController,
+              ? Stack(
+                  children: [
+                    CustomNumericFormField(
+                      label: 'Mätarvärde (timmar)',
+                      allowDecimal: false,
+                      controller: meterController,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          height: 60,
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            child: Icon(
+                              size: 30,
+                              FontAwesomeIcons.rightToBracket,
+                              color: colorBlue,
+                            ),
+                            onTap: () async {
+                              var dateControllerDateTime =
+                                  dateController.toDateTime();
+                              var posts = widget.consumption.posts.where((x) {
+                                return x.meterValue != null &&
+                                    x.date.millisecondsSinceEpoch <
+                                        dateControllerDateTime
+                                            .millisecondsSinceEpoch;
+                              });
+                              var previousConsumptionItem = posts.firstOrNull;
+                              var meterValue = await showDialog<int?>(
+                                context: context,
+                                builder: (context) {
+                                  return TripHourMeterDialog(
+                                      previousMeterValue:
+                                          previousConsumptionItem?.meterValue);
+                                },
+                              );
+                              if (meterValue != null) {
+                                meterController.text = meterValue.toString();
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 )
               : const SizedBox(),
           CustomNumericFormField(

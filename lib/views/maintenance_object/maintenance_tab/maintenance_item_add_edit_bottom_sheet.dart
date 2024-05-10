@@ -34,7 +34,8 @@ class _MaintenanceItemAddEditBottomSheetState
     if (widget.maintenanceItem != null) {
       dateController.text = widget.maintenanceItem!.date.toDateAndTime();
       headerController.text = widget.maintenanceItem!.header;
-      meterController.text = widget.maintenanceItem!.meterValue.toString();
+      meterController.text =
+          widget.maintenanceItem!.meterValue?.toString() ?? '';
       costController.text = widget.maintenanceItem!.costs.toString();
       noteController.text = widget.maintenanceItem!.note;
     } else {

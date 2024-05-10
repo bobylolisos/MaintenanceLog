@@ -88,7 +88,7 @@ class ConsumptionItem {
 
   int? previousMeterValue;
   num cumulativeLitre = 0;
-  num? litrePer10km;
+  num? litrePer;
 
   bool get invalidMeterValue =>
       previousMeterValue != null &&

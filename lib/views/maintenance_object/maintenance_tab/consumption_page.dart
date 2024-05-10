@@ -329,7 +329,9 @@ class ConsumptionPage extends StatelessWidget {
                       consumptionItem.date.toDateText(),
                       style: TextStyle(fontSize: 20, color: colorBlue),
                     ),
-                    consumptionItem.litrePer10km != null
+                    consumptionItem.litrePer != null &&
+                            (consumption.meterType == MeterType.odometer ||
+                                consumption.meterType == MeterType.hourmeter)
                         ? Row(
                             children: [
                               Padding(
@@ -347,9 +349,7 @@ class ConsumptionPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Text(
-                                  consumptionItem.litrePer10km!
-                                      .toStringAsFixed(2),
+                              Text(consumptionItem.litrePer!.toStringAsFixed(2),
                                   style: TextStyle(
                                       fontSize: 18, color: colorBlue)),
                             ],

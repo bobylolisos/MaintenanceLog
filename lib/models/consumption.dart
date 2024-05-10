@@ -58,12 +58,13 @@ class Consumption {
       map['name'] as String,
       map['description'] as String,
       MeterType.values[map['meterType']],
-      mapPosts(map),
+      mapPosts(MeterType.values[map['meterType']], map),
       List<String>.from(map['images'] as List),
     );
   }
 
-  static List<ConsumptionItem> mapPosts(Map<String, dynamic> map) {
+  static List<ConsumptionItem> mapPosts(
+      MeterType meterType, Map<String, dynamic> map) {
     final list = List<ConsumptionItem>.from(
       (map['posts'] as List).map<ConsumptionItem>(
         (x) => ConsumptionItem.fromMap(x as Map<String, dynamic>),
@@ -87,8 +88,15 @@ class Consumption {
           currentPost.litre > 0) {
         final distance =
             currentPost.meterValue! - currentPost.previousMeterValue!;
-        currentPost.litrePer10km =
-            distance / (currentPost.litre + currentPost.cumulativeLitre) / 10;
+
+        if (meterType == MeterType.odometer) {
+          currentPost.litrePer =
+              distance / (currentPost.litre + currentPost.cumulativeLitre) / 10;
+        }
+        if (meterType == MeterType.hourmeter) {
+          currentPost.litrePer =
+              distance / (currentPost.litre + currentPost.cumulativeLitre);
+        }
       } else if (currentPost.meterValue == null && i > 0) {
         var nextPost = list[i - 1];
         nextPost.cumulativeLitre =
