@@ -5,8 +5,12 @@ import 'package:maintenance_log/widgets/custom_numeric_form_field.dart';
 
 class TripHourMeterDialog extends StatefulWidget {
   final num? previousMeterValue;
+  final num? currentMeterValue;
 
-  const TripHourMeterDialog({required this.previousMeterValue, super.key});
+  const TripHourMeterDialog(
+      {required this.previousMeterValue,
+      required this.currentMeterValue,
+      super.key});
 
   @override
   State<TripHourMeterDialog> createState() => _TripHourMeterDialogState();
@@ -14,6 +18,19 @@ class TripHourMeterDialog extends StatefulWidget {
 
 class _TripHourMeterDialogState extends State<TripHourMeterDialog> {
   final tripController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.previousMeterValue != null &&
+        widget.previousMeterValue! > 0 &&
+        widget.currentMeterValue != null &&
+        widget.currentMeterValue! > 0 &&
+        widget.currentMeterValue! >= widget.currentMeterValue!) {
+      tripController.text =
+          (widget.currentMeterValue! - widget.previousMeterValue!).toString();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

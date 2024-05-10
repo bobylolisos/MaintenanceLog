@@ -135,12 +135,20 @@ class _ConsumptionItemAddEditBottomSheetState
                                             .millisecondsSinceEpoch;
                               });
                               var previousConsumptionItem = posts.firstOrNull;
+
+                              num? currentMeterValue;
+                              if (previousConsumptionItem?.meterValue != null &&
+                                  meterController.toNumeric() > 0) {
+                                currentMeterValue = meterController.toNumeric();
+                              }
                               var meterValue = await showDialog<num?>(
                                 context: context,
                                 builder: (context) {
                                   return TripOdoMeterDialog(
-                                      previousMeterValue:
-                                          previousConsumptionItem?.meterValue);
+                                    previousMeterValue:
+                                        previousConsumptionItem?.meterValue,
+                                    currentMeterValue: currentMeterValue,
+                                  );
                                 },
                               );
                               if (meterValue != null) {
@@ -187,12 +195,19 @@ class _ConsumptionItemAddEditBottomSheetState
                                             .millisecondsSinceEpoch;
                               });
                               var previousConsumptionItem = posts.firstOrNull;
+                              num? currentMeterValue;
+                              if (previousConsumptionItem?.meterValue != null &&
+                                  meterController.toNumeric() > 0) {
+                                currentMeterValue = meterController.toNumeric();
+                              }
                               var meterValue = await showDialog<int?>(
                                 context: context,
                                 builder: (context) {
                                   return TripHourMeterDialog(
-                                      previousMeterValue:
-                                          previousConsumptionItem?.meterValue);
+                                    previousMeterValue:
+                                        previousConsumptionItem?.meterValue,
+                                    currentMeterValue: currentMeterValue,
+                                  );
                                 },
                               );
                               if (meterValue != null) {

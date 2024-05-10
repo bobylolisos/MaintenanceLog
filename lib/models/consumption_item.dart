@@ -1,10 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:basic_utils/basic_utils.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:maintenance_log/models/meter_type.dart';
 
 class ConsumptionItem {
   final String id;
