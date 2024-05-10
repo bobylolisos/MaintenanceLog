@@ -86,21 +86,10 @@ class ConsumptionItem {
   factory ConsumptionItem.fromJson(String source) =>
       ConsumptionItem.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  String toMeterValueString(MeterType meterType) {
-    var str = meterValue?.toString() ?? '';
-
-    if (meterType == MeterType.odometer) {
-      if (str.length < 4) {
-        return str;
-      }
-
-      return StringUtils.addCharAtPosition(str, '.', 3);
-    }
-
-    return str;
-  }
-
   int? previousMeterValue;
+  num cumulativeLitre = 0;
+  num? litrePer10km;
+
   bool get invalidMeterValue =>
       previousMeterValue != null &&
       meterValue != null &&

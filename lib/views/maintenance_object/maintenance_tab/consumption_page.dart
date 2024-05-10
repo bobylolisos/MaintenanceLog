@@ -323,44 +323,103 @@ class ConsumptionPage extends StatelessWidget {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       consumptionItem.date.toDateText(),
                       style: TextStyle(fontSize: 20, color: colorBlue),
                     ),
-                    Expanded(child: const SizedBox()),
-                    Text('${consumptionItem.costs.toStringAsFixed(2)} kr',
-                        style: TextStyle(fontSize: 18, color: colorBlue)),
+                    consumptionItem.litrePer10km != null
+                        ? Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 2, right: 10, bottom: 2, top: 2),
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.gasPump,
+                                      size: 20,
+                                      color: colorBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                  consumptionItem.litrePer10km!
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      fontSize: 18, color: colorBlue)),
+                            ],
+                          )
+                        : SizedBox(),
                   ],
                 ),
                 SizedBox(
                   height: 5,
                 ),
-                _row(consumptionItem.date.toTime(), FontAwesomeIcons.clock),
-                meterType == MeterType.odometer ||
-                        meterType == MeterType.hourmeter
-                    ? _row(
-                        consumptionItem.meterValue != null
-                            ? '${consumptionItem.toMeterValueString(meterType)} ${meterType.displaySuffix}'
-                            : '-',
-                        FontAwesomeIcons.rightToBracket)
-                    : const SizedBox(),
-                _row(
-                    '${consumptionItem.pricePerLitre.toStringAsFixed(2)} kr / liter',
-                    FontAwesomeIcons.coins),
-                _row('${consumptionItem.litre.toStringAsFixed(2)} liter',
-                    FontAwesomeIcons.gasPump),
-                _row(
-                    consumptionItem.note.isNotEmpty
-                        ? consumptionItem.note
-                        : '-',
-                    FontAwesomeIcons.clipboard),
-                consumptionItem.invalidMeterValue
-                    ? _row(
-                        'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
-                        FontAwesomeIcons.triangleExclamation,
-                        color: Colors.red)
-                    : const SizedBox(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _row(consumptionItem.date.toTime(),
+                            FontAwesomeIcons.clock),
+                        meterType == MeterType.odometer ||
+                                meterType == MeterType.hourmeter
+                            ? _row(
+                                consumptionItem.meterValue != null
+                                    ? meterType.toMeterValueStringWithSuffix(
+                                        consumptionItem.meterValue)
+                                    : '-',
+                                FontAwesomeIcons.rightToBracket)
+                            : const SizedBox(),
+                        _row(
+                            '${consumptionItem.pricePerLitre.toStringAsFixed(2)} kr / liter',
+                            FontAwesomeIcons.coins),
+                        _row(
+                            '${consumptionItem.litre.toStringAsFixed(2)} liter',
+                            FontAwesomeIcons.gasPump),
+                        _row(
+                            consumptionItem.note.isNotEmpty
+                                ? consumptionItem.note
+                                : '-',
+                            FontAwesomeIcons.clipboard),
+                        consumptionItem.invalidMeterValue
+                            ? _row(
+                                'Mätvärdesfel', //'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
+                                FontAwesomeIcons.triangleExclamation,
+                                color: Colors.red)
+                            : const SizedBox(),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _row('', null),
+                        consumptionItem.meterValue != null &&
+                                consumptionItem.previousMeterValue != null
+                            ? _row(
+                                meterType.toMeterValueStringWithSuffix(
+                                    consumptionItem.meterValue! -
+                                        consumptionItem.previousMeterValue!),
+                                FontAwesomeIcons.leftRight)
+                            : _row('', null),
+                        _row('', null),
+                        _row(
+                            '${(consumptionItem.litre * consumptionItem.pricePerLitre).toStringAsFixed(2)} kr',
+                            FontAwesomeIcons.coins),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -370,7 +429,7 @@ class ConsumptionPage extends StatelessWidget {
     );
   }
 
-  Widget _row(String text, IconData icon, {Color? color}) {
+  Widget _row(String text, IconData? icon, {Color? color}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -380,21 +439,21 @@ class ConsumptionPage extends StatelessWidget {
             width: 15,
             height: 15,
             child: Center(
-              child: FaIcon(
-                icon,
-                size: 14,
-                color: color ?? colorBlue,
-              ),
+              child: icon != null
+                  ? FaIcon(
+                      icon,
+                      size: 14,
+                      color: color ?? colorBlue,
+                    )
+                  : SizedBox(),
             ),
           ),
         ),
-        Expanded(
-          child: Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 5,
-            style: TextStyle(fontSize: 12, color: color ?? colorBlue),
-          ),
+        Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 5,
+          style: TextStyle(fontSize: 12, color: color ?? colorBlue),
         ),
       ],
     );

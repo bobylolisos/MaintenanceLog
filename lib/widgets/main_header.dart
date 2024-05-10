@@ -33,7 +33,7 @@ class MainHeader extends StatelessWidget {
                     ),
                     Text(
                       'Maintenance log',
-                      style: TextStyle(color: colorGold, fontSize: 28),
+                      style: TextStyle(color: colorGold, fontSize: 26),
                     ),
                     SizedBox(
                       height: 15,

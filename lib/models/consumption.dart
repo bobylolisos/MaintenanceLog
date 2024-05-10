@@ -71,12 +71,28 @@ class Consumption {
     );
 
     int? previousMeterValue;
-    for (var i = list.length - 1; i > 0; i--) {
-      if (list[i].meterValue != null) {
-        previousMeterValue = list[i].meterValue;
+    for (var i = list.length - 1; i >= 0; i--) {
+      var currentPost = list[i];
+      if (currentPost.meterValue != null) {
+        previousMeterValue = currentPost.meterValue;
       }
       if (i > 0) {
-        list[i - 1].previousMeterValue = previousMeterValue;
+        var nextPost = list[i - 1];
+        nextPost.previousMeterValue = previousMeterValue;
+      }
+
+      if (currentPost.meterValue != null &&
+          currentPost.previousMeterValue != null &&
+          currentPost.meterValue! > currentPost.previousMeterValue! &&
+          currentPost.litre > 0) {
+        final distance =
+            currentPost.meterValue! - currentPost.previousMeterValue!;
+        currentPost.litrePer10km =
+            distance / (currentPost.litre + currentPost.cumulativeLitre) / 10;
+      } else if (currentPost.meterValue == null && i > 0) {
+        var nextPost = list[i - 1];
+        nextPost.cumulativeLitre =
+            currentPost.litre + currentPost.cumulativeLitre;
       }
     }
 

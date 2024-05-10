@@ -102,7 +102,9 @@ class ConsumptionItemsCardsBuilder {
                           ),
                           _previousPostRowItem(
                               latestPost.meterValue != null
-                                  ? '${latestPost.toMeterValueString(maintenanceObject.meterType)} ${maintenanceObject.meterType.displaySuffix}'
+                                  ? maintenanceObject.meterType
+                                      .toMeterValueStringWithSuffix(
+                                          latestPost.meterValue)
                                   : '-',
                               FontAwesomeIcons.rightToBracket,
                               additionalValidation: () =>

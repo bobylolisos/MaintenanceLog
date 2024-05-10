@@ -70,8 +70,6 @@ class _ConsumptionItemAddEditBottomSheetState
             } else {
               Navigator.pop(context, newConsumptionItem);
             }
-
-            Navigator.pop(context, newConsumptionItem);
           } else {
             final consumptionItem = ConsumptionItem.createNew(
               consumptionId: widget.consumption.id,
