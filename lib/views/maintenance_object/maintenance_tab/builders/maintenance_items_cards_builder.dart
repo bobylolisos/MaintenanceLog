@@ -104,13 +104,14 @@ class MaintenanceItemsCardsBuilder {
                                   maintenanceObject.meterType !=
                                   MeterType.none),
                           _previousPostRowItem(
-                            '${latestPost.costs.toStringAsFixed(0)} kr',
-                            FontAwesomeIcons.coins,
-                          ),
+                              '${latestPost.costs.toStringAsFixed(0)} kr',
+                              FontAwesomeIcons.coins,
+                              additionalValidation: () =>
+                                  latestPost.costs != 0),
                           _previousPostRowItem(
-                            latestPost.note.isNotEmpty ? latestPost.note : '-',
-                            FontAwesomeIcons.clipboard,
-                          ),
+                              latestPost.note, FontAwesomeIcons.clipboard,
+                              additionalValidation: () =>
+                                  latestPost.note.isNotEmpty),
                           _previousPostRowItem(
                               'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
                               FontAwesomeIcons.triangleExclamation,

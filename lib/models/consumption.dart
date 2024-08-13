@@ -91,11 +91,11 @@ class Consumption {
 
         if (meterType == MeterType.odometer) {
           currentPost.litrePer =
-              distance / (currentPost.litre + currentPost.cumulativeLitre) / 10;
+              (currentPost.litre + currentPost.cumulativeLitre) / distance * 10;
         }
         if (meterType == MeterType.hourmeter) {
           currentPost.litrePer =
-              distance / (currentPost.litre + currentPost.cumulativeLitre);
+              (currentPost.litre + currentPost.cumulativeLitre) / distance;
         }
       } else if (currentPost.meterValue == null && i > 0) {
         var nextPost = list[i - 1];

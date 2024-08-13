@@ -80,6 +80,10 @@ class ConsumptionPage extends StatelessWidget {
                             .map((e) => e.costs)
                             .reduce((a, b) => a + b)
                         : 0;
+                    var distance = consumption.posts.length >= 2
+                        ? consumption.posts.first.meterValue! -
+                            consumption.posts.last.meterValue!
+                        : null;
                     return Padding(
                       padding:
                           const EdgeInsets.only(left: 6.0, right: 6, top: 6),
@@ -150,7 +154,7 @@ class ConsumptionPage extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Text(
-                                              '${totalCosts.toStringAsFixed(2)} kr/km', // TODO: Only if metervalue
+                                              '${(totalCosts / distance!).toStringAsFixed(2)} kr/km2', // TODO: Only if metervalue
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: colorBlue,
@@ -349,9 +353,14 @@ class ConsumptionPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Text(consumptionItem.litrePer!.toStringAsFixed(2),
-                                  style: TextStyle(
-                                      fontSize: 18, color: colorBlue)),
+                              Text(
+                                consumptionItem.litrePer!.toStringAsFixed(2),
+                                style:
+                                    TextStyle(fontSize: 18, color: colorBlue),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
                             ],
                           )
                         : SizedBox(),
@@ -367,59 +376,81 @@ class ConsumptionPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        _row(consumptionItem.date.toTime(),
+                        _columnRow(consumptionItem.date.toTime(),
                             FontAwesomeIcons.clock),
                         meterType == MeterType.odometer ||
                                 meterType == MeterType.hourmeter
-                            ? _row(
+                            ? _columnRow(
                                 consumptionItem.meterValue != null
                                     ? meterType.toMeterValueStringWithSuffix(
                                         consumptionItem.meterValue)
                                     : '-',
                                 FontAwesomeIcons.rightToBracket)
                             : const SizedBox(),
-                        _row(
+                        _columnRow(
                             '${consumptionItem.pricePerLitre.toStringAsFixed(2)} kr / liter',
                             FontAwesomeIcons.coins),
-                        _row(
-                            '${consumptionItem.litre.toStringAsFixed(2)} liter',
-                            FontAwesomeIcons.gasPump),
-                        _row(
-                            consumptionItem.note.isNotEmpty
-                                ? consumptionItem.note
-                                : '-',
-                            FontAwesomeIcons.clipboard),
-                        consumptionItem.invalidMeterValue
-                            ? _row(
-                                'Mätvärdesfel', //'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
-                                FontAwesomeIcons.triangleExclamation,
-                                color: Colors.red)
-                            : const SizedBox(),
                       ],
                     ),
-                    SizedBox(
-                      width: 40,
+                    Expanded(
+                      child: SizedBox(),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _row('', null),
+                        _columnRow('', null),
                         consumptionItem.meterValue != null &&
                                 consumptionItem.previousMeterValue != null
-                            ? _row(
+                            ? _columnRow(
                                 meterType.toMeterValueStringWithSuffix(
                                     consumptionItem.meterValue! -
                                         consumptionItem.previousMeterValue!),
                                 FontAwesomeIcons.leftRight)
-                            : _row('', null),
-                        _row('', null),
-                        _row(
+                            : _columnRow('', null),
+                        _columnRow(
+                            '${consumptionItem.litre.toStringAsFixed(2)} liter',
+                            FontAwesomeIcons.gasPump),
+                      ],
+                    ),
+                    Expanded(
+                      child: SizedBox(),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _columnRow('', null),
+                        _columnRow('', null),
+                        _columnRow(
                             '${(consumptionItem.litre * consumptionItem.pricePerLitre).toStringAsFixed(2)} kr',
                             FontAwesomeIcons.coins),
                       ],
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
                   ],
                 ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          _fullRow(
+                              consumptionItem.note.isNotEmpty
+                                  ? consumptionItem.note
+                                  : '-',
+                              FontAwesomeIcons.clipboard),
+                          consumptionItem.invalidMeterValue
+                              ? _fullRow(
+                                  'Mätarvärdet överenstämmer inte med tidigare angivet mätarvärde',
+                                  FontAwesomeIcons.triangleExclamation,
+                                  color: Colors.red)
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -429,7 +460,35 @@ class ConsumptionPage extends StatelessWidget {
     );
   }
 
-  Widget _row(String text, IconData? icon, {Color? color}) {
+  Widget _fullRow(String text, IconData icon, {Color? color}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 2, right: 10, bottom: 2, top: 2),
+          child: SizedBox(
+            width: 15,
+            height: 15,
+            child: Center(
+              child: FaIcon(
+                icon,
+                size: 14,
+                color: color ?? colorBlue,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(text,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 5,
+              style: TextStyle(fontSize: 12, color: colorBlue)),
+        ),
+      ],
+    );
+  }
+
+  Widget _columnRow(String text, IconData? icon, {Color? color}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

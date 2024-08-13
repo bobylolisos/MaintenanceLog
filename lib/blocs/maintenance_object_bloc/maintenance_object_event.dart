@@ -4,6 +4,7 @@ import 'package:maintenance_log/models/consumption_item.dart';
 import 'package:maintenance_log/models/maintenance.dart';
 import 'package:maintenance_log/models/maintenance_item.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
+import 'package:maintenance_log/models/note.dart';
 
 @immutable
 sealed class MaintenanceObjectEvent {}
@@ -24,6 +25,21 @@ final class MaintenanceObjectSaveEvent extends MaintenanceObjectEvent {
   final MaintenanceObject maintenanceObject;
 
   MaintenanceObjectSaveEvent({required this.maintenanceObject});
+}
+
+// N o t e
+final class NoteChangedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final Note note;
+
+  NoteChangedEvent({required this.maintenanceObject, required this.note});
+}
+
+final class NoteDeletedEvent extends MaintenanceObjectEvent {
+  final MaintenanceObject maintenanceObject;
+  final Note note;
+
+  NoteDeletedEvent({required this.maintenanceObject, required this.note});
 }
 
 // C o n s u m p t i o n

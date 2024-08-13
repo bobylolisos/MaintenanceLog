@@ -34,7 +34,7 @@ class MaintenanceObjectMaintenanceTabView extends StatelessWidget {
                 children: [
                   // ----------- Object information ----------
                   MaintenanceObjectInformationCardBuilder.create(
-                      maintenanceObject),
+                      context, maintenanceObject),
 
                   // ----------- If no consumptions or maintenances, display a message ----------
                   maintenanceObject.consumptions.isEmpty &&

@@ -89,22 +89,11 @@ class MaintenancePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   MaintenanceObjectItemCard(
-                                    title: 'Underhållspunkt',
+                                    title: maintenance.name,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: Text(
-                                            maintenance.name,
-                                            style: TextStyle(
-                                              fontSize: 22,
-                                              color: colorBlue,
-                                            ),
-                                          ),
-                                        ),
                                         maintenance.description.isNotEmpty
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
@@ -137,25 +126,25 @@ class MaintenancePage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            FaIcon(
-                                              FontAwesomeIcons.coins,
-                                              color: colorBlue,
-                                              size: 16,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              '${totalCosts.toStringAsFixed(2)} kr/km', // TODO: Only if metervalue
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: colorBlue,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        // Row(
+                                        //   children: [
+                                        //     FaIcon(
+                                        //       FontAwesomeIcons.coins,
+                                        //       color: colorBlue,
+                                        //       size: 16,
+                                        //     ),
+                                        //     SizedBox(
+                                        //       width: 10,
+                                        //     ),
+                                        //     Text(
+                                        //       '${totalCosts.toStringAsFixed(2)} kr/km', // TODO: Only if metervalue
+                                        //       style: TextStyle(
+                                        //         fontSize: 16,
+                                        //         color: colorBlue,
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -330,9 +319,15 @@ class MaintenancePage extends StatelessWidget {
                       maintenanceItem.date.toDateText(),
                       style: TextStyle(fontSize: 20, color: colorBlue),
                     ),
-                    Expanded(child: const SizedBox()),
-                    Text('${maintenanceItem.costs.toStringAsFixed(2)} kr',
-                        style: TextStyle(fontSize: 18, color: colorBlue)),
+                    Expanded(
+                      child: const SizedBox(),
+                    ),
+                    maintenanceItem.costs != 0
+                        ? Text(
+                            '${maintenanceItem.costs.toStringAsFixed(2)} kr',
+                            style: TextStyle(fontSize: 18, color: colorBlue),
+                          )
+                        : SizedBox(),
                   ],
                 ),
                 SizedBox(

@@ -60,6 +60,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               ),
               labelText: widget.label ?? '',
               labelStyle: TextStyle(color: colorBlue),
+              alignLabelWithHint: true,
             ),
             controller: widget.textController,
             maxLength: widget.maxLength,

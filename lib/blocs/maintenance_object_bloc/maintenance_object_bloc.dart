@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maintenance_log/models/note.dart';
 import 'package:maintenance_log/repositories/firestore_maintenance_repository.dart';
 
 import 'maintenance_object_event.dart';
@@ -20,6 +21,10 @@ class MaintenanceObjectBloc
     on<MaintenanceObjectGetEvent>(onMaintenanceObjectGetEvent);
 
     on<MaintenanceObjectSaveEvent>(onMaintenanceObjectSaveEvent);
+
+    // N o t e
+    on<NoteChangedEvent>(onNoteChangedEvent);
+    on<NoteDeletedEvent>(onNoteDeletedEvent);
 
     // C o n s u m p t i o n
     on<ConsumptionAddedEvent>(onConsumptionAddedEvent);
@@ -71,6 +76,56 @@ class MaintenanceObjectBloc
     if (maintenanceObject != null) {
       emit(MaintenanceObjectUpdatedState(maintenanceObject: maintenanceObject));
     }
+  }
+
+  // Note
+
+  FutureOr<void> onNoteChangedEvent(
+      NoteChangedEvent event, Emitter<MaintenanceObjectState> emit) {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenanceObject = event.maintenanceObject;
+    final index = maintenanceObject.notes
+        .indexWhere((element) => element.id == event.note.id);
+
+    if (index >= 0) {
+      maintenanceObject.notes.removeAt(index);
+      maintenanceObject.notes.insert(index, event.note);
+    } else {
+      var notes = List<Note>.empty(growable: true);
+      notes.add(event.note);
+      for (var i = 0; i < maintenanceObject.notes.length; i++) {
+        var existingNote = maintenanceObject.notes.elementAt(i);
+        existingNote.sortOrder = i + 1;
+        notes.add(existingNote);
+      }
+      maintenanceObject.notes.clear();
+      maintenanceObject.notes.addAll(notes);
+    }
+
+    _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
+  }
+
+  FutureOr<void> onNoteDeletedEvent(
+      NoteDeletedEvent event, Emitter<MaintenanceObjectState> emit) {
+    emit(MaintenanceObjectWorkInProgressState());
+    final maintenanceObject = event.maintenanceObject;
+    final index = maintenanceObject.notes
+        .indexWhere((element) => element.id == event.note.id);
+
+    if (index >= 0) {
+      maintenanceObject.notes.removeAt(index);
+    }
+
+    var notes = List<Note>.empty(growable: true);
+    for (var i = 0; i < maintenanceObject.notes.length; i++) {
+      var existingNote = maintenanceObject.notes.elementAt(i);
+      existingNote.sortOrder = i;
+      notes.add(existingNote);
+    }
+    maintenanceObject.notes.clear();
+    maintenanceObject.notes.addAll(notes);
+
+    _maintenanceObjectRepository.setMaintenanceObject(maintenanceObject);
   }
 
   // C o n s u m p t i o n

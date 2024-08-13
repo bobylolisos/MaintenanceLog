@@ -6,37 +6,43 @@ import 'package:uuid/uuid.dart';
 class Note {
   final String id;
   final String header;
-  final String note;
-  final int sortOrder;
+  final String subHeader;
+  final String text;
+  int sortOrder;
 
   Note({
     required this.id,
     required this.header,
-    required this.note,
+    required this.subHeader,
+    required this.text,
     required this.sortOrder,
   });
 
   factory Note.createNew(
     String header,
-    String note,
+    String subHeader,
+    String text,
   ) {
     return Note(
       id: Uuid().v4().toString(),
       header: header,
-      note: note,
+      subHeader: subHeader,
+      text: text,
       sortOrder: 0,
     );
   }
 
   Note copyWith({
     String? header,
-    String? note,
+    String? subHeader,
+    String? text,
     int? sortOrder,
   }) {
     return Note(
       id: id,
       header: header ?? this.header,
-      note: note ?? this.note,
+      subHeader: subHeader ?? this.subHeader,
+      text: text ?? this.text,
       sortOrder: sortOrder ?? this.sortOrder,
     );
   }
@@ -45,8 +51,8 @@ class Note {
     return <String, dynamic>{
       'id': id,
       'header': header,
-      'note': note,
-      'description': note,
+      'subHeader': subHeader,
+      'text': text,
       'sortOrder': sortOrder,
     };
   }
@@ -55,7 +61,8 @@ class Note {
     return Note(
       id: map['id'] as String,
       header: map['header'] as String,
-      note: map['note'] as String,
+      subHeader: map['subHeader'] as String,
+      text: map['text'] as String,
       sortOrder: map['sortOrder'] as int,
     );
   }

@@ -3,14 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maintenance_log/models/maintenance_object.dart';
 import 'package:maintenance_log/resources/colors.dart';
+import 'package:maintenance_log/views/maintenance_object/maintenance_tab/information_page.dart';
 import 'package:maintenance_log/widgets/maintenance_object_item_card.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MaintenanceObjectInformationCardBuilder {
-  static Widget create(MaintenanceObject maintenanceObject) {
+  static Widget create(
+      BuildContext context, MaintenanceObject maintenanceObject) {
     return MaintenanceObjectItemCard(
       title: 'Information',
-      onTap: () {},
+      postCount: maintenanceObject.notes.length,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => InformationPage(
+            maintenanceObjectId: maintenanceObject.id,
+            maintenanceObjectName: maintenanceObject.header,
+          ),
+        ));
+      },
       child: Column(
         children: [
           Row(

@@ -30,7 +30,7 @@ class DrawerMenu extends StatelessWidget {
                 Text(
                   'Maintenance log',
                   style: TextStyle(fontSize: 22, color: colorGold),
-                )
+                ),
               ],
             ),
           ),

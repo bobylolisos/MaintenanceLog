@@ -22,3 +22,11 @@ X num.parse(pricePerLitreController.text.replaceAll(',', '.')) -> toNumeric(), a
 - Beräkna pris per km
 
 - Inloggning + hierarki i firestore
+
+- Dölj 0.00 kr i poster
+
+- Om man går in på en underhållspunkt så visas 0.00 kr/km, trots ingen metertype
+
+- Om man kollar på ett underhållsobjekt, måste belopp & notering visas på "Föregående post" om den är 0kr eller tomt?
+
+- Lägg till swipe-höger för att editera på fler ställen
